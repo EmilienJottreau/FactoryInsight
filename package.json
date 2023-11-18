@@ -1,0 +1,14 @@
+{
+  "name": "factoryinsight",
+  "version": "1.0.0",
+  "description": "Service Web de supervision industrielle d'une usine",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,21 @@
+aller sur le site : https://nodejs.org/en
+telecharger la LTS
+installer nodejs
+
+pour flask : 
+
+.\venv\Scripts\activate
+	Si bug :	
+		Set-ExecutionPolicy Unrestricted -Scope Process
+		.\venv\Scripts\activate
+
+pip install flask
+
+pour demmarer l'appli front: 
+
+cd client
+npm start
+
+pour demarrer l'appli back :
+
+python server.py
