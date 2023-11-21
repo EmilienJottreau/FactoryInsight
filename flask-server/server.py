@@ -1,6 +1,12 @@
 from flask import Flask
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder=".", static_url_path="")
+
+
+@app.route("/home")
+def home():
+    return app.send_static_file("index.html")
+
 
 @app.route("/members")
 def members():
@@ -8,4 +14,4 @@ def members():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=8080, debug=True)
