@@ -1,6 +1,6 @@
 # FactoryInsight
 
-Service web de supervision industrielle d'une usine
+Service web de supervision d'une usine industrielle
 
 ## Technologie du serveur
 
