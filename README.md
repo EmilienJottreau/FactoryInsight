@@ -1,6 +1,6 @@
 # FactoryInsight
 
-Service web de supervision d'une usine industrielle
+Service web de supervision d'une usine industrielle.
 
 ## Technologie du serveur
 
@@ -8,7 +8,7 @@ Service web de supervision d'une usine industrielle
 - **Python**
 - Framework **React**
 - Base de donnée **MySQL**
-- Serveur **OPC KepServer**
+- Serveur OPC **KepServer**
 
 ## Setup du serveur
 
