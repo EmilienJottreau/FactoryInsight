@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FactoryInsight</title>
+    <link rel="stylesheet" href="templates/style.css" type="text/css">
+</head>
+
+<body>
+
+    <header>
+        <h1>FactoryInsight</h1>
+    </header>
+
+    <main>
+        <h2>Tableau des variables OPC</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Variable</th>
+                    <th>Valeur</th>
+                    <th>Date et Heure</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{data.name}}</td>
+                    <td>{{data.value}}</td>
+                    <td>{{data.time}}</td>
+                </tr>
+                <tr>
+                    <td>{{data.name}}</td>
+                    <td>{{data.value}}</td>
+                    <td>{{data.time}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+</body>
+
+</html>
