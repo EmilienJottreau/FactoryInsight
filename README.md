@@ -13,10 +13,11 @@ Service web de supervision d'une usine industrielle.
 ## Setup du serveur
 - Lancer le server [Node.JS](https://nodejs.org/en/download/current) depuis le dossier client `cd client`.
 - Lancer le server [Node.JS](https://nodejs.org/en/download/current) `npm start` pour l'appli front-end.
-- Installer les bibliothèques python pour flask `pip install flask`
-- Installer les bibliothèques python pour l'asynchronisme `pip install async`
-- Installer les bibliothèques python pour le serveur OPC `pip install asyncua`
-- Installer les bibliothèques python pour la base de donnée MySQL `pip install mysql-connector-python`
+- Utiliser la commande `pip install -r requirements.txt` depuis le dossier pour installer toutes les dépendances python.
+    - Installer les bibliothèques python pour flask `pip install flask`
+    - Installer les bibliothèques python pour l'asynchronisme `pip install asyncio`
+    - Installer les bibliothèques python pour le serveur OPC `pip install asyncua`
+    - Installer les bibliothèques python pour la base de donnée MySQL `pip install mysql-connector-python`
 - Démarrer la base donnée MySQL depuis [XAMPP](https://www.apachefriends.org/fr/download.html).                  
 - Initialiser le serveur OPC depuis [KepServer](https://www.kepware.fr/produit/kepserverex/).
 - Exécuter `python flask-server/server.py` pour démarrer le serveur.
