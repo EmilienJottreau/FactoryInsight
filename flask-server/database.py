@@ -1,4 +1,4 @@
-import mysql.connector as db
+import mysql.connector as mysql
 import datetime
 
 
@@ -20,60 +20,54 @@ class Tag:
 class DataBase:
     def __init__(self) -> None:
         try:
-            self.database = db.connect(
-                user="root", password="", host="127.0.0.1", database=""
-            )
+            self.database = mysql.connect(user="root", password="", host="localhost")
             self.cursor = self.database.cursor()
         except Exception as err:
-            print(err)
-            if err.errno == db.errorcode.ER_ACCESS_DENIED_ERROR:
-                print("Something is wrong with your user name or password")
-            elif err.errno == db.errorcode.ER_BAD_DB_ERROR:
+            if err.errno == mysql.errorcode.ER_ACCESS_DENIED_ERROR:
+                print("User name or password is wrong")
+            elif err.errno == mysql.errorcode.ER_BAD_DB_ERROR:
                 print("Database does not exist")
             else:
                 print(err)
 
-    def initialization(self):
-        # CREATE TABLE
-        DB_NAME = "opc_tags"
+    def get_databases(self):
+        self.cursor.execute("SHOW DATABASES")
 
-        TABLES = {}
-        TABLES["tags"] = (
-            "CREATE TABLE `tags` ("
-            "  `name` varchar(255) NOT NULL,"
-            "  `value` double NOT NULL,"
-            "  `timestamp` timestamp NOT NULL,"
-            "  PRIMARY KEY (`name`)"
-            ") ENGINE=InnoDB"
-        )
+        databases = []
+        for database in self.cursor:
+            databases.append(database)
+        return databases
 
+    def create_database(self, database_name:str):
         try:
-            self.cursor.execute("USE {}".format(DB_NAME))
-        except db.Error as err:
-            print("Database {} does not exists.".format(DB_NAME))
-            if err.errno == db.errorcode.ER_BAD_DB_ERROR:
+            self.cursor.execute("USE {}".format(database_name))
+        except mysql.Error as err:
+            print("Database {} does not exists.".format(database_name))
+            if err.errno == mysql.errorcode.ER_BAD_DB_ERROR:
                 try:
-                    self.cursor.execute(
-                        "CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(
-                            DB_NAME
-                        )
-                    )
-                except db.Error as err:
+                    self.cursor.execute("CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(database_name))
+                except mysql.Error as err:
                     print("Failed creating database: {}".format(err))
                     exit(1)
-                print("Database {} created successfully.".format(DB_NAME))
-                self.database.database = DB_NAME
+                print("Database {} created successfully.".format(database_name))
+                self.database.database = database_name
             else:
                 print(err)
                 exit(1)
+
+    def create_table():
+        TABLES = {}
+        TABLES["tags"] = (
+            "CREATE TABLE `tags` (" "  `name` varchar(255) NOT NULL," "  `value` double NOT NULL," "  `timestamp` timestamp NOT NULL," "  PRIMARY KEY (`name`)" ") ENGINE=InnoDB"
+        )
 
         for table_name in TABLES:
             table_description = TABLES[table_name]
             try:
                 print("Creating table {}: ".format(table_name), end="")
                 self.cursor.execute(table_description)
-            except db.Error as err:
-                if err.errno == db.errorcode.ER_TABLE_EXISTS_ERROR:
+            except mysql.Error as err:
+                if err.errno == mysql.errorcode.ER_TABLE_EXISTS_ERROR:
                     print("already exists.")
                 else:
                     print(err.msg)

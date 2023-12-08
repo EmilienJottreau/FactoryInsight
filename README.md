@@ -16,8 +16,8 @@ Service web de supervision d'une usine industrielle.
 - Installer les bibliothèques python pour flask `pip install flask`
 - Installer les bibliothèques python pour l'asynchronisme `pip install async`
 - Installer les bibliothèques python pour le serveur OPC `pip install asyncua`
-- Installer les bibliothèques python pour la base de donnée MySQL `pip mysql-connector-python`
-- Démarrer la base donnée MySQL depuis [XAMPP](https://www.apachefriends.org/fr/download.html).
+- Installer les bibliothèques python pour la base de donnée MySQL `pip install mysql-connector-python`
+- Démarrer la base donnée MySQL depuis [XAMPP](https://www.apachefriends.org/fr/download.html).                  
 - Initialiser le serveur OPC depuis [KepServer](https://www.kepware.fr/produit/kepserverex/).
 - Exécuter `python flask-server/server.py` pour démarrer le serveur.
 

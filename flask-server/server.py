@@ -4,7 +4,7 @@ import database as db1
 app = Flask(__name__, static_folder=".", static_url_path="")
 
 db = db1.DataBase()
-db.initialization()
+db.create("opc_tags")
 
 try:
     tag1 = db1.Tag("Tag1", 44)
@@ -23,7 +23,6 @@ response = db.select()
 
 @app.route("/")
 def index():
-    data = [{"name": "test", "value": 45, "timestamp": "12h"}]
     return render_template("index.html", data=response)
 
 
