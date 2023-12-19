@@ -1,0 +1,4 @@
+flask
+asyncio
+asyncua
+mysql-connector-python
