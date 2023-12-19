@@ -1,7 +1,11 @@
 from asyncua import Client, Node, ua
 from typing import Any
 import asyncio
+import database as db1
 
+db = db1.DataBase("opc_tags")
+lvl = db1.Tag("level", 0)
+db.insert([lvl])
 
 class SubHandler(object):
     """
@@ -10,8 +14,9 @@ class SubHandler(object):
         - defines the associated callback procedures
     """
 
-    def datachange_notification(self, node, val, data):
+    async def datachange_notification(self, node : Node, val, data):
         """Subscription to monitoring variables from KEPServer's notifications"""
+        db.update(lvl, val)
         print(f"Notification de changement de valeur pour {node} : vaut {val}")
 
 
@@ -52,7 +57,7 @@ class OPCTag:
 
     async def test(self):
         async with OPCTag.client as client:
-            node = client.get_node("ns=2;s=Channel1.Device1.Tag1")
+            node = client.get_node("ns=2;s=FactoryInsight.Tank.level")
             value = await node.read_value()
             return value
 
@@ -63,24 +68,29 @@ class OPCTag:
 
 server_url = "opc.tcp://127.0.0.1:49320"
 
-tag1 = OPCTag("ns=2;s=Channel1.Device1.Tag1")
+#tag1 = OPCTag("ns=2;s=ns=2;s=FactoryInsight.Tank.level")
 #tag1.subscribe(100)
-print(tag1.test2())
+#print(tag1.test2())
 #value = asyncio.run(tag1.read())
 
 
-"""
+
 async def main():
     async with Client(url=server_url) as client:
 
-        tag2 = OPCTag("ns=2;s=Channel1.Device1.Tag2")
-        value = await tag2.test()
-        print(f"is equal to {value}")
-        await tag2.subscribe(100)
+        level = await client.nodes.root.get_child(["0:Objects", f"{2}:FactoryInsight", f"{2}:Tank", f"{2}:level"])
+        subscription = await client.create_subscription(500, OPCTag.handler)
+        await subscription.subscribe_data_change(level)
+        
+        #tag2 = OPCTag("ns=2;s=FactoryInsight.Tank.level")
+        #value = await tag2.test()
+        #print(f"is equal to {value}")
+        #await tag2.subscribe(100)
+
+        
         while True:
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.5)
 
 
 if __name__ == "__main__":
     asyncio.run(main())
-"""

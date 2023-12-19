@@ -15,25 +15,10 @@
     </header>
 
     <main>
-        <h2>Tableau des variables OPC</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Variable</th>
-                    <th>Valeur</th>
-                    <th>Date et Heure</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for tag in data %}
-                <tr>
-                    <td>{{tag["name"]}}</td>
-                    <td>{{tag["value"]}}</td>
-                    <td>{{tag["timestamp"]}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <h2>Menu</h2>
+        <a href="/data">
+            <button>Voir données</button>
+        </a>
     </main>
 
 </body>

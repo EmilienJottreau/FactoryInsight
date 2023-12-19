@@ -1,6 +1,6 @@
 import mysql.connector as mysql
 import datetime
-
+from typing import Any, List
 
 class Tag:
     def __init__(
@@ -18,9 +18,9 @@ class Tag:
 
 
 class DataBase:
-    def __init__(self) -> None:
+    def __init__(self, database = "") -> None:
         try:
-            self.database = mysql.connect(user="root", password="", host="localhost")
+            self.database = mysql.connect(user="root", password="", host="localhost", database=database)
             self.cursor = self.database.cursor()
         except Exception as err:
             if err.errno == mysql.errorcode.ER_ACCESS_DENIED_ERROR:
@@ -38,7 +38,7 @@ class DataBase:
             databases.append(database)
         return databases
 
-    def create_database(self, database_name:str):
+    def create_database(self, database_name: str):
         try:
             self.cursor.execute("USE {}".format(database_name))
         except mysql.Error as err:
@@ -55,7 +55,7 @@ class DataBase:
                 print(err)
                 exit(1)
 
-    def create_table():
+    def create_table(self):
         TABLES = {}
         TABLES["tags"] = (
             "CREATE TABLE `tags` (" "  `name` varchar(255) NOT NULL," "  `value` double NOT NULL," "  `timestamp` timestamp NOT NULL," "  PRIMARY KEY (`name`)" ") ENGINE=InnoDB"
@@ -74,12 +74,17 @@ class DataBase:
             else:
                 print("OK")
 
-    def insert(self, tag: Tag):
+    def insert(self, tags: list):
         add_tag = "INSERT INTO tags " "(name, value, timestamp) VALUES (%s, %s, %s)"
 
-        data_tag = (tag.name, tag.value, tag.timestamp)
-
-        self.cursor.execute(add_tag, data_tag)
+        if len(tags) == 1:
+            data_tag = (tags[0].name, tags[0].value, tags[0].timestamp)
+            self.cursor.execute(add_tag, data_tag)
+        else:
+            data_tag = []
+            for tag in tags:
+                data_tag.append((tag.name, tag.value, tag.timestamp))
+            self.cursor.executemany(add_tag, data_tag)
 
         self.database.commit()
 
@@ -87,12 +92,20 @@ class DataBase:
         query = "SELECT name, value, timestamp FROM tags"
 
         self.cursor.execute(query)
-
+        #myresult = self.cursor.fetchall()
         response = []
         for name, value, timestamp in self.cursor:
             print(f"The tag {name} is equal to {value} and was updated at {timestamp}")
             response.append({"name": name, "value": value, "timestamp": timestamp})
         return response
+    
+    def update(self, tag:Tag, value):
+        query = "UPDATE tags SET value = %s WHERE name = %s"
+        arg = (value, tag.name)
+
+        self.cursor.execute(query, arg)
+
+        self.database.commit()
 
     def delete(self, tag: Tag):
         delete = "DELETE FROM tags WHERE name = %s"
