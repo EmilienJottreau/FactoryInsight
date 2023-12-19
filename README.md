@@ -7,7 +7,7 @@ Service web de supervision d'installations industrielles.
 - Framework back-end **Python Flask**
 - **Python**
 - Framework front-end **React**
-- Base de donnée **MySQL**
+- Base de données **MySQL**
 - Serveur OPC **KepServer**
 
 ## Setup du serveur
