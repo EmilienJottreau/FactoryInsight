@@ -1,7 +1,7 @@
 {
   "name": "factoryinsight",
   "version": "1.0.0",
-  "description": "Service web de supervision d'une usine industrielle",
+  "description": "Service web de supervision d'installations industrielles",
   "main": "index.js",
   "directories": {
     "doc": "doc"
