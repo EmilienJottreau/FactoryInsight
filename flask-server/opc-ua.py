@@ -4,8 +4,11 @@ import asyncio
 import database as db1
 
 db = db1.DataBase("opc_tags")
-lvl = db1.Tag("level", 0)
-db.insert([lvl])
+try:
+    lvl = db1.Tag("level", 0)
+    db.insert([lvl])
+except:
+    pass
 
 class SubHandler(object):
     """
