@@ -2,6 +2,10 @@
 
 Service web de supervision d'installations industrielles.
 
+pour utiliser ce repo :
+
+`git clone https://github.com/EmilienJottreau/FactoryInsight.git`
+
 ## Technologie du serveur
 
 - Framework back-end **Python Flask**
