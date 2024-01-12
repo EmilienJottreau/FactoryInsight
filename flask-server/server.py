@@ -1,52 +1,83 @@
-from flask import Flask, render_template
-import database as db1
+from flask import Flask, redirect, render_template, url_for
+from flask_socketio import SocketIO, emit
+from database import Database
+from opc_tags import OPC_Tag
+from typing import Any
 import random as rd
 
-app = Flask(__name__, static_folder=".", static_url_path="")
 
-try:
-    db = db1.DataBase()
-    db.create_database("opc_tags")
-    db.create_table()
-    tag1 = db1.Tag("Tag1", 44)
-    db.insert(tag1)
-    db.update(tag1, 42)
-    tag2 = db1.Tag("Tag2", 788)
-    db.insert(tag2)
-except Exception as e:
-    print(e)
+app = Flask(__name__)
+socketio = SocketIO(app, logger=True, engineio_logger=False)
 
-def up():
-    db.update(tag1, rd.randint(0, 100))
-    return db.select()
 
-try:
-    response = up()
-except Exception as e:
-    response = [{"name": "Error", "value": 0, "timestamp": "00/00"}]
-    print(e)
+def emit_to_sockets(function_name: str, table: str, tags, *args):
+    if function_name == "insert":
+        data = {"table": table, "tags": tags[0].json}
+    elif function_name == "delete":
+        data = {"table": table, "id": tags}
+    elif function_name == "update":
+        data = {"table": table, "tag_name": tags, "value": args[0]}
+    emit(function_name, data, broadcast=True)
+
+
+tables_list = ["level", "liquid_temperature", "heating_temperature", "input_flow", "output_flow", "agitator_speed", "states"]
+database = Database("Tank", recreate_db=True, logger=True)
+Database.callback_function = emit_to_sockets
+print(Database.callback_function)
+for table in tables_list:
+    database.create_table(table)
+    database.insert(table, [OPC_Tag(f"{table}0", rd.random())])
+database.insert(
+    "states",
+    [
+        OPC_Tag("agitator_state", False),
+        OPC_Tag("emptying_state", False),
+        OPC_Tag("filling_state", False),
+        OPC_Tag("input_state", False),
+        OPC_Tag("maintenance", False),
+        OPC_Tag("manual_mode", False),
+        OPC_Tag("output_state", False),
+    ],
+)
 
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    tags = {}
+    for table in tables_list:
+        tags[table] = database.select(table)
+    return render_template("index.html", data=tags)
 
 
-@app.route("/data")
-def data():
-    return render_template("data.html", data=response)
+@app.route("/reset")
+def reset():
+    for table in tables_list:
+        database.drop_table(table)
+        database.create_table(table)
+        database.insert(table, [OPC_Tag(f"{table}0", rd.random())])
+    return redirect(url_for("index"))
 
 
-@app.route("/update")
-def update():
-    response = up()
-    return render_template("data.html", data=response)
+@socketio.on("message")
+def handle_message(message: str):
+    print("Server received from client : " + message)
 
 
-@app.route("/members")
-def members():
-    return {"members": ["Member1", "Member2", "Member3"]}
+@socketio.on("append")
+def handle_append(table: str):
+    database.insert(table, [OPC_Tag(table, rd.random())])
+
+
+@socketio.on("update")
+def handle_update(table: str, tag_name: str, value: Any):
+    database.update(table, tag_name, value)
+
+
+@socketio.on("delete")
+def handle_delete(table: str, id: str):
+    print(table, id)
+    database.delete(table, int(id))
 
 
 if __name__ == "__main__":
-    app.run(port=8080, debug=False)
+    socketio.run(app)

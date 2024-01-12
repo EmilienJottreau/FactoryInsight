@@ -44,7 +44,7 @@ async def main():
 
         while True:
             if not await tags["maintenance"].read_value():
-                if not False:#await tags["cleaning"].read_value():
+                if not await tags["cleaning"].read_value():
                     if await tags["input_state"].read_value():
                         await change_value(tags["filling_state"], True)
                         await change_value(tags["input_flow"], rd.gauss(1, 1))

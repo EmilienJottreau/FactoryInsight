@@ -2,3 +2,4 @@ flask
 asyncio
 asyncua
 mysql-connector-python
+flask_socketio

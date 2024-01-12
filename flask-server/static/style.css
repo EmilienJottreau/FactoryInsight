@@ -1,0 +1,134 @@
+html {
+    font-family: Arial, sans-serif;
+}
+
+body {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+hr {
+    margin-top: 40px;
+    margin-bottom: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #e4e4e4;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+button {
+    background-color: #555555;
+    color: white;
+    font-size: 95%;
+    border-radius: 8px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    margin: 4px;
+    padding: 11px 23px;
+}
+
+button:hover {
+    background-color: white;
+    color: #555555;
+}
+
+#mode_button {
+    background-color: darkorchid;
+    border-color: darkorchid;
+}
+
+#mode_button:hover {
+    background-color: white;
+    border: 2px solid;
+    border-color: darkorchid;
+}
+
+.delete_buttons {
+    background-color: #ee4c4c;
+    border: 0px;
+    display: block;
+    margin: auto;
+    font-size: 75%;
+    padding: 3px 12px;
+}
+
+.delete_buttons:hover {
+    background-color: #ee4c4c;
+    color: #ffffff;
+}
+
+#tabs {
+    overflow: hidden;
+    border: 1px solid #ddd;
+    background-color: #e4e4e4;
+}
+
+#tabs button {
+    background-color: inherit;
+    color: black;
+    float: left;
+    border-radius: 0;
+    border: none;
+    outline: none;
+    transition: 0.2s;
+    margin: 0;
+}
+
+#tabs button:hover {
+    background-color: #d6d6d6;
+}
+
+#tabs button.active {
+    background-color: #b9b9b9;
+}
+
+.tabcontent {
+    display: none;
+    -webkit-animation: fadeEffect 0.7s;
+    animation: fadeEffect 0.7s;
+}
+
+@-webkit-keyframes fadeEffect {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeEffect {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

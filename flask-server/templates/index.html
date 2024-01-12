@@ -2,10 +2,9 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
     <title>FactoryInsight</title>
-    <link rel="stylesheet" href="templates/style.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}" />
 </head>
 
 <body>
@@ -14,13 +13,63 @@
         <h1>FactoryInsight</h1>
     </header>
 
+    <hr>
+
     <main>
-        <h2>Menu</h2>
-        <a href="/data">
-            <button>Voir données</button>
+        <h2>Tableaux des variables OPC</h2>
+
+        <div id="tabs">
+            {% for table in data %}
+            <button class="tablinks" id="{{table}}_tab" onclick="tabs_manager(event, '{{table}}')">{{table.replace("_",
+                " ").capitalize()}}</button>
+            {% endfor %}
+        </div>
+
+        <div id="content">
+            {% for table in data %}
+            <div class="tabcontent" id="{{table}}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Valeur</th>
+                            <th>Qualité</th>
+                            <th>Date et Heure</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody id="{{table}}_table">
+                        {% for tag in data[table] %}
+                        <tr {% if table != "states" %} id="{{table}}_{{tag['id']}}" {% else %} id="{{table}}_{{tag['name']}}" {% endif %}>
+                            <td>{{tag["name"]}}</td>
+                            <td>{{tag["value"]}}</td>
+                            <td>{{tag["quality"]}}</td>
+                            <td>{{tag["timestamp"]}}</td>
+                            <td><button class="delete_buttons" onclick="delete_tag(`{{tag['id']}}`)">Supprimer</button></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+
+        <hr>
+
+        <a href="{{ url_for('index') }}">
+            <button>Menu</button>
         </a>
+        <a href="{{ url_for('reset') }}">
+            <button>Reset</button>
+        </a>
+        <button onclick="append_tag()">Ajouter</button>
+        <button onclick="switch_mode(this)" id="mode_button">Mode automatique</button>
     </main>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"
+        integrity="sha512-zoJXRvW2gC8Z0Xo3lBbao5+AS3g6YWr5ztKqaicua11xHo+AvE1b0lT9ODgrHTmNUxeCw0Ry4BGRYZfXu70weg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='script.js')}}"></script>
 </body>
 
 </html>
