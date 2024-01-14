@@ -2,21 +2,17 @@
 
 Service web de supervision d'installations industrielles.
 
-pour utiliser ce repo :
-
-`git clone https://github.com/EmilienJottreau/FactoryInsight.git`
-
 ## Technologie du serveur
 
-- Framework **Python Flask** pour la partie back-end
+- Framework **Python Flask** pour la partie back-end du projet
 - Base de données **MySQL** pour la sauvegarde de données
-- Serveur OPC **KepServer** pour la gestion des données d'automates industriels
-- Framework front-end **React**
+- Serveur OPC **KepServer** pour la gestion de données issues d'automates industriels
+- Framework **React** pour la partie front-end du site
 
 ## Setup du serveur
-- Lancer le server [Node.JS](https://nodejs.org/en/download/current) depuis le dossier client `cd client`.
-- Lancer le server [Node.JS](https://nodejs.org/en/download/current) avec `npm start` nécessaire au front-end.
-- Installer les dépendances python avec la commande `pip install -r requirements.txt` depuis le dossier
+- Utiliser la commande `git clone https://github.com/EmilienJottreau/FactoryInsight.git` pour cloner le projet.
+- Accéder au dossier client `cd client` pour lancer le serveur [Node.JS](https://nodejs.org/en/download/current) avec `npm start` utiliser par React pour la partie front-end.
+- Installer les bibliothèques python nécessaires au projet avec la commande `pip install -r requirements.txt` depuis le dossier.
 - Démarrer la base de données MySQL depuis [XAMPP](https://www.apachefriends.org/fr/download.html).                  
 - Initialiser le serveur OPC depuis [KepServer](https://www.kepware.fr/produit/kepserverex/).
 - Exécuter `python flask-server/server.py` pour lancer le serveur.

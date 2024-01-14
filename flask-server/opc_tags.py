@@ -15,6 +15,9 @@ class OPC_Tag:
         else:
             return datetime.now()
 
+    def set_id(self, id: int) -> None:
+        self.id = id
+
     @property
     def json(self) -> dict:
         return {"name": self.name, "value": self.value, "quality": self.quality, "timestamp": str(self.timestamp)[:-7]}

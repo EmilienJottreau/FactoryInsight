@@ -58,11 +58,6 @@ def reset():
     return redirect(url_for("index"))
 
 
-@socketio.on("message")
-def handle_message(message: str):
-    print("Server received from client : " + message)
-
-
 @socketio.on("append")
 def handle_append(table: str):
     database.insert(table, [OPC_Tag(table, rd.random())])
@@ -75,7 +70,6 @@ def handle_update(table: str, tag_name: str, value: Any):
 
 @socketio.on("delete")
 def handle_delete(table: str, id: str):
-    print(table, id)
     database.delete(table, int(id))
 
 

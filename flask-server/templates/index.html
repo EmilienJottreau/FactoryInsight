@@ -40,12 +40,14 @@
                     </thead>
                     <tbody id="{{table}}_table">
                         {% for tag in data[table] %}
-                        <tr {% if table != "states" %} id="{{table}}_{{tag['id']}}" {% else %} id="{{table}}_{{tag['name']}}" {% endif %}>
+                        <tr {% if table !="states" %} id="{{table}}_{{tag['id']}}" {% else %}
+                            id="{{table}}_{{tag['name']}}" {% endif %}>
                             <td>{{tag["name"]}}</td>
                             <td>{{tag["value"]}}</td>
                             <td>{{tag["quality"]}}</td>
                             <td>{{tag["timestamp"]}}</td>
-                            <td><button class="delete_buttons" onclick="delete_tag(`{{tag['id']}}`)">Supprimer</button></td>
+                            <td><button class="delete_buttons" onclick="delete_tag(`{{tag['id']}}`)">Supprimer</button>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
