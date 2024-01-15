@@ -23,6 +23,7 @@ Service web de supervision d'installations industrielles.
   - Se connecter depuis l'onglet *Runtime* > *Connect*.
 - Exécuter `python flask-server/server.py` pour lancer le serveur.
 - Démarrer le simulateur avec `python flask-server/simulator.py` afin de simuler l'installation.
+- Afficher la page web de l'application depuis l'adresse `http://127.0.0.1:5000/` dans votre navigateur.
 
 ## Vidéo de démonstration
 
