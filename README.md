@@ -11,11 +11,18 @@ Service web de supervision d'installations industrielles.
 
 ## Setup du serveur
 - Utiliser la commande `git clone https://github.com/EmilienJottreau/FactoryInsight.git` pour cloner le projet.
-- Accéder au dossier client `cd client` pour lancer le serveur [Node.JS](https://nodejs.org/en/download/current) avec `npm start` utiliser par React pour la partie front-end.
-- Installer les bibliothèques python nécessaires au projet avec la commande `pip install -r requirements.txt` depuis le dossier.
-- Démarrer la base de données MySQL depuis [XAMPP](https://www.apachefriends.org/fr/download.html).                  
+- Accéder au dossier client `cd client` pour lancer le serveur [Node.JS](https://nodejs.org/en/download/current) avec `npm start` utilisé par React pour la partie front-end.
+- [Facultatif] Créer un environnement virtuel pour installer les bibliothèques python :
+  - Utiliser `python -m venv .venv` pour initialiser l'environnement.
+  - Activer l'environnement virtuel avec `.venv\Scripts\activate` sur Windows ou `.venv/bin/activate` sur Linux ou mac.
+- Installer les bibliothèques python nécessaires au projet avec la commande `pip install -r requirements.txt` depuis la racine du dossier.
+- Initialiser la base de données MySQL depuis [XAMPP](https://www.apachefriends.org/fr/download.html) :
+  - Démarrer les modules *Apache* et *MySQL*.
 - Initialiser le serveur OPC depuis [KepServer](https://www.kepware.fr/produit/kepserverex/).
+  - Importer depuis l'application le fichier **namespace.opf** situé dans le dossier *ressources* correspondant à l'espace d'adressage.
+  - Se connecter depuis l'onglet *Runtime* > *Connect*.
 - Exécuter `python flask-server/server.py` pour lancer le serveur.
+- Démarrer le simulateur avec `python flask-server/simulator.py` afin de simuler l'installation.
 
 ## Vidéo de démonstration
 
