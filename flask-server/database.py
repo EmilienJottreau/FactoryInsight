@@ -1,12 +1,10 @@
 from mysql.connector import connect
-from typing import Any, Callable
 from opc_tags import OPC_Tag
+from typing import Any
 
 
 class Database:
-    callback_function = None
-
-    def __init__(self, database_name="", recreate_db=False, logger=False) -> None:
+    def __init__(self, database_name, recreate_db=False, logger=False) -> None:
         self.logger = logger
         self.connect(database_name, recreate_db)
 
@@ -15,38 +13,28 @@ class Database:
             self.db = connect(host="localhost", user="root", password="", database="")
             self.cursor = self.db.cursor()
 
-            if database_name:
-                if recreate_database:
-                    self.drop_database(database_name)
-                self.cursor.execute("SHOW DATABASES")
+            self.create_database(database_name)
+            self.cursor.execute(f"USE {database_name}")
 
-                if database_name.casefold() not in [db[0] for db in self.cursor.fetchall()]:
-                    self.create_database(database_name)
-                self.cursor.execute(f"USE {database_name}")
+            if recreate_database:
+                print("on recrer la db")
+                self.drop_database(database_name)
+                self.create_database(database_name)
         except:
-            if self.logger:
-                print(f"Unable to connect to '{database_name}' database")
-            return Exception
+            raise Exception("Can't connect to MySQL server")
         else:
             if self.logger:
                 print(f"Connected succcesfully to '{database_name}' database")
 
-    def callback(function: Callable):
-        def wrapper(self, *args, **kwargs):
-            try:
-                Database.callback_function(function.__name__, *args)
-            except:
-                print(f"No callback function defined")
-            else:
-                print(f"Callback received from '{function.__name__}' function")
-            return function(self, *args, **kwargs)
-
-        return wrapper
-
     def create_database(self, database_name: str) -> None:
         try:
-            self.cursor.execute(f"CREATE DATABASE {database_name} DEFAULT CHARACTER SET 'utf8'")
-            self.cursor.execute(f"USE {database_name}")
+            self.cursor.execute("SHOW DATABASES")
+            if database_name.casefold() not in [db[0] for db in self.cursor.fetchall()]:
+                print("la db n'existe pas")
+                self.cursor.execute(f"CREATE DATABASE {database_name} DEFAULT CHARACTER SET 'utf8'")
+            else:
+                print("erreur create db")
+                raise Exception
         except:
             if self.logger:
                 print(f"Unable to create '{database_name}' database")
@@ -64,36 +52,41 @@ class Database:
             if self.logger:
                 print(f"'{database_name}' database was dropped succcesfully")
 
-    def create_table(self, table_name: str) -> None:
+    def create_table(self, station:str, table: str) -> None:
         try:
-            self.cursor.execute(
-                f"CREATE TABLE {table_name} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, value DOUBLE NOT NULL, quality TINYINT UNSIGNED, timestamp TIMESTAMP)"
-            )
+            self.cursor.execute("SHOW TABLES")
+            station = station + "_" + table
+            if station.casefold() not in [db[0] for db in self.cursor.fetchall()]:
+                self.cursor.execute(
+                    f"CREATE TABLE {station + "_" + table} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, value DOUBLE NOT NULL, quality TINYINT UNSIGNED, timestamp TIMESTAMP)"
+                )
+            else:
+                print("erreur create table")
+                raise Exception
         except:
             if self.logger:
-                print(f"Unable to create '{table_name}' table")
+                print(f"Unable to create '{station + "_" + table}' table")
         else:
             if self.logger:
-                print(f"'{table_name}' table was created succcesfully")
+                print(f"'{station + "_" + table}' table was created succcesfully")
 
-    def drop_table(self, table_name: str) -> None:
+    def drop_table(self, station:str, table: str) -> None:
         try:
-            self.cursor.execute(f"DROP TABLE {table_name}")
+            self.cursor.execute(f"DROP TABLE {station + "_" + table}")
         except:
             if self.logger:
-                print(f"Unable to drop '{table_name}' table")
+                print(f"Unable to drop '{station + "_" + table}' table")
         else:
             if self.logger:
-                print(f"'{table_name}' table was dropped succcesfully")
+                print(f"'{station + "_" + table}' table was dropped succcesfully")
 
-    @callback
-    def insert(self, table_name: str, tags: list[OPC_Tag]) -> None:
+    def insert(self, station:str, table: str, tags: list[OPC_Tag]) -> None:
         try:
-            query = f"INSERT INTO {table_name} (name, value, quality, timestamp) VALUES (%s, %s, %s, %s)"
+            query = f"INSERT INTO {station + "_" + table} (name, value, quality, timestamp) VALUES (%s, %s, %s, %s)"
 
             if len(tags) <= 1:
-                query_value = (tags[0].name, tags[0].value, tags[0].quality, tags[0].timestamp)
-                self.cursor.execute(query, query_value)
+                query_values = (tags[0].name, tags[0].value, tags[0].quality, tags[0].timestamp)
+                self.cursor.execute(query, query_values)
             else:
                 query_values = []
                 for tag in tags:
@@ -103,45 +96,43 @@ class Database:
             self.db.commit()
         except:
             if self.logger:
-                print(f"Unable to insert tags in '{table_name}' table")
+                print(f"Unable to insert tags in '{station + "_" + table}' table")
         else:
             if self.logger:
-                print(f"Tags was inserted into '{table_name}' succcesfully")
+                print(f"Tags was inserted into '{station + "_" + table}' succcesfully")
 
-    @callback
-    def update(self, table_name: str, tag_name: str, value: Any) -> None:
+    def update(self, station:str, table: str, tag_name: str,  value: Any) -> None:
         try:
-            query = f"UPDATE {table_name} SET value = %s WHERE name = %s"
-            query_value = (value, tag_name)
+            query = f"UPDATE {station + "_" + table} SET value = %s WHERE name = %s"
+            query_values = (value, tag_name)
 
-            self.cursor.execute(query, query_value)
+            self.cursor.execute(query, query_values)
             self.db.commit()
         except:
             if self.logger:
-                print(f"Unable to update '{tag_name}' from '{table_name}' to {value}")
+                print(f"Unable to update '{tag_name}' from '{station + "_" + table}' to {value}")
         else:
             if self.logger:
-                print(f"'{tag_name}' was updated from '{table_name}' to {value} succcesfully")
+                print(f"'{tag_name}' was updated from '{station + "_" + table}' to {value} succcesfully")
 
-    @callback
-    def delete(self, table_name: str, id: int) -> None:
+    def delete(self, station:str, table: str, id: int) -> None:
         try:
-            query = f"DELETE FROM {table_name} WHERE id = %s"
-            query_value = (id,)
+            query = f"DELETE FROM {station + "_" + table} WHERE id = %s"
+            query_values = (id,)
 
-            self.cursor.execute(query, query_value)
+            self.cursor.execute(query, query_values)
             self.db.commit()
         except:
             if self.logger:
-                print(f"Unable to delete id='{id}' from '{table_name}'")
+                print(f"Unable to delete id='{id}' from '{station + "_" + table}'")
         else:
             if self.logger:
-                print(f"'{id}' was deleted from '{table_name}' succcesfully")
+                print(f"'{id}' was deleted from '{station + "_" + table}' succcesfully")
 
-    def select(self, table_name: str) -> list[dict]:
+    def select(self, station:str, table: str) -> list[dict]:
         response = []
         try:
-            query = f"SELECT id, name, value, quality, timestamp FROM {table_name}"
+            query = f"SELECT id, name, value, quality, timestamp FROM {station + "_" + table}"
 
             self.cursor.execute(query)
 
@@ -149,10 +140,10 @@ class Database:
                 response.append({"id": id, "name": name, "value": value, "quality": quality, "timestamp": timestamp})
         except:
             if self.logger:
-                print(f"Unable to select tags from '{table_name}'")
+                print(f"Unable to select tags from '{station + "_" + table}'")
         else:
             if self.logger:
-                print(f"{len(response)} tag(s) was selected from '{table_name}'")
+                print(f"{len(response)} tag(s) was selected from '{station + "_" + table}'")
         return response
 
     def __del__(self) -> None:
@@ -163,17 +154,15 @@ class Database:
 
 
 if __name__ == "__main__":
-    database = Database("mydatabase", logger=True)
-    database.drop_database("mydatabase")
-    database.create_database("mydatabase")
-    database.create_table("table1")
-    database.drop_table("table1")
-    database.create_table("table2")
-    database.insert("table2", [OPC_Tag("tag1", 1)])
+    database = Database("mydatabase", logger=True, recreate_db=False)
+    database.create_table("station1", "table1")
+    database.create_table("station1", "table2")
+    database.drop_table("station1", "table2")
+    database.insert("station1","table1", [OPC_Tag("tag1", 1)])
     tag2 = OPC_Tag("tag2", 2)
     tag3 = OPC_Tag("tag3", 3)
-    database.insert("table2", [tag2, tag3])
-    database.update("table2", tag2, 20)
-    database.delete("table2", tag3)
-    res = database.select("table2")
+    database.insert("station1","table1", [tag2, tag3])
+    database.update("station1","table1", tag2.name, 20)
+    database.delete("station1","table1", 3)
+    result = database.select("station1","table1")
     database.drop_database("mydatabase")
