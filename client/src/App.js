@@ -6,9 +6,12 @@ import { Scrim } from './Components/scrim';
 
 import { Main } from './Components/main';
 
+
 const color = {
   "backgroundColor" : "#34495E",
 }
+
+
 
 
 function App() {
@@ -22,6 +25,7 @@ function App() {
 
   return (
     <div className="App">
+
 
 
       <NavBar toggleMenu={toggleChecked} menuVisible={menuVisible}/>
