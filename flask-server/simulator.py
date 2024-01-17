@@ -17,8 +17,8 @@ tags = {
     "level": None,
     "liquid_temperature": None,
     "maintenance": None,
-    "operating_state": None,
     "manual_mode": None,
+    "operating_state": None,
     "output_flow": None,
     "output_state": None,
 }

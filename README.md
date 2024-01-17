@@ -10,7 +10,7 @@ Service web de supervision d'installations industrielles.
 - Framework **React** pour la partie front-end du site
 
 ## Setup du serveur
-- Utiliser la commande `git clone https://github.com/EmilienJottreau/FactoryInsight.git` pour cloner le projet.
+- Télécharger le projet ou utiliser la commande `git clone https://github.com/EmilienJottreau/FactoryInsight.git` pour le cloner.
 - Accéder au dossier client `cd client` pour lancer le serveur [Node.JS](https://nodejs.org/en/download/current) avec `npm start` utilisé par React pour la partie front-end.
 - [Facultatif] Créer un environnement virtuel pour installer les bibliothèques [python](https://www.python.org/downloads/) :
   - Utiliser `python -m venv .venv` pour initialiser l'environnement.
@@ -22,8 +22,8 @@ Service web de supervision d'installations industrielles.
   - Importer depuis l'application l'espace d'adressage **namespace.opf** situé dans le dossier *ressources*.
   - Se connecter aux sources de données depuis l'onglet *Runtime* > *Connect*.
 - Exécuter `python flask-server/server.py` pour lancer le serveur.
-- Démarrer le simulateur avec `python flask-server/simulator.py` afin de simuler l'installation.
 - Afficher la page web de l'application depuis l'adresse `http://127.0.0.1:5000/` dans votre navigateur.
+- Démarrer le simulateur avec `python flask-server/simulator.py` afin de simuler l'installation.
 
 ## Vidéo de démonstration
 

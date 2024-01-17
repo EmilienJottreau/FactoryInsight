@@ -47,27 +47,27 @@ class Database:
 
     def create_table(self, station: str, table: str) -> None:
         try:
-            self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station + "_" + table} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, value DOUBLE NOT NULL, quality TINYINT UNSIGNED, timestamp TIMESTAMP)")
+            self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + table} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, value DOUBLE NOT NULL, quality TINYINT UNSIGNED, timestamp TIMESTAMP)")
         except:
             if self.logger:
-                print(f"Unable to create '{station + "_" + table}' table")
+                print(f"Unable to create '{station + '_' + table}' table")
         else:
             if self.logger:
-                print(f"Table '{station + "_" + table}' was created succcesfully")
+                print(f"Table '{station + '_' + table}' was created succcesfully")
 
     def drop_table(self, station: str, table: str) -> None:
         try:
-            self.cursor.execute(f"DROP TABLE {station + "_" + table}")
+            self.cursor.execute(f"DROP TABLE {station + '_' + table}")
         except:
             if self.logger:
-                print(f"Unable to drop '{station + "_" + table}' table")
+                print(f"Unable to drop '{station + '_' + table}' table")
         else:
             if self.logger:
-                print(f"Table '{station + "_" + table}' was dropped succcesfully")
+                print(f"Table '{station + '_' + table}' was dropped succcesfully")
 
     def insert(self, station: str, table: str, tags: list[OPC_Tag]) -> None:
         try:
-            query = f"INSERT INTO {station + "_" + table} (name, value, quality, timestamp) VALUES (%s, %s, %s, %s)"
+            query = f"INSERT INTO {station + '_' + table} (name, value, quality, timestamp) VALUES (%s, %s, %s, %s)"
 
             if len(tags) <= 1:
                 query_values = (tags[0].name, tags[0].value, tags[0].quality, tags[0].timestamp)
@@ -81,54 +81,54 @@ class Database:
             self.db.commit()
         except:
             if self.logger:
-                print(f"Unable to insert tags in '{station + "_" + table}' table")
+                print(f"Unable to insert tags in '{station + '_' + table}' table")
         else:
             if self.logger:
-                print(f"Tags was inserted into '{station + "_" + table}' succcesfully")
+                print(f"Tags was inserted into '{station + '_' + table}' succcesfully")
 
     def update(self, station: str, table: str, tag_name: str, value: Any) -> None:
         try:
-            query = f"UPDATE {station + "_" + table} SET value = %s WHERE name = %s"
+            query = f"UPDATE {station + '_' + table} SET value = %s WHERE name = %s"
             query_values = (value, tag_name)
 
             self.cursor.execute(query, query_values)
             self.db.commit()
         except:
             if self.logger:
-                print(f"Unable to update '{tag_name}' from '{station + "_" + table}' to {value}")
+                print(f"Unable to update '{tag_name}' from '{station + '_' + table}' to {value}")
         else:
             if self.logger:
-                print(f"Update '{tag_name}' from '{station + "_" + table}' to {value} succcesfully")
+                print(f"Update '{tag_name}' from '{station + '_' + table}' to {value} succcesfully")
 
     def delete(self, station: str, table: str, id: int) -> None:
         try:
-            query = f"DELETE FROM {station + "_" + table} WHERE id = %s"
+            query = f"DELETE FROM {station + '_' + table} WHERE id = %s"
             query_values = (id,)
 
             self.cursor.execute(query, query_values)
             self.db.commit()
         except:
             if self.logger:
-                print(f"Unable to delete id='{id}' from '{station + "_" + table}'")
+                print(f"Unable to delete id='{id}' from '{station + '_' + table}'")
         else:
             if self.logger:
-                print(f"Delete '{id}' from '{station + "_" + table}' succcesfully")
+                print(f"Delete '{id}' from '{station + '_' + table}' succcesfully")
 
     def select(self, station: str, table: str) -> list[dict]:
         response = []
         try:
-            query = f"SELECT id, name, value, quality, timestamp FROM {station + "_" + table}"
+            query = f"SELECT id, name, value, quality, timestamp FROM {station + '_' + table}"
 
             self.cursor.execute(query)
 
             for id, name, value, quality, timestamp in self.cursor.fetchall():
-                response.append({"id": id, "name": name, "value": value, "quality": quality, "timestamp": timestamp})
+                response.append({"id": id, "name": name, "value": value, "quality": quality, "timestamp": str(timestamp)[:-7]})
         except:
             if self.logger:
-                print(f"Unable to select tags from '{station + "_" + table}'")
+                print(f"Unable to select tags from '{station + '_' + table}'")
         else:
             if self.logger:
-                print(f"Select {len(response)} tag(s) from '{station + "_" + table}'")
+                print(f"Select {len(response)} tag(s) from '{station + '_' + table}'")
         return response
 
     def __del__(self) -> None:

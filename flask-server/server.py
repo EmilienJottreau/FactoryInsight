@@ -9,32 +9,26 @@ import random as rd
 app = Flask(__name__)
 socketio = SocketIO(app, logger=True, engineio_logger=False)
 
-
-def emit_to_sockets(function_name: str, table: str, tags, *args):
-    if function_name == "insert":
-        data = {"table": table, "tags": tags[0].json}
-    elif function_name == "delete":
-        data = {"table": table, "id": tags}
-    elif function_name == "update":
-        data = {"table": table, "tag_name": tags, "value": args[0]}
-    emit(function_name, data, broadcast=True)
+database = Database("FactoryInsignt", recreate_db=True, logger=False)
 
 
-tables_list = ["level", "liquid_temperature", "heating_temperature", "input_flow", "output_flow", "agitator_speed", "states"]
-database = Database("Tank", recreate_db=True, logger=True)
-Database.callback_function = emit_to_sockets
-print(Database.callback_function)
-for table in tables_list:
-    database.create_table(table)
-    database.insert(table, [OPC_Tag(f"{table}0", rd.random())])
+station = "tank"
+variables_list = ["level", "liquid_temperature", "heating_temperature", "input_flow", "output_flow", "agitator_speed", "states"]
+
+for variable in variables_list:
+    database.create_table(station, variable)
+    database.insert(station, variable, [OPC_Tag(variable, rd.random())])
+
 database.insert(
+    station,
     "states",
     [
         OPC_Tag("agitator_state", False),
-        OPC_Tag("emptying_state", False),
-        OPC_Tag("filling_state", False),
+        OPC_Tag("cleaning_state", False),
+        OPC_Tag("heating_state", False),
         OPC_Tag("input_state", False),
         OPC_Tag("maintenance", False),
+        OPC_Tag("operating_state", False),
         OPC_Tag("manual_mode", False),
         OPC_Tag("output_state", False),
     ],
@@ -43,34 +37,36 @@ database.insert(
 
 @app.route("/")
 def index():
-    tags = {}
-    for table in tables_list:
-        tags[table] = database.select(table)
-    return render_template("index.html", data=tags)
+    return render_template("index.html")
 
 
 @app.route("/reset")
 def reset():
-    for table in tables_list:
-        database.drop_table(table)
-        database.create_table(table)
-        database.insert(table, [OPC_Tag(f"{table}0", rd.random())])
+    for variable in variables_list:
+        database.drop_variable(station, variable)
+        database.create_table(station, variable)
     return redirect(url_for("index"))
 
 
+@socketio.on("get_data")
+def handle_get_data():
+    for variable in variables_list:
+        emit("insert", {f"{variable}": database.select(station, variable)}, broadcast=True)
+
+
 @socketio.on("append")
-def handle_append(table: str):
-    database.insert(table, [OPC_Tag(table, rd.random())])
+def handle_append(station: str, variable: str):
+    database.insert(station, variable, [OPC_Tag(variable, rd.random())])
 
 
 @socketio.on("update")
-def handle_update(table: str, tag_name: str, value: Any):
-    database.update(table, tag_name, value)
+def handle_update(station: str, variable: str, tag_name: str, value: Any):
+    database.update(station, variable, tag_name, value)
 
 
 @socketio.on("delete")
-def handle_delete(table: str, id: str):
-    database.delete(table, int(id))
+def handle_delete(station: str, variable: str, id: str):
+    database.delete(station, variable, int(id))
 
 
 if __name__ == "__main__":
