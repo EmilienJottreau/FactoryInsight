@@ -1,10 +1,9 @@
 import { useState, useRef ,useEffect } from 'react';
-import './App.css';
-import { NavBar } from './Components/nav/navbar';
-import { LeftMenu } from './Components/menu/leftmenu';
-import { Scrim } from './Components/scrim';
+import { NavBar } from './nav/navbar';
+import { LeftMenu } from './menu/leftmenu';
+import { Scrim } from './scrim';
 
-import { Main } from './Components/main';
+import { Main } from './main';
 
 
 const color = {

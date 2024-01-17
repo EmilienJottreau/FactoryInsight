@@ -4,7 +4,10 @@ import { CuveRoute } from './Components/pages/TestPageCuveRoute';
 
 import useWebSocket, { ReadyState } from "react-use-websocket"
 import { useCallback, useEffect, useState } from 'react';
+import { io } from "socket.io-client";
 
+import HttpCall from "./Components/HttpCall";
+import WebSocketCall from "./Components/WebSocketCall";
 
 
 
@@ -30,7 +33,8 @@ const router = createBrowserRouter([
                         element: <CuveRoute />
                     }
                 ]
-            }
+            }, 
+            
         ]
 
     },
@@ -49,55 +53,83 @@ const router = createBrowserRouter([
 
 export function TestRoute() {
 
-    const [socketUrl, setSocketUrl] = useState('wss://echo.websocket.org');
-    const [messageHistory, setMessageHistory] = useState([]);
-
-    const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
-
+    const [socketInstance, setSocketInstance] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [buttonStatus, setButtonStatus] = useState(false);
+    const [agitateurState,  setAgitateurState]  =useState(0)
+  
+    const handleClick = () => {
+      if (buttonStatus === false) {
+        setButtonStatus(true);
+      } else {
+        setButtonStatus(false);
+      }
+    };
+  
     useEffect(() => {
-        if (lastMessage !== null) {
-            setMessageHistory((prev) => prev.concat(lastMessage));
-        }
-    }, [lastMessage, setMessageHistory]);
+      console.log("je suis un useeffect debile je m'appelle en boucle")
+      if (buttonStatus === true) {
+        const socket = io("localhost:5000/", {
+          transports: ["websocket"],
+          cors: {
+            origin: "http://localhost:3000/",
+          },
+        });
+  
+        setSocketInstance(socket);
+  
+        socket.on("connect", (data) => {
+          console.log("event connect appelé")
+          console.log(data);
+        });
+  
+        setLoading(false);
+  
+        socket.on("disconnect", (data) => {
+          console.log("event disconnect appelé")
+          console.log(data);
+        });
 
-    const handleClickChangeSocketUrl = useCallback(
-        () => setSocketUrl('wss://demos.kaazing.com/echo'),
-        []
-    );
+        socket.on("update")
+  
+        return function cleanup() {
+          socket.disconnect();
+        };
+      }
+    }, [buttonStatus]);
 
-    const handleClickSendMessage = useCallback(() => sendMessage('Hello'), []);
 
-    const connectionStatus = {
-        [ReadyState.CONNECTING]: 'Connecting',
-        [ReadyState.OPEN]: 'Open',
-        [ReadyState.CLOSING]: 'Closing',
-        [ReadyState.CLOSED]: 'Closed',
-        [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-    }[readyState];
 
+    const toggleAgitateur = () => {
+      if (agitateurState == 0){
+        socketInstance.emit("agitateur", 0)
+        setAgitateurState(1)
+      } else {
+        socketInstance.emit("agitateur", 1)
+        setAgitateurState(0)
+      }
+    }
+  
     return (
-        <div>
-          <RouterProvider router={router} />
-
-          
-          <button onClick={handleClickChangeSocketUrl}>
-            Click Me to change Socket Url
-          </button>
-          <button
-            onClick={handleClickSendMessage}
-            disabled={readyState !== ReadyState.OPEN}
-          >
-            Click Me to send 'Hello'
-          </button>
-          <span>The WebSocket is currently {connectionStatus}</span>
-          {lastMessage ? <span>Last message: {lastMessage.data}</span> : null}
-          <ul>
-            {messageHistory.map((message, idx) => (
-              <span key={idx}>{message ? message.data : null}</span>
-            ))}
-          </ul>
+      <div className="App">
+        <h1>React/Flask App + socket.io</h1>
+        <div className="line">
+          <HttpCall />
         </div>
-      );
+        {!buttonStatus ? (
+          <button onClick={handleClick}>turn chat on</button>
+        ) : (
+          <>
+            <button onClick={handleClick}>turn chat off</button>
+            <div className="line">
+              {!loading && <WebSocketCall socket={socketInstance} />}
+            </div>
+
+            <button onClick={toggleAgitateur}>Allumer l'agitateur comme un grand</button>
+          </>
+        )}
+      </div>
+    );
 }
 
 

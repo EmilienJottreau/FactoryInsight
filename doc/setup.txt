@@ -11,6 +11,9 @@ pour flask :
 
 pip install flask
 
+Bibliothèque python MySQL:
+python -m pip install mysql-connector-python
+
 pour demmarer l'appli front: 
 
 cd client
