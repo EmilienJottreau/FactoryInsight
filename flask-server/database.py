@@ -47,7 +47,9 @@ class Database:
 
     def create_table(self, station: str, table: str) -> None:
         try:
-            self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + table} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, value DOUBLE NOT NULL, quality TINYINT UNSIGNED, timestamp TIMESTAMP)")
+            self.cursor.execute(
+                f"CREATE TABLE IF NOT EXISTS {station +'_' + table} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, value DOUBLE NOT NULL, quality TINYINT UNSIGNED, timestamp TIMESTAMP)"
+            )
         except:
             if self.logger:
                 print(f"Unable to create '{station + '_' + table}' table")
@@ -122,7 +124,7 @@ class Database:
             self.cursor.execute(query)
 
             for id, name, value, quality, timestamp in self.cursor.fetchall():
-                response.append({"id": id, "name": name, "value": value, "quality": quality, "timestamp": str(timestamp)[:-7]})
+                response.append({"id": id, "name": name, "value": value, "quality": quality, "timestamp": str(timestamp)})
         except:
             if self.logger:
                 print(f"Unable to select tags from '{station + '_' + table}'")

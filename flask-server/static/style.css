@@ -82,13 +82,13 @@ button:hover {
     color: #ffffff;
 }
 
-#tabs {
+#tab_bar {
     overflow: hidden;
     border: 1px solid #ddd;
     background-color: #e4e4e4;
 }
 
-#tabs button {
+#tab_bar button {
     background-color: inherit;
     color: black;
     float: left;
@@ -99,11 +99,11 @@ button:hover {
     margin: 0;
 }
 
-#tabs button:hover {
+#tab_bar button:hover {
     background-color: #d6d6d6;
 }
 
-#tabs button.active {
+#tab_bar button.active {
     background-color: #b9b9b9;
 }
 

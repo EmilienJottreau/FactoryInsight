@@ -1,38 +1,30 @@
 from flask import Flask, redirect, render_template, url_for
 from flask_socketio import SocketIO, emit
+from asyncua import Client, Node, ua
 from database import Database
 from opc_tags import OPC_Tag
+import constant as constant
 from typing import Any
 import random as rd
+import asyncio
 
 
 app = Flask(__name__)
-socketio = SocketIO(app, logger=True, engineio_logger=False)
+socketio = SocketIO(app, logger=False, engineio_logger=False)
+
 
 database = Database("FactoryInsignt", recreate_db=True, logger=False)
 
-
 station = "tank"
-variables_list = ["level", "liquid_temperature", "heating_temperature", "input_flow", "output_flow", "agitator_speed", "states"]
+tables_list = constant.tables_list
 
-for variable in variables_list:
-    database.create_table(station, variable)
-    database.insert(station, variable, [OPC_Tag(variable, rd.random())])
 
-database.insert(
-    station,
-    "states",
-    [
-        OPC_Tag("agitator_state", False),
-        OPC_Tag("cleaning_state", False),
-        OPC_Tag("heating_state", False),
-        OPC_Tag("input_state", False),
-        OPC_Tag("maintenance", False),
-        OPC_Tag("operating_state", False),
-        OPC_Tag("manual_mode", False),
-        OPC_Tag("output_state", False),
-    ],
-)
+def initial_fill_db():
+    for table in tables_list:
+        database.create_table(station, table)
+        database.insert(station, table, [OPC_Tag(table, rd.random())])
+
+    database.insert(station, "states", constant.state_tags)
 
 
 @app.route("/")
@@ -42,32 +34,37 @@ def index():
 
 @app.route("/reset")
 def reset():
-    for variable in variables_list:
-        database.drop_variable(station, variable)
-        database.create_table(station, variable)
+    for table in tables_list:
+        database.drop_table(station, table)
+        database.create_table(station, table)
     return redirect(url_for("index"))
 
 
 @socketio.on("get_data")
 def handle_get_data():
-    for variable in variables_list:
-        emit("insert", {f"{variable}": database.select(station, variable)}, broadcast=True)
+    for table in tables_list:
+        emit("setup", {"table": f"{table}", "tags": database.select(station, table)})
 
 
 @socketio.on("append")
-def handle_append(station: str, variable: str):
-    database.insert(station, variable, [OPC_Tag(variable, rd.random())])
-
-
-@socketio.on("update")
-def handle_update(station: str, variable: str, tag_name: str, value: Any):
-    database.update(station, variable, tag_name, value)
+def handle_append(station: str, table: str):
+    new_tag = OPC_Tag(table, rd.random())
+    database.insert(station, table, [new_tag])
+    emit("append", {"station": station, "table": table, "tags": [new_tag.json]}, broadcast=True)
 
 
 @socketio.on("delete")
-def handle_delete(station: str, variable: str, id: str):
-    database.delete(station, variable, int(id))
+def handle_delete(station: str, tag: str, id: int):
+    database.delete(station, tag, id)
+    # emit("delete", {"station": station, "table": tag, "id": id}, broadcast=True)
+
+
+@socketio.on("update")
+def handle_update(station: str, table: str, tag_name: str, value: Any):
+    database.update(station, table, tag_name, value)
+    # emit("update", {"station": station, "table": table, "tag_name": tag_name, "value": value}, broadcast=True)
 
 
 if __name__ == "__main__":
+    initial_fill_db()
     socketio.run(app)
