@@ -1,7 +1,7 @@
+from asyncio import run as async_run, sleep as async_sleep
 from asyncua import Client, Node, ua
+from random import gauss, random
 from typing import Any
-import random as rd
-import asyncio
 
 
 server_url = "opc.tcp://127.0.0.1:49320"
@@ -25,7 +25,7 @@ tags = {
 
 
 async def change_value(tag: Node, value: Any) -> None:
-    """Change the value of the tag"""
+    """Change the value of a tag"""
     await tag.write_value(ua.DataValue(ua.Variant(value, await tag.read_data_type_as_variant_type())))
 
 
@@ -46,24 +46,24 @@ async def simulator() -> None:
                 if not await tags["maintenance"].read_value():
                     if not await tags["cleaning_state"].read_value():
                         if await tags["input_state"].read_value():
-                            await change_value(tags["input_flow"], rd.gauss(0.8, 0.4))
-                            await change_value(tags["level"], await tags["level"].read_value() + rd.random() / 1000)
+                            await change_value(tags["input_flow"], gauss(0.8, 0.4))
+                            await change_value(tags["level"], await tags["level"].read_value() + random() / 1000)
 
                         if await tags["output_state"].read_value():
-                            await change_value(tags["output_flow"], rd.gauss(0.8, 0.4))
-                            await change_value(tags["level"], await tags["level"].read_value() - rd.random() / 1000)
+                            await change_value(tags["output_flow"], gauss(0.8, 0.4))
+                            await change_value(tags["level"], await tags["level"].read_value() - random() / 1000)
 
                         if await tags["heating_state"].read_value():
-                            await change_value(tags["heating_temperature"], rd.gauss(82, 1))
-                            await change_value(tags["liquid_temperature"], rd.gauss(79, 4))
+                            await change_value(tags["heating_temperature"], gauss(82, 1))
+                            await change_value(tags["liquid_temperature"], gauss(79, 4))
 
                         if await tags["agitator_state"].read_value():
-                            await change_value(tags["agitator_speed"], rd.gauss(30, 0.2))
+                            await change_value(tags["agitator_speed"], gauss(30, 0.2))
 
                         # if await tags["level"].read_value() > 1.98:
                         # await change_value(tags["input_state"], False)
-            await asyncio.sleep(0.5)
+            await async_sleep(0.5)
 
 
 if __name__ == "__main__":
-    asyncio.run(simulator())
+    async_run(simulator())

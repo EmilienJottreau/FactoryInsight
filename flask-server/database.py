@@ -1,6 +1,6 @@
-from mysql.connector import connect
+from mysql.connector import connect as mysql_connect
+from typing import Any, Iterable
 from opc_tags import OPC_Tag
-from typing import Any
 
 
 class Database:
@@ -10,7 +10,7 @@ class Database:
 
     def connect(self, database_name: str, recreate_database: bool) -> None:
         try:
-            self.db = connect(host="localhost", user="root", password="", database="")
+            self.db = mysql_connect(host="localhost", user="root", password="", database="")
             self.cursor = self.db.cursor()
 
             self.create_database(database_name)
@@ -67,12 +67,12 @@ class Database:
             if self.logger:
                 print(f"Table '{station + '_' + table}' was dropped succcesfully")
 
-    def insert(self, station: str, table: str, tags: list[OPC_Tag]) -> None:
+    def insert(self, station: str, table: str, tags: OPC_Tag | list[OPC_Tag]) -> None:
         try:
             query = f"INSERT INTO {station + '_' + table} (name, value, quality, timestamp) VALUES (%s, %s, %s, %s)"
 
-            if len(tags) <= 1:
-                query_values = (tags[0].name, tags[0].value, tags[0].quality, tags[0].timestamp)
+            if not isinstance(tags, Iterable):
+                query_values = (tags.name, tags.value, tags.quality, tags.timestamp)
                 self.cursor.execute(query, query_values)
             else:
                 query_values = []

@@ -5,9 +5,7 @@ tables_list = ["level", "liquid_temperature", "heating_temperature", "input_flow
 tags = {
     "agitator_speed": None,
     "agitator_state": None,
-    "cleaning": None,
-    "emptying_state": None,
-    "filling_state": None,
+    "cleaning_state": None,
     "heating_state": None,
     "heating_temperature": None,
     "input_flow": None,
@@ -16,6 +14,7 @@ tags = {
     "liquid_temperature": None,
     "maintenance": None,
     "manual_mode": None,
+    "operating_state": None,
     "output_flow": None,
     "output_state": None,
 }
