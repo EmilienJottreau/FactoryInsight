@@ -1,5 +1,5 @@
 const tab_bar = document.getElementById("tab_bar");
-const content = document.getElementById("content");
+const tab_contents = document.getElementById("tab_contents");
 
 let current_station = "tank";
 let current_tab = "level";
@@ -7,21 +7,27 @@ let current_tab = "level";
 const socket = io();
 
 
+//////////////////// INITIALIZATION ////////////////////
+
+window.onload = function () {
+    socket.emit("get_data");
+}
+
 //////////////////// SOCKETS RECEPTION ////////////////////
 
 socket.on("setup", (data) => {
-    let tab = document.createElement("button");
-    tab.className = "tab";
-    tab.id = data.table + "_tab";
-    tab.onclick = function () { tab_bar_manager(event, data.table); };
-    tab.innerText = data.table.charAt(0).toUpperCase() + data.table.slice(1);
-    tab_bar.appendChild(tab);
+    let tab_button = document.createElement("button");
+    tab_button.className = "tab_button";
+    tab_button.id = data.table + "_tab_button";
+    tab_button.onclick = function () { tab_bar_manager(event, data.table); };
+    tab_button.innerText = (data.table.charAt(0).toUpperCase() + data.table.slice(1)).replace("_", " ");
+    tab_bar.appendChild(tab_button);
 
-    let table = document.createElement("div");
-    table.className = "tab_content";
-    table.id = data.table + "_content";
+    let tab_table = document.createElement("div");
+    tab_table.className = "tab_content";
+    tab_table.id = data.table + "_content";
 
-    table.innerHTML = `            
+    tab_table.innerHTML = `            
     <table>
         <thead>
             <tr>
@@ -36,55 +42,32 @@ socket.on("setup", (data) => {
         </tbody>
     </table>`;
 
-    content.appendChild(table);
+    tab_contents.appendChild(tab_table);
 
-    let tbody = document.getElementById(data.table + "_table");
+    let table = document.getElementById(data.table + "_table");
     data.tags.forEach(function (tag) {
-        let row = document.createElement("tr");
-        row_data = `            
-                    <td>${tag.name}</td>
-                    <td>${tag.value}</td>
-                    <td>${tag.quality}</td>
-                    <td>${tag.timestamp}</td>
-                    <td><button class="delete_buttons" onclick="delete_tag(\`${tag.id}\`)">Supprimer</button></td>
-                `;
-        row.id = data.table + "_" + tag.id;
-        row.innerHTML = row_data;
-        tbody.appendChild(row);
+        table.appendChild(create_row(data.table, tag));
     });
 
-    document.getElementById(current_tab + "_tab").click();
+    document.getElementById(current_tab + "_tab_button").click();
 });
 
 socket.on("append", (data) => {
-    let table = document.getElementById(data.table + "_table");
+    const table = document.getElementById(data.table + "_table");
 
     data.tags.forEach(function (tag) {
-        let row = document.createElement("tr");
-        row_data = `<tr id="${data.table}_${tag.id}">
-                    <td>${tag.name}</td>
-                    <td>${tag.value}</td>
-                    <td>${tag.quality}</td>
-                    <td>${tag.timestamp}</td>
-                    <td><button class="delete_buttons" onclick="delete_tag(\`${tag.id}\`)">Supprimer</button></td>
-                </tr>                       
-            `;
-        row.id = data.table + "_" + tag.id;
-        row.innerHTML = row_data;
-        table.appendChild(row);
+        table.appendChild(create_row(data.table, tag));
     });
 });
 
 socket.on("delete", (data) => {
-    console.log(data.table + "_" + data.id)
-    let row = document.getElementById(data.table + "_" + data.id);
-    console.log(parentNode)
+    const row = document.getElementById(data.table + "_" + data.id);
     row.parentNode.removeChild(row);
 });
 
 socket.on("update", (data) => {
-    let row = document.getElementById(data.table + "_" + data.tag_name);
-    let mode_button = document.getElementById("mode_button");
+    const row = document.getElementById(data.table + "_" + data.tag_name);
+    const mode_button = document.getElementById("mode_button");
 
     if (data.value) {
         mode_button.innerHTML = "Mode manuel";
@@ -102,7 +85,9 @@ socket.on("update", (data) => {
 //////////////////// BUTTONS ////////////////////
 
 function append_tag() {
-    socket.emit("append", current_station, current_tab);
+    if (current_tab !== "states") {
+        socket.emit("append", current_station, current_tab);
+    }
 }
 
 function delete_tag(id) {
@@ -120,16 +105,16 @@ function switch_mode(button) {
 //////////////////// TAB BAR ////////////////////
 
 function tab_bar_manager(evt, selected_tab) {
-    let i, tab_content, tab_links;
+    let i, tables, tab_buttons;
 
-    tab_content = document.getElementsByClassName("tab_content");
-    for (i = 0; i < tab_content.length; i++) {
-        tab_content[i].style.display = "none";
+    tables = document.getElementsByClassName("tab_content");
+    for (i = 0; i < tables.length; i++) {
+        tables[i].style.display = "none";
     }
 
-    tab_links = document.getElementsByClassName("tab");
-    for (i = 0; i < tab_links.length; i++) {
-        tab_links[i].className = tab_links[i].className.replace(" active", "");
+    tab_buttons = document.getElementsByClassName("tab_button");
+    for (i = 0; i < tab_buttons.length; i++) {
+        tab_buttons[i].className = tab_buttons[i].className.replace(" active", "");
     }
 
     current_tab = selected_tab;
@@ -137,8 +122,24 @@ function tab_bar_manager(evt, selected_tab) {
     evt.currentTarget.className += " active";
 }
 
-//////////////////// INITIALIZATION ////////////////////
+//////////////////// ROW ////////////////////
 
-window.onload = function () {
-    socket.emit("get_data");
+function create_row(table, tag) {
+    const row = document.createElement("tr");
+    let row_data = `
+                <td>${tag.name}</td>
+                <td>${tag.value}</td>
+                <td>${tag.quality}</td>
+                <td>${tag.timestamp}</td>`;
+
+    if (table === "states") {
+        row.id = table + "_" + tag.name;
+        row_data += `<td></td>`;
+    } else {
+        row.id = table + "_" + tag.id;
+        row_data += `<td><button class="delete_buttons" onclick="delete_tag(\`${tag.id}\`)">Supprimer</button></td>`;
+    }
+    row.innerHTML = row_data;
+
+    return row;
 }

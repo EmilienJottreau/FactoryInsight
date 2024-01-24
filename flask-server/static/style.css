@@ -107,7 +107,7 @@ button:hover {
     background-color: #b9b9b9;
 }
 
-.tabcontent {
+.tab_content {
     display: none;
     -webkit-animation: fadeEffect 0.7s;
     animation: fadeEffect 0.7s;

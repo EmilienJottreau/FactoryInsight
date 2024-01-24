@@ -67,7 +67,7 @@ class Database:
             if self.logger:
                 print(f"Table '{station + '_' + table}' was dropped succcesfully")
 
-    def insert(self, station: str, table: str, tags: OPC_Tag | list[OPC_Tag]) -> None:
+    def insert(self, station: str, table: str, tags: OPC_Tag | list[OPC_Tag]) -> int | None:
         try:
             query = f"INSERT INTO {station + '_' + table} (name, value, quality, timestamp) VALUES (%s, %s, %s, %s)"
 
@@ -87,6 +87,8 @@ class Database:
         else:
             if self.logger:
                 print(f"Tags was inserted into '{station + '_' + table}' succcesfully")
+            return self.cursor.lastrowid
+        
 
     def update(self, station: str, table: str, tag_name: str, value: Any) -> None:
         try:

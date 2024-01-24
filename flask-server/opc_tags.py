@@ -20,7 +20,7 @@ class OPC_Tag:
 
     @property
     def json(self) -> dict:
-        return {"name": self.name, "value": self.value, "quality": self.quality, "timestamp": str(self.timestamp)[:-7]}
+        return {"name": self.name, "value": self.value, "quality": self.quality, "timestamp": str(self.timestamp)[:-7], "id": self.id}
 
     def __str__(self) -> str:
         return f"{self.name} has a value of {self.value} at {self.timestamp}"

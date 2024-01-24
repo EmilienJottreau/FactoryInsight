@@ -21,14 +21,15 @@ tables_list = constant.tables_list
 tags = constant.tags
 
 
-def init_db(recreate_tables=False):
+def init_db(reset=False):
     for table in tables_list:
-        if recreate_tables:
+        if reset:
             database.drop_table(station, table)
         database.create_table(station, table)
-        # database.insert(station, table, OPC_Tag(table, 0))
-
-    #database.insert(station, "states", constant.state_tags)
+        if reset:
+            database.insert(station, table, OPC_Tag(table, 0))
+    if reset:
+        database.insert(station, "states", constant.state_tags)
 
 
 @app.route("/")
@@ -51,20 +52,21 @@ def handle_get_data():
 @socketio.on("append")
 def handle_append(station: str, table: str):
     new_tag = OPC_Tag(table, 0)
-    database.insert(station, table, new_tag)
+    id = database.insert(station, table, new_tag)
+    new_tag.set_id(id)
     emit("append", {"station": station, "table": table, "tags": [new_tag.json]}, broadcast=True)
 
 
 @socketio.on("delete")
 def handle_delete(station: str, tag: str, id: int):
     database.delete(station, tag, id)
-    # emit("delete", {"station": station, "table": tag, "id": id}, broadcast=True)
+    emit("delete", {"station": station, "table": tag, "id": id}, broadcast=True)
 
 
 @socketio.on("update")
 def handle_update(station: str, table: str, tag_name: str, value: Any):
     database.update(station, table, tag_name, value)
-    # emit("update", {"station": station, "table": table, "tag_name": tag_name, "value": value}, broadcast=True)
+    emit("update", {"station": station, "table": table, "tag_name": tag_name, "value": value}, broadcast=True)
 
 
 class SubHandler(object):
