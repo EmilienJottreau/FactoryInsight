@@ -2,7 +2,7 @@ const tab_bar = document.getElementById("tab_bar");
 const tab_contents = document.getElementById("tab_contents");
 
 let current_station = "tank";
-let current_tab = "level";
+let current_tab = "liquid_level";
 
 const socket = io();
 
@@ -67,17 +67,10 @@ socket.on("delete", (data) => {
 
 socket.on("update", (data) => {
     const row = document.getElementById(data.table + "_" + data.tag_name);
-    const mode_button = document.getElementById("mode_button");
 
     if (data.value) {
-        mode_button.innerHTML = "Mode manuel";
-        mode_button.style.backgroundColor = "orange";
-        mode_button.style.borderColor = "orange";
         row.childNodes[3].innerHTML = data.value;
     } else {
-        mode_button.innerHTML = "Mode automatique";
-        mode_button.style.backgroundColor = "darkorchid";
-        mode_button.style.borderColor = "darkorchid";
         row.childNodes[3].innerHTML = data.value;
     }
 });
@@ -95,10 +88,18 @@ function delete_tag(id) {
 }
 
 function switch_mode(button) {
+    const mode_button = document.getElementById("mode_button");
+
     if (button.innerHTML == "Mode automatique") {
         socket.emit("update", current_station, "states", "manual_mode", true);
+        mode_button.innerHTML = "Mode manuel";
+        mode_button.style.backgroundColor = "orange";
+        mode_button.style.borderColor = "orange";
     } else {
         socket.emit("update", current_station, "states", "manual_mode", false);
+        mode_button.innerHTML = "Mode automatique";
+        mode_button.style.backgroundColor = "darkorchid";
+        mode_button.style.borderColor = "darkorchid";
     }
 }
 

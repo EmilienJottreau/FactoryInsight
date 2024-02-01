@@ -47,9 +47,7 @@ class Database:
 
     def create_table(self, station: str, table: str) -> None:
         try:
-            self.cursor.execute(
-                f"CREATE TABLE IF NOT EXISTS {station +'_' + table} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, value DOUBLE NOT NULL, quality TINYINT UNSIGNED, timestamp TIMESTAMP)"
-            )
+            self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + table} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, value DOUBLE NOT NULL, quality TINYINT UNSIGNED, timestamp TIMESTAMP)")
         except:
             if self.logger:
                 print(f"Unable to create '{station + '_' + table}' table")
@@ -88,7 +86,6 @@ class Database:
             if self.logger:
                 print(f"Tags was inserted into '{station + '_' + table}' succcesfully")
             return self.cursor.lastrowid
-        
 
     def update(self, station: str, table: str, tag_name: str, value: Any) -> None:
         try:

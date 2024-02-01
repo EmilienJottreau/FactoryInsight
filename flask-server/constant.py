@@ -1,6 +1,6 @@
 from opc_tags import OPC_Tag
 
-tables_list = ["level", "liquid_temperature", "heating_temperature", "input_flow", "output_flow", "agitator_speed", "states"]
+tables_list = ["liquid_level", "liquid_temperature", "heating_temperature", "input_flow", "output_flow", "agitator_speed", "states"]
 
 tags = {
     "agitator_speed": None,
@@ -10,7 +10,7 @@ tags = {
     "heating_temperature": None,
     "input_flow": None,
     "input_state": None,
-    "level": None,
+    "liquid_level": None,
     "liquid_temperature": None,
     "maintenance": None,
     "manual_mode": None,

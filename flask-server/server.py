@@ -2,11 +2,10 @@ from flask import Flask, redirect, render_template, url_for
 from asyncio import new_event_loop, set_event_loop, sleep
 from flask_socketio import SocketIO, emit
 from asyncua import Client, Node, ua
-from typing import Any, Callable
 from database import Database
 from opc_tags import OPC_Tag
-from threading import Thread
 import constant as constant
+from typing import Any
 
 
 app = Flask(__name__)
@@ -14,7 +13,7 @@ socketio = SocketIO(app, logger=False, engineio_logger=False)
 
 server_url = "opc.tcp://127.0.0.1:49320"
 
-database = Database("FactoryInsignt", recreate_db=True, logger=False)
+database = Database("FactoryInsignt", recreate_db=False, logger=False)
 
 station = "tank"
 tables_list = constant.tables_list
@@ -47,6 +46,7 @@ def reset():
 def handle_get_data():
     for table in tables_list:
         emit("setup", {"table": f"{table}", "tags": database.select(station, table)})
+        pass
 
 
 @socketio.on("append")
@@ -70,24 +70,28 @@ def handle_update(station: str, table: str, tag_name: str, value: Any):
 
 
 class SubHandler(object):
+    def __init__(self, socket) -> None:
+        self.socket = socket
+
     async def datachange_notification(self, node: Node, value: Any, data):
         tag_name = (await node.read_browse_name()).Name
 
         match await node.read_data_type_as_variant_type():
             case ua.VariantType.Float:
                 tag = OPC_Tag(tag_name, value)
-                database.insert(station, tag_name, tag)
-                # emit("append", {"station": station, "table": tag_name, "tags": [tag.json]}, broadcast=True)
+                id = database.insert(station, tag_name, tag)
+                tag.set_id(id)
+                self.socket.emit("append", {"station": station, "table": tag_name, "tags": [tag.json]})
 
             case ua.VariantType.Boolean:
                 database.insert(station, "states", OPC_Tag(tag_name, value))
 
 
-async def main():
+async def main(socket):
     async with Client(url=server_url) as client:
         namespace_index = await client.get_namespace_index("KEPServerEX")
 
-        handler = SubHandler()
+        handler = SubHandler(socket=socket)
 
         for tag in tags:
             tags[tag] = await client.nodes.root.get_child(["0:Objects", f"{namespace_index}:FactoryInsight", f"{namespace_index}:Tank", f"{namespace_index}:{tag}"])
@@ -95,22 +99,18 @@ async def main():
             await subscription.subscribe_data_change(tags[tag])
 
         while True:
-            await sleep(0.5)
+            await sleep(5)
 
 
-def run_async_loop():
+def run_async_loop(socket):
     loop = new_event_loop()
     set_event_loop(loop)
 
-    loop.run_until_complete(main())
+    loop.run_until_complete(main(socket))
 
 
 if __name__ == "__main__":
     init_db()
 
-    opc_client = Thread(target=run_async_loop)
-    opc_client.start()
-
+    socketio.start_background_task(run_async_loop, socketio)
     socketio.run(app)
-
-    opc_client.join()
