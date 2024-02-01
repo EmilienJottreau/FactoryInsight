@@ -70,10 +70,10 @@ def handle_update(station: str, table: str, tag_name: str, value: Any):
 
 
 class SubHandler(object):
-    def __init__(self, socket) -> None:
-        self.socket = socket
+    def __init__(self, socket: SocketIO) -> None:
+        self.server_socket = socket
 
-    async def datachange_notification(self, node: Node, value: Any, data):
+    async def datachange_notification(self, node: Node, value: Any, data) -> None:
         tag_name = (await node.read_browse_name()).Name
 
         match await node.read_data_type_as_variant_type():
@@ -81,17 +81,17 @@ class SubHandler(object):
                 tag = OPC_Tag(tag_name, value)
                 id = database.insert(station, tag_name, tag)
                 tag.set_id(id)
-                self.socket.emit("append", {"station": station, "table": tag_name, "tags": [tag.json]})
+                self.server_socket.emit("append", {"station": station, "table": tag_name, "tags": [tag.json]})
 
             case ua.VariantType.Boolean:
                 database.insert(station, "states", OPC_Tag(tag_name, value))
 
 
-async def main(socket):
+async def main(server_socket: SocketIO) -> None:
     async with Client(url=server_url) as client:
         namespace_index = await client.get_namespace_index("KEPServerEX")
 
-        handler = SubHandler(socket=socket)
+        handler = SubHandler(server_socket)
 
         for tag in tags:
             tags[tag] = await client.nodes.root.get_child(["0:Objects", f"{namespace_index}:FactoryInsight", f"{namespace_index}:Tank", f"{namespace_index}:{tag}"])
@@ -102,11 +102,11 @@ async def main(socket):
             await sleep(5)
 
 
-def run_async_loop(socket):
+def run_async_loop(server_socket: SocketIO) -> None:
     loop = new_event_loop()
     set_event_loop(loop)
 
-    loop.run_until_complete(main(socket))
+    loop.run_until_complete(main(server_socket))
 
 
 if __name__ == "__main__":
