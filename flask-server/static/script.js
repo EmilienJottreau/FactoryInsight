@@ -33,7 +33,6 @@ socket.on("setup", (data) => {
             <tr>
                 <th>Variable</th>
                 <th>Valeur</th>
-                <th>Qualité</th>
                 <th>Date et Heure</th>
                 <th>Options</th>
             </tr>
@@ -56,6 +55,7 @@ socket.on("append", (data) => {
     const table = document.getElementById(data.table + "_table");
 
     data.tags.forEach(function (tag) {
+        console.log(data)
         table.appendChild(create_row(data.table, tag));
     });
 });
@@ -130,7 +130,6 @@ function create_row(table, tag) {
     let row_data = `
                 <td>${tag.name}</td>
                 <td>${tag.value}</td>
-                <td>${tag.quality}</td>
                 <td>${tag.timestamp}</td>`;
 
     if (table === "states") {

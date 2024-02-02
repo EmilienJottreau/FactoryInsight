@@ -1,10 +1,10 @@
 from mysql.connector import connect as mysql_connect
-from typing import Any, Iterable
+from typing import Any, Iterable, List, Union
 from opc_tags import OPC_Tag
 
 
 class Database:
-    def __init__(self, database_name: str, recreate_db=False, logger=False) -> None:
+    def __init__(self, database_name: str, recreate_db: bool = False, logger: bool = False) -> None:
         self.logger = logger
         self.connect(database_name, recreate_db)
 
@@ -47,7 +47,7 @@ class Database:
 
     def create_table(self, station: str, table: str) -> None:
         try:
-            self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + table} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, value DOUBLE NOT NULL, quality TINYINT UNSIGNED, timestamp TIMESTAMP)")
+            self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + table} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, value DOUBLE NOT NULL, timestamp TIMESTAMP)")
         except:
             if self.logger:
                 print(f"Unable to create '{station + '_' + table}' table")
@@ -65,17 +65,17 @@ class Database:
             if self.logger:
                 print(f"Table '{station + '_' + table}' was dropped succcesfully")
 
-    def insert(self, station: str, table: str, tags: OPC_Tag | list[OPC_Tag]) -> int | None:
+    def insert(self, station: str, table: str, tags: Union[OPC_Tag, List[OPC_Tag]]) -> Union[int, None]:
         try:
-            query = f"INSERT INTO {station + '_' + table} (name, value, quality, timestamp) VALUES (%s, %s, %s, %s)"
+            query = f"INSERT INTO {station + '_' + table} (name, value, timestamp) VALUES (%s, %s, %s)"
 
             if not isinstance(tags, Iterable):
-                query_values = (tags.name, tags.value, tags.quality, tags.timestamp)
+                query_values = (tags.name, tags.value, tags.timestamp)
                 self.cursor.execute(query, query_values)
             else:
                 query_values = []
                 for tag in tags:
-                    query_values.append((tag.name, tag.value, tag.quality, tag.timestamp))
+                    query_values.append((tag.name, tag.value, tag.timestamp))
                 self.cursor.executemany(query, query_values)
 
             self.db.commit()
@@ -115,15 +115,15 @@ class Database:
             if self.logger:
                 print(f"Delete '{id}' from '{station + '_' + table}' succcesfully")
 
-    def select(self, station: str, table: str) -> list[dict]:
+    def select(self, station: str, table: str) -> List[dict]:
         response = []
         try:
-            query = f"SELECT id, name, value, quality, timestamp FROM {station + '_' + table}"
+            query = f"SELECT id, name, value, timestamp FROM {station + '_' + table}"
 
             self.cursor.execute(query)
 
-            for id, name, value, quality, timestamp in self.cursor.fetchall():
-                response.append({"id": id, "name": name, "value": value, "quality": quality, "timestamp": str(timestamp)})
+            for id, name, value, timestamp in self.cursor.fetchall():
+                response.append({"id": id, "name": name, "value": value, "timestamp": str(timestamp)})
         except:
             if self.logger:
                 print(f"Unable to select tags from '{station + '_' + table}'")

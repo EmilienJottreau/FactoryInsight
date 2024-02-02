@@ -13,7 +13,7 @@ socketio = SocketIO(app, logger=False, engineio_logger=False)
 
 server_url = "opc.tcp://127.0.0.1:49320"
 
-database = Database("FactoryInsignt", recreate_db=False, logger=False)
+database = Database("FactoryInsignt", recreate_db=True, logger=False)
 
 station = "tank"
 tables_list = constant.tables_list
@@ -84,7 +84,10 @@ class SubHandler(object):
                 self.server_socket.emit("append", {"station": station, "table": tag_name, "tags": [tag.json]})
 
             case ua.VariantType.Boolean:
-                database.insert(station, "states", OPC_Tag(tag_name, value))
+                tag = OPC_Tag(tag_name, value)
+                id = database.insert(station, "states", tag)
+                tag.set_id(id)
+                self.server_socket.emit("append", {"station": station, "table": "states", "tags": [tag.json]})
 
 
 async def main(server_socket: SocketIO) -> None:
