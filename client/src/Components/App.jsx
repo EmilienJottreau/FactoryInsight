@@ -13,7 +13,8 @@ import { Outlet } from 'react-router-dom';
 function App() {
   const [socketInstance, setSocketInstance] = useState("");
   const [menuVisible, setMenuVisible] = useState(false)
-  const toggleChecked = () => setMenuVisible(value => !value);
+  const toggleMenu = () => setMenuVisible(value => !value);
+  const [lastStation, setLastStation] = useState(0)
 
 
   useEffect(()=>{
@@ -54,12 +55,12 @@ function App() {
 
 
 
-      <NavBar toggleMenu={toggleChecked} menuVisible={menuVisible}/>
+      <NavBar toggleMenu={toggleMenu} menuVisible={menuVisible}/>
 
       <div className='below-nav'>
-        {menuVisible && <LeftMenu/>}
+        {menuVisible && <LeftMenu lastStation={lastStation} closeMenu={() => (setMenuVisible(false))}/>}
         <div className='mainContent'>
-          <Outlet/>
+          <Outlet context={[setLastStation]}/>
           {menuVisible && <Scrim/>}
         </div>
       </div>

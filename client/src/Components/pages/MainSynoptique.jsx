@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { useFetchAtStart } from "../../hooks/useFetch";
-import { Button } from "../ilot/button";
 import { CoupleButtons } from "../ilot/coupleButtons";
 import { Cuve } from "../ilot/cuve";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 
 import config from "../configuration.json";
 
 export function MainSynoptique() {
   const { id } = useParams();
+  const [setLastStation] = useOutletContext();
+
+  setLastStation(id)
 
   //const {loading, data, errors} = useFetchAtStart('https://jsonplaceholder.typicode.com/posts?_limit=10&_delay=2000')
   function changeState(param, value) {
@@ -18,15 +18,12 @@ export function MainSynoptique() {
     });
   }
 
-  console.log(config);
-
-  const [agitateurState, setAgitateurState] = useState(false);
 
   return (
     <main>
       <div className="leftContainer">
         <div className="ilotName">
-          <h1>CUVE {id+1}</h1>
+          <h1>CUVE {parseInt(id)+1}</h1>
           <div className="textDescription">
             description du procédé? unt aut facere repellat provident occaecati
             excepturi optio reprehenderi
