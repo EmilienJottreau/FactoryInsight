@@ -1,6 +1,7 @@
-from typing import Any, Dict, TypeAlias
+from flask_socketio import SocketIO
 from database import Database
 from asyncua import Node, ua
+from typing import Any, Dict, TypeAlias
 
 
 class OPC_Tag:
@@ -18,6 +19,10 @@ class OPC_Tag:
 
     def __repr__(self) -> str:
         return f"{{station: {self.station}, name : {self.name}, type: {self.variant_type}}}"
+    
+    @property
+    def json() -> Dict:
+        return {}
 
 
 OPC_Dict: TypeAlias = Dict[str, Dict[str, OPC_Tag]]
@@ -45,7 +50,7 @@ async def subscribe_tag(tags: OPC_Dict, subscription) -> None:
             await subscription.subscribe_data_change(tags[station][tag].node)
 
 
-def init_database(tags: OPC_Dict, database: Database) -> None:
+def init_database(tags : OPC_Dict, database: Database) -> None:
     for station in tags:
         for tag in tags[station]:
             database.create_table(station, tag)

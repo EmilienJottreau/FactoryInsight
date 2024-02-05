@@ -12,9 +12,12 @@ async def simulator() -> None:
     async with Client(url=server_url) as client:
         namespace_index = await client.get_namespace_index("KEPServerEX")
 
-        main_node = await client.nodes.root.get_child(f"0:Objects/{namespace_index}:FactoryInsight")
+        try:
+            main_node = await client.nodes.root.get_child(f"0:Objects/{namespace_index}:FactoryInsight")
 
-        tags = (await browse_nodes(main_node))["Tank"]
+            tags = (await browse_nodes(main_node))["Tank"]
+        except:
+            raise Exception("Le namespace 'FactoryInsignt' n'est pas chargé dans le serveur OPC")
 
         await tags["operating_state"].change_value(True)
         await tags["input_state"].change_value(True)
