@@ -1,12 +1,15 @@
+import { useState } from "react";
 import { useFetchAtStart } from "../../hooks/useFetch";
 import { Button } from "../ilot/button";
+import { CoupleButtons } from "../ilot/coupleButtons";
 import { Cuve } from "../ilot/cuve";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router-dom";
+
+import config from "../configuration.json";
 
 export function MainSynoptique() {
-
-  const {id} = useParams()
+  const { id } = useParams();
 
   //const {loading, data, errors} = useFetchAtStart('https://jsonplaceholder.typicode.com/posts?_limit=10&_delay=2000')
   function changeState(param, value) {
@@ -15,11 +18,15 @@ export function MainSynoptique() {
     });
   }
 
+  console.log(config);
+
+  const [agitateurState, setAgitateurState] = useState(false);
+
   return (
     <main>
       <div className="leftContainer">
         <div className="ilotName">
-          <h1>ILOT {id}</h1>
+          <h1>CUVE {id+1}</h1>
           <div className="textDescription">
             description du procédé? unt aut facere repellat provident occaecati
             excepturi optio reprehenderi
@@ -56,32 +63,29 @@ export function MainSynoptique() {
         <Cuve />
       </div>
       <div className="buttonContainer">
-        <div className="coupleButtons">
-          <label>Chaufage</label>
-          <div className="twoButtons">
-            <Button
-              text={"Allumer"}
-              onClick={() => {
-                changeState("temp", 1);
-              }}
-            />
-            <Button text={"Eteindre"} />
-          </div>
-        </div>
-        <div className="coupleButtons">
-          <label>Agitateur</label>
-          <div className="twoButtons">
-            <Button text={"Allumer"} />
-            <Button text={"Eteindre"} />
-          </div>
-        </div>
-        <div className="coupleButtons">
-          <label>Volume</label>
-          <div className="twoButtons">
-            <Button text={"Remplir"} />
-            <Button text={"Vider"} />
-          </div>
-        </div>
+
+        {config.stations[id].write.map((x, i) => (
+          <CoupleButtons
+            name={{ title: x.frendlyName, on: x.on, off: x.off }}
+            action={{ on: () => {}, off: () => {} }}
+          />
+        ))}
+
+        {/* <CoupleButtons
+          name={{ title: "Agitateur", on: "Allumer", off: "Eteindre" }}
+          state={agitateurState}
+          action={{
+            on: () => {
+              setAgitateurState(true);
+              console.log("agitateur on");
+            },
+            off: () => {
+              setAgitateurState(false);
+              console.log("agitateur off");
+            },
+          }}
+        /> */}
+
       </div>
     </main>
   );

@@ -7,14 +7,13 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/style.css";
-import {
-  RouterProvider,
-  createBrowserRouter,
-} from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { PageError } from "./Components/pages/PageError";
 import { MainSynoptique } from "./Components/pages/MainSynoptique";
 import { MainHistoryGraph } from "./Components/pages/MainHistoryGraph";
 import { MainHistoryTable } from "./Components/pages/MainHistoryTable";
+import { MainStatistique } from "./Components/pages/MainStatistique";
+import { Accueil } from "./Components/pages/Accueil";
 
 library.add(fas);
 
@@ -28,21 +27,23 @@ const router = createBrowserRouter([
     children: [
       {
         path: "historyGraph",
-        element: <MainHistoryGraph/>,
+        element: <MainHistoryGraph />,
+      },
+      {
+        path: "stats",
+        element: <MainStatistique />,
       },
       {
         path: "historyTable",
-        element: <MainHistoryTable/>,
+        element: <MainHistoryTable />,
       },
       {
-        path: "cuve",
+        path: "station",
         children: [
           {
             path: "",
             element: (
-              <div className="center">
-                <div>Aucun numero de cuve selectionné</div>
-              </div>
+              <Accueil/>
             ),
           },
           {
@@ -50,6 +51,14 @@ const router = createBrowserRouter([
             element: <MainSynoptique />,
           },
         ],
+      },
+      {
+        path: "user",
+        element: (
+          <div className="center">
+            <div>a faire plus tard, connexion utilisateur</div>
+          </div>
+        ),
       },
     ],
   },

@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 export function LeftMenu({}) {
   return (
     <div className="left-menu">
-      <NavLink to={"/cuve/1"}>
+      <NavLink to={"station/1"}>
         <button>
           <div>Synoptique</div>
         </button>
@@ -14,7 +14,7 @@ export function LeftMenu({}) {
       <Link to={"historyTable"}>
         <button>Graphiques</button>
       </Link>
-      <Link to={""}>
+      <Link to={"stats"}>
         <button>Statistiques</button>
       </Link>
       <Link>

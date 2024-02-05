@@ -3,6 +3,7 @@ import { NavUser } from "./navuser";
 
 import { ReactComponent as NavCircle } from "../../assets/img/Nav_Circle.svg";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 export function NavBar({ toggleMenu, menuVisible }) {
   return (
@@ -23,21 +24,12 @@ export function NavBar({ toggleMenu, menuVisible }) {
         </button>
       </div>
       <div className="d-flex flex-wrap">
-        <a className="nav-link active" aria-current="page" href="#section">
-          <NavCircle stroke="var(--color-primary)" />
-        </a>
-        <a className="nav-link" href="#section">
-          <NavCircle stroke="var(--color-primary)" />
-        </a>
-        <a className="nav-link" href="#section">
-          <NavCircle stroke="var(--color-primary)" />
-        </a>
-        <a className="nav-link" href="#section">
-          <NavCircle stroke="var(--color-primary)" />
-        </a>
-        <a className="nav-link" href="#section">
-          <NavCircle stroke="var(--color-primary)" />
-        </a>
+        {[...Array(10)].map((x, i) => (
+          <Link className="nav-link" to={"station/"+(i+1)}>
+            <NavCircle stroke="var(--color-primary)" />
+          </Link>
+        ))}
+
       </div>
       <NavUser
         stroke="var(--color-primary)"
