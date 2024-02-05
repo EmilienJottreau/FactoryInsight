@@ -1,32 +1,65 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-import App from './Components/App';
-import reportWebVitals from './reportWebVitals';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas } from '@fortawesome/free-solid-svg-icons'
-import { TestRoute } from './test';
+import App from "./Components/App";
+import reportWebVitals from "./reportWebVitals";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
-import './css/style.css';
-import { Helmet } from 'react-helmet';
-// import "placeholder-loading/dist/css/placeholder-loading.min.css"
+import "./css/style.css";
+import {
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
+import { PageError } from "./Components/pages/PageError";
+import { MainSynoptique } from "./Components/pages/MainSynoptique";
+import { MainHistoryGraph } from "./Components/pages/MainHistoryGraph";
+import { MainHistoryTable } from "./Components/pages/MainHistoryTable";
 
+library.add(fas);
 
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
-library.add(fas)
-
-
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-
-
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    errorElement: <PageError />,
+    children: [
+      {
+        path: "historyGraph",
+        element: <MainHistoryGraph/>,
+      },
+      {
+        path: "historyTable",
+        element: <MainHistoryTable/>,
+      },
+      {
+        path: "cuve",
+        children: [
+          {
+            path: "",
+            element: (
+              <div className="center">
+                <div>Aucun numero de cuve selectionné</div>
+              </div>
+            ),
+          },
+          {
+            path: ":id",
+            element: <MainSynoptique />,
+          },
+        ],
+      },
+    ],
+  },
+]);
 
 root.render(
-
   <React.StrictMode>
-    
-    <App />
+    {/* <App /> */}
     {/* <TestRoute /> */}
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 

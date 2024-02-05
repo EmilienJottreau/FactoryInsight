@@ -3,7 +3,7 @@ import { NavBar } from './nav/navbar';
 import { LeftMenu } from './menu/leftmenu';
 import { Scrim } from './scrim';
 
-import { Main } from './main';
+import { Outlet } from 'react-router-dom';
 
 
 
@@ -28,7 +28,7 @@ function App() {
       <div className='below-nav'>
         {menuVisible && <LeftMenu/>}
         <div className='mainContent'>
-          <Main/>
+          <Outlet/>
           {menuVisible && <Scrim/>}
         </div>
       </div>

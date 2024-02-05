@@ -39,11 +39,11 @@ a {
   color: var(--color-text);
   cursor: pointer;
 }
-
+/*
 a:focus,
 a:hover {
   outline: solid 1px var(--color-primary-accent);
-}
+}*/
 
 button {
   all: unset;
@@ -105,7 +105,7 @@ button:focus {
   }
 }
 
-.left-menu > * {
+.left-menu > * > * {
   display: flex;
   margin: 10px;
   padding: 10px;
@@ -304,3 +304,10 @@ main > * {
 }
 
 
+.center {
+  flex-grow: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+}

@@ -1,9 +1,13 @@
-import { useFetchAtStart } from "../hooks/useFetch";
-import { Button } from "./ilot/button";
-import { Cuve } from "./ilot/cuve";
+import { useFetchAtStart } from "../../hooks/useFetch";
+import { Button } from "../ilot/button";
+import { Cuve } from "../ilot/cuve";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useParams } from "react-router-dom"
 
-export function Main() {
+export function MainSynoptique() {
+
+  const {id} = useParams()
+
   //const {loading, data, errors} = useFetchAtStart('https://jsonplaceholder.typicode.com/posts?_limit=10&_delay=2000')
   function changeState(param, value) {
     fetch("http://localhost:8080/" + param + "?val=" + value).catch((e) => {
@@ -15,7 +19,7 @@ export function Main() {
     <main>
       <div className="leftContainer">
         <div className="ilotName">
-          <h1>ILOT 1</h1>
+          <h1>ILOT {id}</h1>
           <div className="textDescription">
             description du procédé? unt aut facere repellat provident occaecati
             excepturi optio reprehenderi
