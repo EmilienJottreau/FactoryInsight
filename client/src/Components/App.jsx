@@ -6,10 +6,6 @@ import { Scrim } from './scrim';
 import { Main } from './main';
 
 
-const color = {
-  "backgroundColor" : "#34495E",
-}
-
 
 
 
