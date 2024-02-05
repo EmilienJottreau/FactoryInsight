@@ -1,6 +1,5 @@
 from mysql.connector import connect as mysql_connect
-from typing import Any, Iterable, List, Union
-from opc_tags import OPC_Tag
+from typing import Any, Dict, List, Union
 
 
 class Database:
@@ -23,7 +22,7 @@ class Database:
             raise Exception("Unable to connect to MySQL database, please check XAMPP module status")
         else:
             if self.logger:
-                print(f"Connection to '{database_name}' database completed successfully")
+                print(f"Connected to '{database_name}' database successfully")
 
     def create_database(self, database_name: str) -> None:
         try:
@@ -65,17 +64,17 @@ class Database:
             if self.logger:
                 print(f"Table '{station + '_' + table}' was dropped succcesfully")
 
-    def insert(self, station: str, table: str, tags: Union[OPC_Tag, List[OPC_Tag]]) -> Union[int, None]:
+    def insert(self, station: str, table: str, tags: Union[Dict, List]) -> Union[int, None]:
         try:
             query = f"INSERT INTO {station + '_' + table} (name, value, timestamp) VALUES (%s, %s, %s)"
 
-            if not isinstance(tags, Iterable):
-                query_values = (tags.name, tags.value, tags.timestamp)
+            if not isinstance(tags, List):
+                query_values = (tags["name"], tags["value"], tags["timestamp"])
                 self.cursor.execute(query, query_values)
             else:
                 query_values = []
                 for tag in tags:
-                    query_values.append((tag.name, tag.value, tag.timestamp))
+                    query_values.append((tag["name"], tag["value"], tag["timestamp"]))
                 self.cursor.executemany(query, query_values)
 
             self.db.commit()
@@ -87,38 +86,41 @@ class Database:
                 print(f"Tags was inserted into '{station + '_' + table}' succcesfully")
             return self.cursor.lastrowid
 
-    def update(self, station: str, table: str, tag_name: str, value: Any) -> None:
+    def update(self, station: str, table: str, id: int, value: Any) -> None:
         try:
-            query = f"UPDATE {station + '_' + table} SET value = %s WHERE name = %s"
-            query_values = (value, tag_name)
+            query = f"UPDATE {station + '_' + table} SET value = %s WHERE id = %s"
+            query_values = (value, id)
 
             self.cursor.execute(query, query_values)
             self.db.commit()
         except:
             if self.logger:
-                print(f"Unable to update '{tag_name}' from '{station + '_' + table}' to {value}")
+                print(f"Unable to update '{id}' from '{station + '_' + table}' to {value}")
         else:
             if self.logger:
-                print(f"Update '{tag_name}' from '{station + '_' + table}' to {value} succcesfully")
+                print(f"Update '{id}' from '{station + '_' + table}' to {value} succcesfully")
 
     def delete(self, station: str, table: str, id: int) -> None:
         try:
             query = f"DELETE FROM {station + '_' + table} WHERE id = %s"
-            query_values = (id,)
+            query_value = id
 
-            self.cursor.execute(query, query_values)
+            self.cursor.execute(query, query_value)
             self.db.commit()
         except:
             if self.logger:
-                print(f"Unable to delete id='{id}' from '{station + '_' + table}'")
+                print(f"Unable to delete '{id}' from '{station + '_' + table}'")
         else:
             if self.logger:
                 print(f"Delete '{id}' from '{station + '_' + table}' succcesfully")
 
-    def select(self, station: str, table: str) -> List[dict]:
+    def select(self, station: str, table: str, limit: int = None) -> List[dict]:
         response = []
         try:
-            query = f"SELECT id, name, value, timestamp FROM {station + '_' + table}"
+            if limit:
+                query = f"SELECT id, name, value, timestamp FROM {station + '_' + table} ORDER BY timestamp DESC LIMIT {limit}"
+            else:
+                query = f"SELECT id, name, value, timestamp FROM {station + '_' + table}"
 
             self.cursor.execute(query)
 
@@ -132,6 +134,14 @@ class Database:
                 print(f"Select {len(response)} tag(s) from '{station + '_' + table}'")
         return response
 
+    def reset(self) -> None:
+        self.cursor.execute("SHOW TABLES")
+
+        for table in self.cursor:
+            station, table = table[0].split("_")
+            self.drop_table(station, table)
+            self.create_table(station, table)
+
     def __del__(self) -> None:
         try:
             self.db.close()
@@ -144,11 +154,10 @@ if __name__ == "__main__":
     database.create_table("station1", "table1")
     database.create_table("station1", "table2")
     database.drop_table("station1", "table2")
-    database.insert("station1", "table1", [OPC_Tag("tag1", 1)])
-    tag2 = OPC_Tag("tag2", 2)
-    tag3 = OPC_Tag("tag3", 3)
-    database.insert("station1", "table1", [tag2, tag3])
-    database.update("station1", "table1", tag2.name, 20)
+    database.insert("station1", "table1", {"name": "tag1", "value": 1, "timestamp": ""})
+    database.insert("station1", "table1", [{"name": "tag2", "value": 2, "timestamp": ""}, {"name": "tag3", "value": 3, "timestamp": ""}])
+    database.update("station1", "table1", "tag2", 20)
     database.delete("station1", "table1", 3)
     result = database.select("station1", "table1")
+    database.reset()
     database.drop_database("mydatabase")
