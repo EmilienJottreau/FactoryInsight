@@ -9,56 +9,26 @@ const socket = io();
 
 //////////////////// INITIALIZATION ////////////////////
 
+
 window.onload = function () {
-    socket.emit("get_data");
+    fetch("/api/v1/setup")
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+        })
 }
 
+
+//////////////////// GRAPH ////////////////////
+
+// Tu peux récupérer les données envoyées par le serveur et mis à jour avec le simulateur ici
+socket.on("datachange", (data) => {
+    console.log(data, data["tag"])
+
+});
+
+
 //////////////////// SOCKETS RECEPTION ////////////////////
-
-socket.on("setup", (data) => {
-    let tab_button = document.createElement("button");
-    tab_button.className = "tab_button";
-    tab_button.id = data.table + "_tab_button";
-    tab_button.onclick = function () { tab_bar_manager(event, data.table); };
-    tab_button.innerText = (data.table.charAt(0).toUpperCase() + data.table.slice(1)).replace("_", " ");
-    tab_bar.appendChild(tab_button);
-
-    let tab_table = document.createElement("div");
-    tab_table.className = "tab_content";
-    tab_table.id = data.table + "_content";
-
-    tab_table.innerHTML = `            
-    <table>
-        <thead>
-            <tr>
-                <th>Variable</th>
-                <th>Valeur</th>
-                <th>Date et Heure</th>
-                <th>Options</th>
-            </tr>
-        </thead>
-        <tbody id="${data.table}_table">
-        </tbody>
-    </table>`;
-
-    tab_contents.appendChild(tab_table);
-
-    let table = document.getElementById(data.table + "_table");
-    data.tags.forEach(function (tag) {
-        table.appendChild(create_row(data.table, tag));
-    });
-
-    document.getElementById(current_tab + "_tab_button").click();
-});
-
-socket.on("append", (data) => {
-    const table = document.getElementById(data.table + "_table");
-
-    data.tags.forEach(function (tag) {
-        console.log(data)
-        table.appendChild(create_row(data.table, tag));
-    });
-});
 
 socket.on("delete", (data) => {
     const row = document.getElementById(data.table + "_" + data.id);
@@ -84,7 +54,7 @@ function append_tag() {
 }
 
 function delete_tag(id) {
-    socket.emit("delete", current_station, current_tab, id);
+    
 }
 
 function switch_mode(button) {
@@ -143,3 +113,48 @@ function create_row(table, tag) {
 
     return row;
 }
+
+socket.on("setup", (data) => {
+    let tab_button = document.createElement("button");
+    tab_button.className = "tab_button";
+    tab_button.id = data.table + "_tab_button";
+    tab_button.onclick = function () { tab_bar_manager(event, data.table); };
+    tab_button.innerText = (data.table.charAt(0).toUpperCase() + data.table.slice(1)).replace("_", " ");
+    tab_bar.appendChild(tab_button);
+
+    let tab_table = document.createElement("div");
+    tab_table.className = "tab_content";
+    tab_table.id = data.table + "_content";
+
+    tab_table.innerHTML = `            
+    <table>
+        <thead>
+            <tr>
+                <th>Variable</th>
+                <th>Valeur</th>
+                <th>Date et Heure</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody id="${data.table}_table">
+        </tbody>
+    </table>`;
+
+    tab_contents.appendChild(tab_table);
+
+    let table = document.getElementById(data.table + "_table");
+    data.tags.forEach(function (tag) {
+        table.appendChild(create_row(data.table, tag));
+    });
+
+    document.getElementById(current_tab + "_tab_button").click();
+});
+
+socket.on("append", (data) => {
+    const table = document.getElementById(data.table + "_table");
+
+    data.tags.forEach(function (tag) {
+        console.log(data)
+        table.appendChild(create_row(data.table, tag));
+    });
+});

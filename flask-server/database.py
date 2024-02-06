@@ -46,7 +46,7 @@ class Database:
 
     def create_table(self, station: str, table: str) -> None:
         try:
-            self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + table} (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, value DOUBLE NOT NULL, timestamp TIMESTAMP)")
+            self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + table} (id INT AUTO_INCREMENT PRIMARY KEY, value DOUBLE NOT NULL, timestamp TIMESTAMP)")
         except:
             if self.logger:
                 print(f"Unable to create '{station + '_' + table}' table")
@@ -66,15 +66,15 @@ class Database:
 
     def insert(self, station: str, table: str, tags: Union[Dict, List]) -> Union[int, None]:
         try:
-            query = f"INSERT INTO {station + '_' + table} (name, value, timestamp) VALUES (%s, %s, %s)"
+            query = f"INSERT INTO {station + '_' + table} (value, timestamp) VALUES (%s, %s)"
 
             if not isinstance(tags, List):
-                query_values = (tags["name"], tags["value"], tags["timestamp"])
+                query_values = (tags["value"], tags["timestamp"])
                 self.cursor.execute(query, query_values)
             else:
                 query_values = []
                 for tag in tags:
-                    query_values.append((tag["name"], tag["value"], tag["timestamp"]))
+                    query_values.append((tag["value"], tag["timestamp"]))
                 self.cursor.executemany(query, query_values)
 
             self.db.commit()
@@ -103,9 +103,9 @@ class Database:
     def delete(self, station: str, table: str, id: int) -> None:
         try:
             query = f"DELETE FROM {station + '_' + table} WHERE id = %s"
-            query_value = id
+            query_values = (id,)
 
-            self.cursor.execute(query, query_value)
+            self.cursor.execute(query, query_values)
             self.db.commit()
         except:
             if self.logger:
@@ -118,14 +118,14 @@ class Database:
         response = []
         try:
             if limit:
-                query = f"SELECT id, name, value, timestamp FROM {station + '_' + table} ORDER BY timestamp DESC LIMIT {limit}"
+                query = f"SELECT id, value, timestamp FROM {station + '_' + table} ORDER BY timestamp DESC LIMIT {limit}"
             else:
-                query = f"SELECT id, name, value, timestamp FROM {station + '_' + table}"
+                query = f"SELECT id, value, timestamp FROM {station + '_' + table}"
 
             self.cursor.execute(query)
 
-            for id, name, value, timestamp in self.cursor.fetchall():
-                response.append({"id": id, "name": name, "value": value, "timestamp": str(timestamp)})
+            for id, value, timestamp in self.cursor.fetchall():
+                response.append({"id": id, "value": value, "timestamp": str(timestamp)})
         except:
             if self.logger:
                 print(f"Unable to select tags from '{station + '_' + table}'")
@@ -154,10 +154,10 @@ if __name__ == "__main__":
     database.create_table("station1", "table1")
     database.create_table("station1", "table2")
     database.drop_table("station1", "table2")
-    database.insert("station1", "table1", {"name": "tag1", "value": 1, "timestamp": ""})
-    database.insert("station1", "table1", [{"name": "tag2", "value": 2, "timestamp": ""}, {"name": "tag3", "value": 3, "timestamp": ""}])
+    database.insert("station1", "table1", {"value": 1, "timestamp": ""})
+    database.insert("station1", "table1", [{"value": 2, "timestamp": ""}, {"value": 3, "timestamp": ""}])
     database.update("station1", "table1", "tag2", 20)
-    database.delete("station1", "table1", 3)
+    database.delete("station1", "table1", 1)
     result = database.select("station1", "table1")
     database.reset()
     database.drop_database("mydatabase")

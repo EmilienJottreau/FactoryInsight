@@ -14,7 +14,6 @@ async def simulator() -> None:
 
         try:
             main_node = await client.nodes.root.get_child(f"0:Objects/{namespace_index}:FactoryInsight")
-
             tags = (await browse_nodes(main_node))["Tank"]
         except:
             raise Exception("Le namespace 'FactoryInsignt' n'est pas chargé dans le serveur OPC")
@@ -45,7 +44,7 @@ async def simulator() -> None:
 
                             if await tags["liquid_level"].read_value() > 1.98:
                                 await tags["input_state"].change_value(False)
-            await sleep(1)
+            await sleep(3)
 
 
 if __name__ == "__main__":
