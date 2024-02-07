@@ -32,7 +32,7 @@ export function NavUser({ user, stroke, fill }) {
         <FontAwesomeIcon icon="fa-solid fa-palette" />
       </button>
 
-      <div id="colorModal" class="modal">
+      <div id="colorModal" className="modal">
         <SketchPicker
           color={state.background}
           onChangeComplete={handleChangeComplete}

@@ -3,7 +3,6 @@ import { Link, NavLink } from "react-router-dom";
 export function LeftMenu({lastStation, closeMenu}) {
 
 
-
   return (
     <div className="left-menu">
       <NavLink to={"station/"+lastStation} onClick={closeMenu}>
@@ -11,16 +10,16 @@ export function LeftMenu({lastStation, closeMenu}) {
           <div>Synoptique</div>
         </button>
       </NavLink>
-      <Link to={"historyGraph"} onClick={closeMenu}>
+      <Link to={"historyTable"} onClick={closeMenu}>
         <button>Tables</button>
       </Link>
-      <Link to={"historyTable"} onClick={closeMenu}>
+      <Link to={"historyGraph"} onClick={closeMenu}>
         <button>Graphiques</button>
       </Link>
       <Link to={"stats"} onClick={closeMenu}>
         <button>Statistiques</button>
       </Link>
-      <Link onClick={closeMenu}>
+      <Link to={"legal"} onClick={closeMenu}>
         <button className="signature">
           Mentions Legales
           {/* <div>Marguerite DIOUF</div>

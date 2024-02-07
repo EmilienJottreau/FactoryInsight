@@ -1,70 +1,94 @@
-import { useState, useEffect } from 'react';
-import { NavBar } from './nav/navbar';
-import { LeftMenu } from './menu/leftmenu';
-import { Scrim } from './scrim';
+import { useState, useEffect, createContext } from "react";
+import { NavBar } from "./nav/navbar";
+import { LeftMenu } from "./menu/leftmenu";
+import { Scrim } from "./scrim";
 import { io } from "socket.io-client";
 
-import { Outlet } from 'react-router-dom';
+import { Outlet } from "react-router-dom";
 
-
-
-
+export const Context = createContext({});
 
 function App() {
-  const [socketInstance, setSocketInstance] = useState("");
-  const [menuVisible, setMenuVisible] = useState(false)
-  const toggleMenu = () => setMenuVisible(value => !value);
-  const [lastStation, setLastStation] = useState(0)
+
+  const [menuVisible, setMenuVisible] = useState(false);
+  const toggleMenu = () => setMenuVisible((value) => !value);
+  const [lastStation, setLastStation] = useState(0);
+
+  const [donnees, setDonnees] = useState({ stations: {} });
+
+  const handleDataChange = (data) => {
+    // ajout de donnée dans l'array des données recues
+    const parsedData = JSON.parse(data);
+    const { station, tag } = parsedData;
+
+    // setDonnees((prevData) => [...prevData, data]);
+    setDonnees((prevData) => {
+
+      const newData = {...prevData}
+
+      if (!newData.stations[station]) {
+        // If the station doesn't exist, create it
+        newData.stations[station] = {
+        };
+      }
+
+      newData.stations[station][tag.name] = {
+        value: tag.value,
+        timestamp: tag.timestamp,
+      };
+      // console.log("Nouvelles données" + JSON.stringify(newData))
+      return newData
+    });
+  }
 
 
-  useEffect(()=>{
-
+  useEffect(() => {
     const socket = io("localhost:5000/", {
       transports: ["websocket"],
-      cors: { 
+      cors: {
         origin: "http://localhost:3000/",
       },
     });
 
     socket.on("connect", (data) => {
-      console.log("event connect appelé")
-      console.log(data);
+      console.log("event connect appelé");
     });
-
 
     socket.on("disconnect", (data) => {
-      console.log("event disconnect appelé")
+      console.log("event disconnect appelé");
       console.log(data);
     });
 
-    socket.on("datachange", (data) => (
-      console.log(data)
-    ));
 
+    socket.on("datachange", (data) => {
+      handleDataChange(data)
+    });
 
-
-    setSocketInstance(socket);
     return function cleanup() {
       socket.disconnect();
     };
-  }, [])
+  }, []);
+
 
 
   return (
     <div className="App">
+      <NavBar toggleMenu={toggleMenu} menuVisible={menuVisible} />
 
-
-
-      <NavBar toggleMenu={toggleMenu} menuVisible={menuVisible}/>
-
-      <div className='below-nav'>
-        {menuVisible && <LeftMenu lastStation={lastStation} closeMenu={() => (setMenuVisible(false))}/>}
-        <div className='mainContent'>
-          <Outlet context={[setLastStation]}/>
-          {menuVisible && <Scrim/>}
+      <div className="below-nav">
+        {menuVisible && (
+          <LeftMenu
+            lastStation={lastStation}
+            closeMenu={() => setMenuVisible(false)}
+          />
+        )}
+        <div className="mainContent">
+          <Context.Provider value={donnees}>
+            <Outlet context={[setLastStation]}/>
+            {menuVisible && <Scrim />}
+          </Context.Provider>
         </div>
       </div>
-
     </div>
   );
 }

@@ -27,8 +27,8 @@ export function NavBar({ toggleMenu, menuVisible }) {
       </div>
       <div className="d-flex flex-wrap">
         {config.stations.map((x, i) => (
-          <Link className="nav-link" to={"station/"+(i)}>
-            <NavCircle stroke="var(--color-primary)" />
+          <Link key={i} className="nav-link" to={"station/"+(i)}>
+            <NavCircle key={i} stroke="var(--color-primary)" />
           </Link>
         ))}
 

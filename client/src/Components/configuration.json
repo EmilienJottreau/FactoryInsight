@@ -76,7 +76,8 @@
           "name": "input_state"
         },
         {
-          "name": "liquid_level"
+          "name": "liquid_level",
+          "unit":"m"
         },
         {
           "name": "liquid_temperature"
@@ -183,16 +184,7 @@
           "name": "output_state"
         }
       ]
-    },
-    {
-      "type": "cuve",
-      "number": 3
-    },
-    {
-      "type": "cuve",
-      "number": 4
-    },
+    }
 
-    {}
   ]
 }

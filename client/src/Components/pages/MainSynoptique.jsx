@@ -2,14 +2,16 @@ import { CoupleButtons } from "../ilot/coupleButtons";
 import { Cuve } from "../ilot/cuve";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useOutletContext, useParams } from "react-router-dom";
+import { Context } from "../App";
 
 import config from "../configuration.json";
+import { createContext, useContext, useEffect } from "react";
 
 export function MainSynoptique() {
   const { id } = useParams();
   const [setLastStation] = useOutletContext();
 
-  setLastStation(id)
+  useEffect(() => setLastStation(id), [id, setLastStation]);
 
   //const {loading, data, errors} = useFetchAtStart('https://jsonplaceholder.typicode.com/posts?_limit=10&_delay=2000')
   function changeState(param, value) {
@@ -18,16 +20,23 @@ export function MainSynoptique() {
     });
   }
 
+  const values = useContext(Context);
+  if(id == 0){
+    const station_data = values.stations.tank
+    console.log(station_data)
+  }
+
 
   return (
     <main>
       <div className="leftContainer">
         <div className="ilotName">
-          <h1>CUVE {parseInt(id)+1}</h1>
+          <h1>CUVE {parseInt(id) + 1}</h1>
           <div className="textDescription">
             description du procédé? unt aut facere repellat provident occaecati
             excepturi optio reprehenderi
           </div>
+          <div>{JSON.stringify(values)}</div>
         </div>
         <div className="informations">
           <div className="logo-info">
@@ -41,9 +50,15 @@ export function MainSynoptique() {
           <div className="logo-info">
             <FontAwesomeIcon icon="fa-solid fa-arrows-up-down" />
             <div>
-              <p className="placeholder-glow">
-                <span className="placeholder col-8 placeholder-lg"></span>
-              </p>
+
+              { 
+              values?.tag?.liquid_level  ? (
+                <p> {values.tag.value} { config.stations[id].read[6].unit}</p>
+              ) : (
+                <p className="placeholder-glow">
+                  <span className="placeholder col-8 placeholder-lg"></span>
+                </p>
+              )}
             </div>
           </div>
           <div className="logo-info">
@@ -60,9 +75,9 @@ export function MainSynoptique() {
         <Cuve />
       </div>
       <div className="buttonContainer">
-
         {config.stations[id].write.map((x, i) => (
           <CoupleButtons
+            key={x.frendlyName}
             name={{ title: x.frendlyName, on: x.on, off: x.off }}
             action={{ on: () => {}, off: () => {} }}
           />
@@ -82,7 +97,6 @@ export function MainSynoptique() {
             },
           }}
         /> */}
-
       </div>
     </main>
   );
