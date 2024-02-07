@@ -48,4 +48,4 @@ async def subscribe_tag(tags: OPC_Dict, subscription) -> None:
 def init_database(tags: OPC_Dict, database: Database) -> None:
     for station in tags:
         for tag in tags[station]:
-            database.create_table(station, tag)
+            database.create_table(station, tag, tags[station][tag].variant_type == ua.VariantType.Float)

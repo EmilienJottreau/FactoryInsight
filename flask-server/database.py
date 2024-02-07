@@ -44,9 +44,12 @@ class Database:
             if self.logger:
                 print(f"Database '{database_name}' was dropped succcesfully")
 
-    def create_table(self, station: str, table: str) -> None:
+    def create_table(self, station: str, table: str, typ: bool) -> None:
         try:
-            self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + table} (id INT AUTO_INCREMENT PRIMARY KEY, value DOUBLE NOT NULL, timestamp TIMESTAMP)")
+            if typ:
+                self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + table} (id INT AUTO_INCREMENT PRIMARY KEY, value FLOAT NOT NULL, timestamp TIMESTAMP)")
+            else:
+                self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + table} (id INT AUTO_INCREMENT PRIMARY KEY, value BOOL NOT NULL, timestamp TIMESTAMP)")
         except:
             if self.logger:
                 print(f"Unable to create '{station + '_' + table}' table")

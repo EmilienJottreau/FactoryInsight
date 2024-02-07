@@ -5,7 +5,6 @@ from flask_socketio import SocketIO, emit
 from asyncua import Client, Node
 from database import Database
 from typing import Any
-import asyncio
 
 
 server_url = "opc.tcp://127.0.0.1:49320"
@@ -32,10 +31,9 @@ def get_setup():
 
 # /api/v1/update/Tank/agitator_speed/2.2
 @app.get("/api/v1/get/<string:station>/<string:tag>")
-def get_value(station: str, tag: str):
-    val = tags[station][tag].read_value()
-    print(station, tag, val)
-    return val
+async def get_value(station: str, tag: str):
+    value = await tags[station][tag].read_value()
+    return {"value": value}
 
 
 # /api/v1/history/tank/liquid_level/10
@@ -46,9 +44,10 @@ def get_history(station: str, tag: str, limit: int = 10):
 
 # /api/v1/update/Tank/agitator_speed/2.2
 @app.get("/api/v1/update/<string:station>/<string:tag>/<value>")
-def get_update(station: str, tag: str, value: Any):
-    print(station, tag, value, tags[station][tag])
-    socketio.start_background_task(tags[station][tag].change_value, 2.2)
+async def get_update(station: str, tag: str, value: Any):
+    value = False if value == "false" else value
+    await tags[station][tag].change_value(bool(value))
+    return {"value": value}
 
 
 class SubHandler(object):

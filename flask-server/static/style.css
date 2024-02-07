@@ -58,14 +58,13 @@ button:hover {
 }
 
 #mode_button {
-    background-color: darkorchid;
-    border-color: darkorchid;
+    background-color: limegreen;
+    border-color: limegreen;
 }
 
 #mode_button:hover {
     background-color: white;
     border: 2px solid;
-    border-color: darkorchid;
 }
 
 .delete_buttons {

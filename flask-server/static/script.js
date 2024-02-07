@@ -30,12 +30,11 @@ socket.on("datachange", (new_data) => {
 
 //////////////////// FETCH FUNCTIONS  ////////////////////
 
-function get_value(station, tag) {
-    fetch(`/api/v1/get/${station}/${tag}`)
+function get_value(station) {
+    fetch(`/api/v1/get/${station}/${current_tab}`)
         .then(response => response.json())
         .then(data => {
-            console.log("Get value : ");
-            console.log(data);
+            console.log("Get value : " + data.value);
         })
 }
 
@@ -52,15 +51,28 @@ function update_tag(station, tag, value) {
     fetch(`/api/v1/update/${station}/${tag}/${value}`)
         .then(response => response.json())
         .then(data => {
-            console.log("Update tag : ");
-            console.log(data);
+            console.log("Update tag : " + data.value);
         })
 }
 
-//////////////////// TABLE FUNCTIONS  ////////////////////
+function switch_mode(button, station, tag) {
+    if (button.innerText == "Off") {
+        update_tag(station, tag, true);
+        button.innerText = "On";
+        button.style.backgroundColor = "limegreen";
+        button.style.borderColor = "limegreen";
+    } else {
+        update_tag(station, tag, false);
+        button.innerText = "Off";
+        button.style.backgroundColor = "crimson";
+        button.style.borderColor = "crimson";
+    }
+}
+
+//////////////////// TABLES FUNCTIONS  ////////////////////
 
 function setup_tables(tags) {
-    table_data = tags
+    table_data = tags;
 
     for (let station in table_data) {
         for (let tag in table_data[station]) {
@@ -73,13 +85,26 @@ function setup_tables(tags) {
 }
 
 function update_table(new_data) {
-    table_data[new_data.station][new_data.tag].unshift(new_data)
+    table_data[new_data.station][new_data.tag].unshift(new_data);
 
     if (table_data[new_data.station][new_data.tag].length > MAX_TABLE_SIZE) {
         table_data[new_data.station][new_data.tag].pop();
     }
 
     render_tables();
+}
+
+function render_tables() {
+    let table = null;
+    for (let station in table_data) {
+        for (let tag in table_data[station]) {
+            table = document.getElementById(tag + "_table");
+            table.innerHTML = "";
+            table_data[station][tag].forEach(function (data) {
+                table.appendChild(create_row(tag, data));
+            });
+        }
+    }
 }
 
 function create_tables(station, tag) {
@@ -101,7 +126,6 @@ function create_tables(station, tag) {
                 <th>#</th>
                 <th>Valeur</th>
                 <th>Date et Heure</th>
-                <th>Options</th>
             </tr>
         </thead>
         <tbody id="${tag}_table">
@@ -109,19 +133,6 @@ function create_tables(station, tag) {
     </table>`;
 
     tab_contents.appendChild(tab_table);
-}
-
-function render_tables() {
-    let table = null
-    for (let station in table_data) {
-        for (let tag in table_data[station]) {
-            table = document.getElementById(tag + "_table");
-            table.innerHTML = "";
-            table_data[station][tag].forEach(function (data) {
-                table.appendChild(create_row(tag, data));
-            });
-        }
-    }
 }
 
 function create_row(table, data) {
@@ -132,14 +143,12 @@ function create_row(table, data) {
                 <td>${data.timestamp}</td>`;
 
     row.id = table + "_" + data.id;
-    row_data += `<td><button class="delete_buttons" onclick="delete_tag(\`${data.id}\`)">Supprimer</button></td>`;
     row.innerHTML = row_data;
 
     return row;
 }
 
 //////////////////// TAB BAR ////////////////////
-
 
 function tab_bar_manager(evt, selected_tab) {
     let i, tables, tab_buttons;
