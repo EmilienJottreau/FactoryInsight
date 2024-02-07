@@ -1,6 +1,6 @@
 from opcua import browse_nodes, init_database, OPC_Dict, OPC_Tag, subscribe_tag
-from flask import Flask, redirect, render_template, url_for
 from asyncio import new_event_loop, set_event_loop, sleep
+from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 from asyncua import Client, Node
 from database import Database
@@ -21,11 +21,21 @@ def index():
 
 @app.get("/api/v1/setup")
 def get_setup():
-    table_data = {}
+    station_data, tag_data = {}, {}
     for station in tags:
         for tag in tags[station]:
-            table_data[station + "_" + tag] = database.select(station, tag, 10)
-    return table_data
+            tag_data[tag] = database.select(station, tag, 10)
+        station_data[station] = tag_data
+        tag_data = {}
+    return station_data
+
+
+# /api/v1/update/Tank/agitator_speed/2.2
+@app.get("/api/v1/get/<string:station>/<string:tag>")
+def get_value(station: str, tag: str):
+    val = tags[station][tag].read_value()
+    print(station, tag, val)
+    return val
 
 
 # /api/v1/history/tank/liquid_level/10
@@ -52,7 +62,8 @@ class SubHandler(object):
 
         tag = {"station": station, "tag": tag_name, "value": value, "timestamp": str(timestamp)}
 
-        self.database.insert(station, tag_name, tag)
+        id = self.database.insert(station, tag_name, tag)
+        tag = {"station": station, "tag": tag_name, "id": id, "value": value, "timestamp": str(timestamp)[:-7]}
         self.socket.emit("datachange", tag)
 
 

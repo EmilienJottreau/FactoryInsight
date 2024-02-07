@@ -24,7 +24,9 @@
 
         <hr>
 
-        <button onclick="append_tag()">Ajouter</button>
+        <button onclick="get_value('Tank', 'liquid_level')">Get value</button>
+        <button onclick="get_history('Tank', 'liquid_level', 5)">Get history</button>
+        <button onclick="update_tag('Tank', 'manual_mode', false)">Update tag</button>
         <button onclick="switch_mode(this)" id="mode_button">Mode automatique</button>
     </main>
 
