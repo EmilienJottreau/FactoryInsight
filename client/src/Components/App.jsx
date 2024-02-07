@@ -53,6 +53,7 @@ function App() {
 
     socket.on("connect", (data) => {
       console.log("event connect appelé");
+      fetch("http://127.0.0.1/setup")
     });
 
     socket.on("disconnect", (data) => {
@@ -85,7 +86,7 @@ function App() {
         )}
         <div className="mainContent">
           <Context.Provider value={donnees}>
-            <Outlet context={[setLastStation]}/>
+            <Outlet context={[lastStation, setLastStation]}/>
             {menuVisible && <Scrim />}
           </Context.Provider>
         </div>

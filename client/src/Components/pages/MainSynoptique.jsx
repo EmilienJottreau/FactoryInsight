@@ -1,26 +1,18 @@
 import { CoupleButtons } from "../ilot/coupleButtons";
 import { Cuve } from "../ilot/cuve";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useOutletContext, useParams } from "react-router-dom";
 import { Context } from "../App";
 
 import config from "../configuration.json";
-import { createContext, useContext, useEffect } from "react";
-import { useState } from "react";
+import { useContext, useEffect } from "react";
 import { DisplayValue } from "../ilot/DisplayValue";
 
 export function MainSynoptique() {
   const { id } = useParams();
-  const [setLastStation] = useOutletContext();
+  const [LastStation, setLastStation] = useOutletContext();
 
   useEffect(() => setLastStation(id), [id, setLastStation]);
 
-  //const {loading, data, errors} = useFetchAtStart('https://jsonplaceholder.typicode.com/posts?_limit=10&_delay=2000')
-  function changeState(param, value) {
-    fetch("http://localhost:8080/" + param + "?val=" + value).catch((e) => {
-      console.log(e);
-    });
-  }
 
   const values = useContext(Context);
   var stationData = {};
@@ -50,10 +42,8 @@ export function MainSynoptique() {
           {config.stations[id].read.map((x, i) => (
             <DisplayValue
               key={x.name}
-              name={x.name}
-              icon={x.icon}
               value={stationData?.[x.name]?.value}
-              unit={x.unit}
+              config={x}
             />
           ))}
         </div>
