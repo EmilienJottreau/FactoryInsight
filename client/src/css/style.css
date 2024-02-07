@@ -47,16 +47,14 @@ a:hover {
 
 button {
   all: unset;
-  padding: 20px;
-}
-
-button:enabled {
-  border: solid 1px var(--color-primary);
+  outline: solid 1px var(--color-primary);
   background-color: var(--color-gray);
 }
 
+
 button:disabled {
   background-color: var(--color-background);
+  outline: 0;
 }
 
 button:hover:enabled,
@@ -95,11 +93,10 @@ button:focus:enabled {
   display: flex;
   flex-direction: column;
   z-index: 1;
-  /* width: 200px; */
+  width: 220px;
   background-color: var(--color-background);
   color: white;
   animation: comeFromLeft 0.2s normal;
-  overflow: hidden;
 }
 
 @keyframes comeFromLeft {
@@ -277,8 +274,6 @@ main > * {
 }
 
 .buttonIlot {
-  all: unset;
-
   background-color: var(--color-gray);
   color: var(--color-text);
 
@@ -338,4 +333,8 @@ main > * {
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.no-fill{
+  background-color: var(--color-background);
 }

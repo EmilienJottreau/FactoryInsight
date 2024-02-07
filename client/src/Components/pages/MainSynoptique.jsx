@@ -28,7 +28,6 @@ export function MainSynoptique() {
   if (id === "0") {
     stationData = values.stations.tank;
     console.log(stationData);
-    console.log(stationData?.liquid_level?.value);
   }
 
   return (

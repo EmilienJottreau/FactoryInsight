@@ -11,7 +11,11 @@ export function DisplayValue({ value, unit, icon, name }) {
             {value !== undefined ? (
               <p>
                 {typeof value == "boolean" ? (
-                  <span>value</span>
+                  value ? (
+                    <span>Vrai</span>
+                  ) : (
+                    <span>Faux</span>
+                  )
                 ) : (
                   <span>{value.toFixed(2) + " " + unit}</span>
                 )}

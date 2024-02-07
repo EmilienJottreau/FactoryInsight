@@ -37,7 +37,7 @@ export function NavUser({ user, stroke, fill }) {
           color={state.background}
           onChangeComplete={handleChangeComplete}
         />
-        <button
+        <button className="no-fill"
           onClick={() => {
             document.getElementById("colorModal").style.display = "none";
           }}
