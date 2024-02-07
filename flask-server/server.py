@@ -1,106 +1,105 @@
-from flask import Flask, redirect, render_template, url_for, request, jsonify
+from opcua import browse_nodes, init_database, OPC_Dict, OPC_Tag, subscribe_tag
+from flask import Flask, redirect, render_template, url_for
+from asyncio import new_event_loop, set_event_loop, sleep
 from flask_socketio import SocketIO, emit
+from asyncua import Client, Node
 from database import Database
-from opc_tags import OPC_Tag
 from typing import Any
-import random as rd
-from flask_cors import CORS
 
+
+from flask_cors import CORS
+import json 
+
+
+server_url = "opc.tcp://127.0.0.1:49320"
+tags = {}
 
 app = Flask(__name__)
 CORS(app,resources={r"/*":{"origins":"*"}})
-socketio = SocketIO(app, logger=True, engineio_logger=False, cors_allowed_origins="*")
-database = Database("FactoryInsignt", recreate_db=True, logger=False)
-
-
-station = "tank"
-variables_list = ["level", "liquid_temperature", "heating_temperature", "input_flow", "output_flow", "agitator_speed", "states"]
-
-for variable in variables_list:
-    database.create_table(station, variable)
-    database.insert(station, variable, [OPC_Tag(variable, rd.random())])
-
-database.insert(
-    station,
-    "states",
-    [
-        OPC_Tag("agitator_state", False),
-        OPC_Tag("cleaning_state", False),
-        OPC_Tag("heating_state", False),
-        OPC_Tag("input_state", False),
-        OPC_Tag("maintenance", False),
-        OPC_Tag("operating_state", False),
-        OPC_Tag("manual_mode", False),
-        OPC_Tag("output_state", False),
-    ],
-)
 
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    data = {}
+    for station in tags:
+        for tag in tags[station]:
+            data[station + "_" + tag] = database.select(station, tag, 10)
+    return render_template("index.html", data=data)
 
 
-@app.route("/reset")
-def reset():
-    for variable in variables_list:
-        database.drop_variable(station, variable)
-        database.create_table(station, variable)
-    return redirect(url_for("index"))
+@app.get("/api/v1/history/<string:station>/<string:tag>/<int:limit>")
+def get_history(station: str, tag: str, limit: int = 10):
+    return database.select(station, tag, limit)
+
+#@app.get("/setup")
+#def setup():
+#    async with Client(url=server_url) as client:
+#        global tags
+#        for tag in tags[station]:
+#            pass
+            #ici faire un read async en passant le callback subhandler
 
 
-@socketio.on("get_data")
-def handle_get_data():
-    for variable in variables_list:
-        emit("insert", {f"{variable}": database.select(station, variable)}, broadcast=True)
+@app.get("/api/v1/update/<string:station>/<string:tag>/<value>")
+async def get_update(station: str, tag: str, value: Any):
+    await tags[station][tag].change_value(value)
 
 
-@socketio.on("append")
-def handle_append(station: str, variable: str):
-    database.insert(station, variable, [OPC_Tag(variable, rd.random())])
+class SubHandler(object):
+    def __init__(self, database: Database, socket: SocketIO) -> None:
+        self.database = database
+        self.socket = socket
+
+    async def datachange_notification(self, node: Node, value: Any, data) -> None:
+        tag_name = (await node.read_browse_name()).Name
+        timestamp = (await node.read_attribute(13)).SourceTimestamp
+
+        # station, tag = tag_name.split("_")
+        # print(await node.read_attribute(13))
+        # print(tags[station][tag])
+
+        tag = {"name": tag_name, "value": value, "timestamp": timestamp}
+        json_to_send = {
+            "station": "tank",
+            "tag":tag
+        }
+
+        self.database.insert("tank", tag_name, tag)
+        json_data = json.dumps(json_to_send, indent=4, sort_keys=True, default=str) 
+        self.socket.emit("datachange", json_data)
+        print("envoie nouvelles données")
 
 
-@socketio.on("update")
-def handle_update(station: str, variable: str, tag_name: str, value: Any):
-    database.update(station, variable, tag_name, value)
+
+async def main(server_socket: SocketIO) -> None:
+    async with Client(url=server_url) as client:
+        namespace_index = await client.get_namespace_index("KEPServerEX")
+        global tags
+
+        main_node = await client.nodes.root.get_child(f"0:Objects/{namespace_index}:FactoryInsight")
+        tags = await browse_nodes(main_node)
+
+        handler = SubHandler(database, server_socket)
+        subscription = await client.create_subscription(500, handler)
+        await subscribe_tag(tags, subscription)
+
+        init_database(tags, database)
+
+        while True:
+            await sleep(1)
 
 
-@socketio.on("delete")
-def handle_delete(station: str, variable: str, id: str):
-    database.delete(station, variable, int(id))
+def run_async_loop(server_socket: SocketIO) -> None:
+    loop = new_event_loop()
+    set_event_loop(loop)
 
-#/////////////////////////////// Test web sockets //////////////////////////
-@socketio.on('data')
-def handle_message(data):
-    """event listener when client types a message"""
-    print("data from the front end: ",str(data))
-    emit("data",{'data':data,'id':request.sid},broadcast=True)
+    loop.run_until_complete(main(server_socket))
 
-@socketio.on("disconnect")
-def disconnected():
-    """event listener when client disconnects to the server"""
-    print("user disconnected")
-    emit("disconnect",f"user {request.sid} disconnected",broadcast=True)
-
-@socketio.on("connect")
-def connected():
-    """event listener when client connects to the server"""
-    print(request.sid)
-    print("client has connected")
-    #emit("connect",{"data":f"id: {request.sid} is connected"})
-
-@app.route("/aa")
-def http_call():
-    """return JSON with string data as the value"""
-    data = {'data':'This text was fetched using an HTTP call to server on render'}
-    #print(jsonify(data))
-    return data
-
-@socketio.on("agitateur")
-def connected(state):
-    print(state)
-    print("je suis a un bon toutou et" +  (" j'eteind ", " j'allume ")[state == 1] +  "l'agitateur sans grogner, sans erreur commme un grand")
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True, port=5000)
-    
+    database = Database("FactoryInsignt", recreate_db=False, logger=False)
+
+    socketio = SocketIO(app, logger=False, engineio_logger=False, cors_allowed_origins="*")
+
+    socketio.start_background_task(run_async_loop, socketio)
+    socketio.run(app)

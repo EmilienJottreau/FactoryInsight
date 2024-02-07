@@ -18,7 +18,7 @@ export function MainSynoptique() {
   var stationData = {};
 
   if (id === "0") {
-    stationData = values.stations.tank;
+    stationData = values.stations.Tank;
     console.log(stationData);
   }
 

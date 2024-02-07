@@ -18,24 +18,25 @@ function App() {
 
   const handleDataChange = (data) => {
     // ajout de donnée dans l'array des données recues
-    const parsedData = JSON.parse(data);
-    const { station, tag } = parsedData;
-    console.log("maj a cause de : " + tag.name)
+    // const parsedData = JSON.parse(data);
+    console.log(data)
+    // const { station, tag, name,  } = data;
+    console.log("maj a cause de : " + data.tag)
 
     // setDonnees((prevData) => [...prevData, data]);
     setDonnees((prevData) => {
 
       const newData = {...prevData}
 
-      if (!newData.stations[station]) {
+      if (!newData.stations[data.station]) {
         // If the station doesn't exist, create it
-        newData.stations[station] = {
+        newData.stations[data.station] = {
         };
       }
 
-      newData.stations[station][tag.name] = {
-        value: tag.value,
-        timestamp: tag.timestamp,
+      newData.stations[data.station][data.tag] = {
+        value: data.value,
+        timestamp: data.timestamp,
       };
       // console.log("Nouvelles données" + JSON.stringify(newData))
       return newData
@@ -53,7 +54,7 @@ function App() {
 
     socket.on("connect", (data) => {
       console.log("event connect appelé");
-      fetch("http://127.0.0.1/setup")
+      // fetch("http://127.0.0.1/setup")
     });
 
     socket.on("disconnect", (data) => {
