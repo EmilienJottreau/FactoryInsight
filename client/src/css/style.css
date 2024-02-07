@@ -11,7 +11,7 @@ html {
   --color-gray-accent: #c0c0c0;
   --color-text: #000000;
   --color-text-inverse: #ffffff;
-  --color-background: #e5e5e5;
+  --color-background: #ebebeb;
   /* --color-background: #1452bc; */
   --color-background-inverse: #000000;
 }
@@ -25,6 +25,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-background);
 }
 
 .App {
@@ -293,7 +294,7 @@ main > * {
   label {
     margin-top: 15px;
     margin-inline: 15px;
-    color: var(--color-primary);
+    color: var(--color-primary-accent);
   }
 }
 
@@ -337,4 +338,26 @@ main > * {
 
 .no-fill{
   background-color: var(--color-background);
+}
+
+
+.tableContainer {
+  width: 75%;
+  >* {
+    margin: 20px;
+  }
+}
+
+.graphicContainer{
+  width: 75%;
+  height: 75%;
+}
+.rootGraphic {
+  width: 90%;
+  height: 90%;
+  border: solid 1px var(--color-primary);
+  border-radius: 20px;
+  margin-inline: auto;
+
+  text-align: center;
 }

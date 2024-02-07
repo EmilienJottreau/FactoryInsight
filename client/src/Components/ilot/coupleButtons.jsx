@@ -1,4 +1,3 @@
-import { useFetch } from "../../hooks/useFetch";
 import { Button } from "./button";
 
 export function CoupleButtons({name, state, url, options={}}) {
@@ -10,7 +9,7 @@ export function CoupleButtons({name, state, url, options={}}) {
       //   'Accept':'application/json; charset=UTF-8',
       //   ...options.headers
       // }
-    })
+    }).then((r) => r.json())
   }
 
 

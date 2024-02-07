@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export function DisplayValue({ value, config }) {
   return (
     <>
-      <Link to={"/historyGraph?tag="+config.name}>
+      <Link to={"/historyTable?tag="+config.name}>
         <div className="logo-info">
           <div>{config.icon && <FontAwesomeIcon icon={config.icon} />}</div>
           <div>

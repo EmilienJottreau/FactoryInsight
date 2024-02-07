@@ -19,6 +19,7 @@ export function NavUser({ user, stroke, fill }) {
   return (
     <div className="navUser">
       <button
+      aria-label="changer le theme"
         onClick={() => {
           document.getElementById("colorModal").style.display = "block";
         }}
