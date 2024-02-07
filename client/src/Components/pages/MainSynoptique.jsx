@@ -6,6 +6,8 @@ import { Context } from "../App";
 
 import config from "../configuration.json";
 import { createContext, useContext, useEffect } from "react";
+import { useState } from "react";
+import { DisplayValue } from "../ilot/DisplayValue";
 
 export function MainSynoptique() {
   const { id } = useParams();
@@ -21,14 +23,16 @@ export function MainSynoptique() {
   }
 
   const values = useContext(Context);
-  if(id == 0){
-    const station_data = values.stations.tank
-    console.log(station_data)
+  var stationData = {};
+
+  if (id === "0") {
+    stationData = values.stations.tank;
+    console.log(stationData);
+    console.log(stationData?.liquid_level?.value);
   }
 
-
   return (
-    <main>
+    <main style={{  overflowY: 'scroll' }}>
       <div className="leftContainer">
         <div className="ilotName">
           <h1>CUVE {parseInt(id) + 1}</h1>
@@ -36,39 +40,23 @@ export function MainSynoptique() {
             description du procédé? unt aut facere repellat provident occaecati
             excepturi optio reprehenderi
           </div>
-          <div>{JSON.stringify(values)}</div>
+          {/* <div>{JSON.stringify(stationData)}</div> */}
         </div>
-        <div className="informations">
-          <div className="logo-info">
-            <FontAwesomeIcon icon="fa-solid fa-temperature-half" />
-            <div>
-              <p className="placeholder-glow">
-                <span className="placeholder col-8 placeholder-lg"></span>
-              </p>
-            </div>
-          </div>
-          <div className="logo-info">
-            <FontAwesomeIcon icon="fa-solid fa-arrows-up-down" />
-            <div>
-
-              { 
-              values?.tag?.liquid_level  ? (
-                <p> {values.tag.value} { config.stations[id].read[6].unit}</p>
-              ) : (
-                <p className="placeholder-glow">
-                  <span className="placeholder col-8 placeholder-lg"></span>
-                </p>
-              )}
-            </div>
-          </div>
-          <div className="logo-info">
-            <FontAwesomeIcon icon="fa-solid fa-arrows-rotate" />
-            <div>
-              <p className="placeholder-glow">
-                <span className="placeholder col-8 placeholder-lg"></span>
-              </p>
-            </div>
-          </div>
+        <div className="informations" style={{ height: '60%', overflowY: 'scroll' }}>
+          {/* <DisplayValue
+            icon={config.stations[id].read[6].icon}
+            value={stationData?.[config.stations[id].read[6].name]?.value}
+            unit={config.stations[id].read[6].unit}
+          /> */}
+          {config.stations[id].read.map((x, i) => (
+            <DisplayValue
+              key={x.name}
+              name={x.name}
+              icon={x.icon}
+              value={stationData?.[x.name]?.value}
+              unit={x.unit}
+            />
+          ))}
         </div>
       </div>
       <div className="synopticContainer">
@@ -78,8 +66,9 @@ export function MainSynoptique() {
         {config.stations[id].write.map((x, i) => (
           <CoupleButtons
             key={x.frendlyName}
-            name={{ title: x.frendlyName, on: x.on, off: x.off }}
-            action={{ on: () => {}, off: () => {} }}
+            name={{title: x.frendlyName, on: x.on, off: x.off }}
+            url={x.url}
+            state={stationData?.[x.name]?.value}
           />
         ))}
 

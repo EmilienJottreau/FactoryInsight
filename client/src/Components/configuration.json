@@ -5,7 +5,7 @@
       "number": 1,
       "write": [
         {
-          "url": "",
+          "url": "http://127.0.0.1:5000/api/v1/update/tank/agitator_state/",
           "name": "agitator_state",
           "frendlyName": "Agitateur",
           "on": "Allumer",
@@ -58,35 +58,50 @@
       ],
       "read": [
         {
-          "name": "agitator_speed"
+          "name": "agitator_speed",
+          "unit":"m/s",
+          "icon":"fa-solid fa-gauge-high"
         },
         {
-          "name": "agitator_state"
+          "name": "agitator_state",
+          "unit":"",
+          "icon":"fa-solid fa-arrows-rotate"
         },
         {
-          "name": "heating_state"
+          "name": "heating_state",
+          "unit":"",
+          "icon":"fa-solid fa-temperature-arrow-up"
         },
         {
-          "name": "heating_temperature"
+          "name": "heating_temperature",
+          "unit":"°C",
+          "icon":"fa-solid fa-temperature-high"
         },
         {
-          "name": "input_flow"
+          "name": "input_flow",
+          "unit":"m3/s",
+          "icon":"fa-solid fa-water"
         },
         {
           "name": "input_state"
         },
         {
           "name": "liquid_level",
-          "unit":"m"
+          "unit":"m",
+          "icon":"fa-solid fa-arrows-up-down"
         },
         {
-          "name": "liquid_temperature"
+          "name": "liquid_temperature",
+          "unit":"°C",
+          "icon":"fa-solid fa-temperature-half"
         },
         {
           "name": "operating_state"
         },
         {
-          "name": "output_flow"
+          "name": "output_flow",
+          "unit":"m3/s",
+          "icon":"fa-solid fa-water"
         },
         {
           "name": "output_state"

@@ -1,13 +1,26 @@
+import { useFetch } from "../../hooks/useFetch";
 import { Button } from "./button";
 
-export function CoupleButtons({name, state, action}) {
+export function CoupleButtons({name, state, url, options={}}) {
+  const ChangeTagValue = (value)=>{
+    console.log("url+value " + url + value)
+    fetch(url+value, {
+      // ...options,
+      // headers:{
+      //   'Accept':'application/json; charset=UTF-8',
+      //   ...options.headers
+      // }
+    })
+  }
+
+
   return (
     <>
       <div className="coupleButtons">
         <label>{name.title}</label>
         <div className="twoButtons">
-          <Button text={name.on}  onClick={action.on} disabled={state}/>
-          <Button text={name.off} onClick={action.off} disabled={!state}/>
+          <Button text={name.on}  onClick={()=>{ChangeTagValue(1)}} disabled={state}/>
+          <Button text={name.off} onClick={()=>{ChangeTagValue(0)}} disabled={!state}/>
         </div>
       </div>
     </>

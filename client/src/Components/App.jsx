@@ -20,6 +20,7 @@ function App() {
     // ajout de donnée dans l'array des données recues
     const parsedData = JSON.parse(data);
     const { station, tag } = parsedData;
+    console.log("maj a cause de : " + tag.name)
 
     // setDonnees((prevData) => [...prevData, data]);
     setDonnees((prevData) => {

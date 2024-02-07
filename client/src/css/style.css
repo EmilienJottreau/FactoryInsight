@@ -50,8 +50,13 @@ button {
   padding: 20px;
 }
 
+button:enabled {
+  border: solid 1px var(--color-primary);
+  background-color: var(--color-gray);
+}
+
 button:disabled {
-  background-color: var(--color-gray-accent);
+  background-color: var(--color-background);
 }
 
 button:hover:enabled,
@@ -220,43 +225,43 @@ main > * {
 
 .informations {
   margin-bottom: 50px;
-  display: grid;
-  grid-template-areas:
-    "a b"
-    "a c";
+  display: flex;
+  flex-wrap: wrap;
+
+  /* set in react to have scroll */
+  /* height: 60%; */
+  /* overflow: 'scroll'; */
 }
 
-.informations :nth-child(1) {
-  grid-area: a;
-}
+
 
 .logo-info {
-  display: flex;
   padding: 20px;
   background-color: #d9d9d9;
-  border-radius: 45px;
-  color: black;
+  border-radius: 30px;
+  color: var(--color-text);
   margin: 10px;
-  justify-content: center;
+
+  display: flex;
+  flex-direction: row;
   align-items: center;
 
-  flex-wrap: wrap;
-  justify-content: space-around;
+  overflow: hidden;
 
-  div {
-    margin-inline: 5%;
-    flex: 1;
+  p {
+    margin: 0;
+  }
 
-    p {
-      margin: 0;
-    }
+  span {
+    display: block;
+    word-wrap: break-word;
   }
 }
 
 .logo-info svg {
-  scale: 3;
-  margin: 5px;
-}
+  scale: 2;
+  margin: 32px;
+} 
 
 .synopticContainer {
   display: flex;
