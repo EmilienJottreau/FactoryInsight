@@ -11,7 +11,9 @@ Service web de supervision d'installations industrielles.
 
 ## Setup du serveur
 - Télécharger le projet ou utiliser la commande `git clone https://github.com/EmilienJottreau/FactoryInsight.git` pour le cloner.
-- Accéder au dossier client `cd client` pour lancer le serveur [Node.JS](https://nodejs.org/en/download/current) avec `npm start` utilisé par React pour la partie front-end.
+- Accéder au dossier client `cd client` pour lancer le serveur [Node.JS](https://nodejs.org/en/download/current)
+  - `npm install` lors de la premiere utilisation 
+  - `npm start` pour lancer le server front-end
 - [Facultatif] Créer un environnement virtuel pour installer les bibliothèques [python](https://www.python.org/downloads/) :
   - Utiliser `python -m venv .venv` pour initialiser l'environnement.
   - Activer l'environnement virtuel avec `.venv\Scripts\activate` sur Windows ou `.venv/bin/activate` sur Linux ou mac.
