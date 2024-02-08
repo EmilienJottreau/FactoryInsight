@@ -98,6 +98,7 @@ button:focus:enabled {
   background-color: var(--color-background);
   color: white;
   animation: comeFromLeft 0.2s normal;
+  
 }
 
 @keyframes comeFromLeft {

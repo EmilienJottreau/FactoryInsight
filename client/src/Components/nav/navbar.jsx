@@ -37,7 +37,7 @@ export function NavBar({ toggleMenu, menuVisible }) {
         stroke="var(--color-primary)"
         fill="var(--color-background)"
         link={null}
-        user={"Emilien"}
+        user={"User"}
       />
     </nav>
   );

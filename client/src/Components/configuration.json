@@ -12,21 +12,21 @@
           "off": "Eteindre"
         },
         {
-          "url": "",
+          "url": "http://127.0.0.1:5000/api/v1/update/Tank/heating_state/",
           "name": "heating_state",
           "frendlyName": "Temperature",
           "on": "Chauffer",
           "off": "Arreter"
         },
         {
-          "url": "",
+          "url": "http://127.0.0.1:5000/api/v1/update/Tank/input_state/",
           "name": "input_state",
           "frendlyName": "Vanne Entrée",
           "on": "Ouvrir",
           "off": "Fermer"
         },
         {
-          "url": "",
+          "url": "http://127.0.0.1:5000/api/v1/update/Tank/output_state/",
           "name": "output_state",
           "frendlyName": "Vanne sortie",
           "on": "Ouvrir",
@@ -72,7 +72,7 @@
         {
           "name": "heating_state",
           "unit":"",
-          "icon":"fa-solid fa-temperature-arrow-up",
+          "icon":"fa-solid fa-fire",
           "state_on":"Allumé",
           "state_off":"Eteint"
         },
@@ -121,98 +121,6 @@
           "icon":"",
           "state_on":"?en output?",
           "state_off":"?pas en output?"
-        }
-      ]
-    },
-    {
-      "type": "cuve",
-      "number": 1,
-      "write": [
-        {
-          "url": "",
-          "name": "agitator_state",
-          "frendlyName": "Agitateur",
-          "on": "Allumer",
-          "off": "Eteindre"
-        },
-        {
-          "url": "",
-          "name": "heating_state",
-          "frendlyName": "Temperature",
-          "on": "Chauffer",
-          "off": "Arreter"
-        },
-        {
-          "url": "",
-          "name": "input_state",
-          "frendlyName": "Vanne Entrée",
-          "on": "Ouvrir",
-          "off": "Fermer"
-        },
-        {
-          "url": "",
-          "name": "output_state",
-          "frendlyName": "Vanne sortie",
-          "on": "Ouvrir",
-          "off": "Fermer"
-        }
-      ],
-      "modes": [
-        {
-          "url": "",
-          "name": "cleaning_state",
-          "frendlyName": "Nettoyage",
-          "on": "Activer",
-          "off": "Desactiver"
-        },
-        {
-          "url": "",
-          "name": "maintenance",
-          "frendlyName": "Mode Maintenance",
-          "on": "...",
-          "off": "..."
-        },
-        {
-          "url": "",
-          "name": "manual_mode",
-          "frendlyName": "Mode Manuel",
-          "on": "Chauffer",
-          "off": "Arreter"
-        }
-      ],
-      "read": [
-        {
-          "name": "agitator_speed"
-        },
-        {
-          "name": "agitator_state"
-        },
-        {
-          "name": "heating_state"
-        },
-        {
-          "name": "heating_temperature"
-        },
-        {
-          "name": "input_flow"
-        },
-        {
-          "name": "input_state"
-        },
-        {
-          "name": "liquid_level"
-        },
-        {
-          "name": "liquid_temperature"
-        },
-        {
-          "name": "operating_state"
-        },
-        {
-          "name": "output_flow"
-        },
-        {
-          "name": "output_state"
         }
       ]
     }
