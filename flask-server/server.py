@@ -4,6 +4,7 @@ from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 from asyncua import Client, Node
 from database import Database
+from flask_cors import CORS
 from typing import Any
 
 
@@ -11,6 +12,7 @@ server_url = "opc.tcp://127.0.0.1:49320"
 tags = {}
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route("/")
@@ -18,12 +20,12 @@ def index():
     return render_template("index.html")
 
 
-@app.get("/api/v1/setup")
+@app.get("/api/v1/getall")
 def get_setup():
     station_data, tag_data = {}, {}
     for station in tags:
         for tag in tags[station]:
-            tag_data[tag] = database.select(station, tag, 10)
+            tag_data[tag] = database.select(station, tag, 1)
         station_data[station] = tag_data
         tag_data = {}
     return station_data
