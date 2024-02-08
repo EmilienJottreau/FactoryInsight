@@ -17,6 +17,7 @@ python -m pip install mysql-connector-python
 pour demmarer l'appli front: 
 
 cd client
+https://www.knowledgehut.com/blog/web-development/npm-install-dev-dependencies
 npm start
 
 pour demarrer l'appli back :

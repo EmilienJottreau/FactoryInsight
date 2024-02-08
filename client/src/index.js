@@ -1,21 +1,79 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas } from '@fortawesome/free-solid-svg-icons'
+import React from "react";
+import ReactDOM from "react-dom/client";
 
+import App from "./Components/App";
+import reportWebVitals from "./reportWebVitals";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./css/style.css";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { PageError } from "./Components/pages/PageError";
+import { MainSynoptique } from "./Components/pages/MainSynoptique";
+import { MainHistoryGraph } from "./Components/pages/MainHistoryGraph";
+import { MainHistoryTable } from "./Components/pages/MainHistoryTable";
+import { MainStatistique } from "./Components/pages/MainStatistique";
+import { Accueil } from "./Components/pages/Accueil";
+import { MentionsLegales } from "./Components/pages/MentionLegales";
 
+library.add(fas);
 
-library.add(fas)
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    errorElement: <PageError />,
+    children: [
+      {
+        path: "historyGraph",
+        element: <MainHistoryGraph />,
+      },
+      {
+        path: "stats",
+        element: <MainStatistique />,
+      },
+      {
+        path: "historyTable",
+        element: <MainHistoryTable />,
+      },
+      {
+        path: "legal",
+        element: <MentionsLegales/>,
+      },
+      {
+        path: "station",
+        children: [
+          {
+            path: "",
+            element: (
+              <Accueil/>
+            ),
+          },
+          {
+            path: ":id",
+            element: <MainSynoptique />,
+          },
+        ],
+      },
+      {
+        path: "user",
+        element: (
+          <div className="center">
+            <div>a faire plus tard, connexion utilisateur</div>
+          </div>
+        ),
+      },
+    ],
+  },
+]);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"></link>
-    <App />
+    {/* <App /> */}
+    {/* <TestRoute /> */}
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 

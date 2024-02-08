@@ -17,7 +17,11 @@ CORS(app)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    data = {}
+    for station in tags:
+        for tag in tags[station]:
+            data[station + "_" + tag] = database.select(station, tag, 10)
+    return render_template("index.html", data=data)
 
 
 @app.get("/api/v1/getall")

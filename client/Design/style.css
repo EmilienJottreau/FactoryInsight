@@ -1,0 +1,105 @@
+html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    color: var(--color-text);
+
+
+    --color-primary: #4D7E3E;
+    --color-primary-accent: #2F4E27;
+    --color-gray: #DCDCDC;
+    --color-text: #000000;
+    --color-text-inverse: #ffffff;
+
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.navbar {
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--color-gray);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar h1 {
+    margin: 0;
+    color: var(--color-primary);
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    border-right: 1px solid var(--color-gray);
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.menu-item {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    border: 1px solid var(--color-primary);
+}
+
+.menu-item:hover {
+    background-color: var(--color-gray);
+}
+
+.main-content-container {
+    flex: 1;
+    padding: 20px;
+    border-radius: 0 15px 15px 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-item {
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-item:hover {
+    background-color: var(--color-gray);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    outline: 1px solid var(--color-primary);
+}
+
+.green-button {
+    color: var(--color-text-inverse);
+    background-color: var(--color-primary);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.green-button:hover {
+    background-color: var(--color-primary-accent);
+}
+
+.logo {
+    width: 200px; /* Ajustez la taille du logo selon vos besoins */
+    margin-bottom: 20px;
+}
