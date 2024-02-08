@@ -13,7 +13,7 @@ const socket = io();
 //////////////////// INITIALIZATION ////////////////////
 
 window.onload = function () {
-    fetch("/api/v1/setup")
+    fetch("/api/v1/getall")
         .then(response => response.json())
         .then(data => {
             //console.log(data);
