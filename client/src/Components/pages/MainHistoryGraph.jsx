@@ -3,6 +3,8 @@ import { getTagOfStation } from "./MainHistoryTable";
 import config from "../configuration.json";
 import { useState, useEffect } from "react";
 import { Select } from "../base/Select";
+import axios from 'axios';
+
 
 export function MainHistoryGraph() {
   const [searchParams] = useSearchParams();
@@ -23,20 +25,20 @@ export function MainHistoryGraph() {
     if (selected == "" || selected == null) return;
 
     const url =
-      "http://127.0.0.1:5000/api/v1/history/" +
+      "/api/v1/history/" +
       station +
       "/" +
       selected +
       "/10";
 
-    fetch(url, {
+    axios.get(url, {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
     })
-      .then((response) => response.json())
-      .then((json) => setData(json));
+      // .then((response) => response.json())
+      .then((json) => setData(json.data));
   }, [selected]);
 
   const tags = getTagOfStation(lastStation, config);
