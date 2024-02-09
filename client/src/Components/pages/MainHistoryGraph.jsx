@@ -64,16 +64,16 @@ useLayoutEffect(() => {
   );
 
   // Define data
-  let data = [{"id":3269,"timestamp":"2024-02-09 17:02:55","value":1.10234},
-  {"id":3268,"timestamp":"2024-02-09 17:02:51","value":1.10173},
-  {"id":3267,"timestamp":"2024-02-09 17:02:48","value":1.10094},
-  {"id":3266,"timestamp":"2024-02-09 17:02:45","value":1.10002},
-  {"id":3265,"timestamp":"2024-02-09 17:02:42","value":1.09974},
-  {"id":3264,"timestamp":"2024-02-09 17:02:39","value":1.09944},
-  {"id":3263,"timestamp":"2024-02-09 17:02:36","value":1.09918},
-  {"id":3262,"timestamp":"2024-02-09 17:02:32","value":1.09843},
-  {"id":3261,"timestamp":"2024-02-09 17:02:29","value":1.09804},
-  {"id":3260,"timestamp":"2024-02-09 17:02:26","value":1.09764}];
+  // let data = [{"id":3269,"timestamp":"2024-02-09 17:02:55","value":1.10234},
+  // {"id":3268,"timestamp":"2024-02-09 17:02:51","value":1.10173},
+  // {"id":3267,"timestamp":"2024-02-09 17:02:48","value":1.10094},
+  // {"id":3266,"timestamp":"2024-02-09 17:02:45","value":1.10002},
+  // {"id":3265,"timestamp":"2024-02-09 17:02:42","value":1.09974},
+  // {"id":3264,"timestamp":"2024-02-09 17:02:39","value":1.09944},
+  // {"id":3263,"timestamp":"2024-02-09 17:02:36","value":1.09918},
+  // {"id":3262,"timestamp":"2024-02-09 17:02:32","value":1.09843},
+  // {"id":3261,"timestamp":"2024-02-09 17:02:29","value":1.09804},
+  // {"id":3260,"timestamp":"2024-02-09 17:02:26","value":1.09764}];
 
   // Create Y-axis
   let yAxis = chart.yAxes.push(
@@ -93,7 +93,7 @@ useLayoutEffect(() => {
 
   // Create series
   let series1 = chart.series.push(
-    am5xy.ColumnSeries.new(root, {
+    am5xy.LineSeries.new(root, {
       name: "Series",
       xAxis: xAxis,
       yAxis: yAxis,
@@ -116,12 +116,23 @@ useLayoutEffect(() => {
   // Add cursor
   chart.set("cursor", am5xy.XYCursor.new(root, {}));
 
+  // Actual bullet
+  series1.bullets.push(function () {
+  var bulletCircle = am5.Circle.new(root, {
+    radius: 5,
+    fill: series1.get("fill")
+  });
+  return am5.Bullet.new(root, {
+    sprite: bulletCircle
+  })
+})
+
   chartRef.current = chart;
 
   return () => {
     root.dispose();
   };
-}, []);
+}, [data]);
 
 // When the paddingRight prop changes it will update the chart
 useLayoutEffect(() => {
@@ -141,9 +152,9 @@ useLayoutEffect(() => {
             selected={selected}
             setSelected={setSelected}
           />
-          <div>{JSON.stringify(data)}</div>
+          {/* <div>{JSON.stringify(data)}</div> */}
           
-          <div className="rootGraphic" id="chartdiv" style={{ width: "900px", height: "900px" }}></div>
+          <div className="rootGraphic" id="chartdiv" style={{ width: "min(900px,100%)", height: "min(600px,100%)" }}></div>
 
         </div>
       </div>
