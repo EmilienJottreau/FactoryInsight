@@ -2,6 +2,8 @@ import { useOutletContext, useSearchParams } from "react-router-dom";
 import config from "../configuration.json";
 import { Select } from "../base/Select";
 import { useState, useEffect } from "react";
+import axios from 'axios';
+
 
 export function getTagOfStation(id, jsonData) {
   if (jsonData && jsonData.stations && jsonData.stations.length > 0) {
@@ -35,20 +37,20 @@ export function MainHistoryTable() {
     if (selected == "" || selected == null) return;
 
     const url =
-      "http://127.0.0.1:5000/api/v1/history/" +
+      "/api/v1/history/" +
       station +
       "/" +
       selected +
       "/10";
 
-    fetch(url, {
+    axios.get(url, {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
     })
-      .then((response) => response.json())
-      .then((json) => setData(json));
+      // .then((response) => response.json())
+      .then((json) => setData(json.data));
   }, [selected]);
   const tags = getTagOfStation(lastStation, config);
   return (
