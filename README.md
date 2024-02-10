@@ -11,20 +11,20 @@ Service web de supervision d'installations industrielles.
 
 ## Setup du serveur
 - Télécharger le projet ou utiliser la commande `git clone https://github.com/EmilienJottreau/FactoryInsight.git` pour le cloner.
-- Accéder au dossier client `cd client` pour lancer le serveur [Node.JS](https://nodejs.org/en/download/current)
-  - `npm install` lors de la premiere utilisation pour générer les node_modules
-  - `npm start` pour lancer le serveur front-end
+- Accéder au dossier client `cd client` pour lancer le serveur [Node.JS](https://nodejs.org/en/download/current) :
+  - `npm install` lors de la premiere utilisation pour générer les modules Node.
+  - `npm start` pour démarrer le serveur front-end.
 - [Facultatif] Créer un environnement virtuel pour installer les bibliothèques [python](https://www.python.org/downloads/) :
   - Utiliser `python -m venv .venv` pour initialiser l'environnement.
-  - Activer l'environnement virtuel avec `.venv\Scripts\activate` sur Windows ou `.venv/bin/activate` sur Linux ou mac.
-- Installer les bibliothèques python nécessaires au projet avec la commande `pip install -r requirements.txt` depuis la racine du dossier.
+  - Activer l'environnement virtuel sur Windows avec `.venv\Scripts\activate` ou `.venv/bin/activate` sur Linux ou mac.
+- Depuis la racine du dossier, utiliser `pip install -r requirements.txt` pour installer les modules python nécessaires au projet.
 - Initialiser la base de données MySQL depuis [XAMPP](https://www.apachefriends.org/fr/download.html) :
   - Démarrer les modules *Apache* et *MySQL*.
-- Initialiser le serveur OPC depuis [KepServer](https://www.kepware.fr/produit/kepserverex/).
+- Configurer le serveur OPC depuis [KepServer](https://www.kepware.fr/produit/kepserverex/) :
   - Importer depuis l'application l'espace d'adressage **namespace.opf** situé dans le dossier *ressources*.
   - Se connecter aux sources de données depuis l'onglet *Runtime* > *Connect*.
-- Exécuter `python flask-server/server.py` pour lancer le serveur.
-- Afficher la page web de l'application depuis l'adresse `http://127.0.0.1:3000/` dans votre navigateur.
+- Exécuter `python flask-server/server.py` pour lancer le serveur Flask.
+- Afficher la page web de l'application depuis l'adresse `http://127.0.0.1:3000/` dans un navigateur.
 - Démarrer le simulateur avec `python flask-server/simulator.py` afin de simuler l'installation.
 
 ## Vidéo de démonstration
