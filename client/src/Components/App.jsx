@@ -45,7 +45,9 @@ function App() {
 
 
   useEffect(() => {
-    const socket = io("localhost:5000/", {
+    const socket = io(
+      // "http://localhost:5000",
+      {
       transports: ["websocket"],
       cors: {
         origin: "http://localhost:3000/",
@@ -61,7 +63,7 @@ function App() {
       console.log("event disconnect appelé");
       console.log(data);
     });
-
+    
 
     socket.on("datachange", (data) => {
       handleDataChange(data)

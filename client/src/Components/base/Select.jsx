@@ -18,7 +18,7 @@ export function Select({ items, description, selected="", setSelected }) {
           value={selected || ""}
           onChange={(x) => handleChange(x)}
         >
-          {items.map((x, i) => (
+          {items.sort().map((x, i) => (
             <option key={x} value={x}>{x}</option>
           ))}
         </select>

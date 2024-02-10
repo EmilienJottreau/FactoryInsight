@@ -358,6 +358,7 @@ main > * {
   height: 90%;
   border: solid 1px var(--color-primary);
   border-radius: 20px;
+  margin: 20px;
   margin-inline: auto;
 
   text-align: center;
