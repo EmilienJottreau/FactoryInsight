@@ -13,10 +13,10 @@ const socket = io();
 //////////////////// INITIALIZATION ////////////////////
 
 window.onload = function () {
-    fetch("/api/v1/getall")
+    fetch("/api/v1/history/1")
         .then(response => response.json())
         .then(data => {
-            //console.log(data);
+            console.log(data);
             setup_tables(data);
         })
 }
@@ -24,31 +24,23 @@ window.onload = function () {
 //////////////////// SOCKETS RECEPTION ////////////////////
 
 socket.on("datachange", (new_data) => {
-    //console.log(new_data);
+    console.log(new_data);
     update_table(new_data);
 });
 
 //////////////////// FETCH FUNCTIONS  ////////////////////
 
-function get_value(station) {
-    fetch(`/api/v1/get/${station}/${current_tab}`)
+function get_values(station, tag, limit) {
+    fetch(`/api/v1/values/${station}/${tag}/${limit}`)
         .then(response => response.json())
         .then(data => {
-            console.log("Get value : " + data.value);
-        })
-}
-
-function get_history(station, tag, limit) {
-    fetch(`/api/v1/history/${station}/${tag}/${limit}`)
-        .then(response => response.json())
-        .then(data => {
-            console.log("Get history : ");
+            console.log("Get values : ");
             console.log(data);
         })
 }
 
-function update_tag(station, tag, value) {
-    fetch(`/api/v1/update/${station}/${tag}/${value}`)
+function switch_tag(station, tag, value) {
+    fetch(`/api/v1/switch/${station}/${tag}/${value}`)
         .then(response => response.json())
         .then(data => {
             console.log("Update tag : " + data.value);
@@ -57,12 +49,12 @@ function update_tag(station, tag, value) {
 
 function switch_mode(button, station, tag) {
     if (button.innerText == "Off") {
-        update_tag(station, tag, true);
+        switch_tag(station, tag, 1);
         button.innerText = "On";
         button.style.backgroundColor = "limegreen";
         button.style.borderColor = "limegreen";
     } else {
-        update_tag(station, tag, false);
+        switch_tag(station, tag, 0);
         button.innerText = "Off";
         button.style.backgroundColor = "crimson";
         button.style.borderColor = "crimson";
@@ -72,14 +64,17 @@ function switch_mode(button, station, tag) {
 //////////////////// TABLES FUNCTIONS  ////////////////////
 
 function setup_tables(tags) {
-    table_data = tags;
+    tags.forEach(function (data) {
+        create_tables(data["station"], data["tag"]);
 
-    for (let station in table_data) {
-        for (let tag in table_data[station]) {
-            create_tables(station, tag);
+        if (data.station in table_data) {
+            table_data[data.station][data.tag] = [data];
+        } else {
+            table_data[data.station] = {};
         }
-    }
+    });
 
+    console.log(table_data);
     render_tables();
     document.getElementById(current_station + "_" + current_tab + "_tab_button").click();
 }
@@ -96,6 +91,7 @@ function update_table(new_data) {
 
 function render_tables() {
     let table = null;
+
     for (let station in table_data) {
         for (let tag in table_data[station]) {
             table = document.getElementById(tag + "_table");
@@ -168,124 +164,124 @@ function tab_bar_manager(evt, selected_tab) {
     evt.currentTarget.className += " active";
 }
 
-////////////////////////////////////////////////////////////chart
+//////////////////// CHART ////////////////////
 
-am5.ready(function() {
-        
+am5.ready(function () {
+
     // Create root element
     // https://www.amcharts.com/docs/v5/getting-started/#Root_element
     var root = am5.Root.new(document.getElementById("chartdiv"));
-    
+
     const myTheme = am5.Theme.new(root);
-    
+
     myTheme.rule("AxisLabel", ["minor"]).setAll({
-      dy:1
+        dy: 1
     });
-    
+
     // Set themes
     // https://www.amcharts.com/docs/v5/concepts/themes/
     root.setThemes([
-      am5themes_Animated.new(root),
-      myTheme,
-      am5themes_Responsive.new(root)
+        am5themes_Animated.new(root),
+        myTheme,
+        am5themes_Responsive.new(root)
     ]);
-    
-    
+
+
     // Create chart
     // https://www.amcharts.com/docs/v5/charts/xy-chart/
     var chart = root.container.children.push(am5xy.XYChart.new(root, {
-      panX: false,
-      panY: false,
-      wheelX: "panX",
-      wheelY: "zoomX",
-      paddingLeft:0
+        panX: false,
+        panY: false,
+        wheelX: "panX",
+        wheelY: "zoomX",
+        paddingLeft: 0
     }));
-    
-    
+
+
     // Add cursor
     // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
     var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
-      behavior: "zoomX"
+        behavior: "zoomX"
     }));
     cursor.lineY.set("visible", false);
-    
+
     var date = new Date();
     date.setHours(0, 0, 0, 0);
     var value = 100;
-    
+
     function generateData() {
-      value = Math.round((Math.random() * 10 - 5) + value);
-      am5.time.add(date, "day", 1);
-      return {
-        date: date.getTime(),
-        value: value
-      };
+        value = Math.round((Math.random() * 10 - 5) + value);
+        am5.time.add(date, "day", 1);
+        return {
+            date: date.getTime(),
+            value: value
+        };
     }
-    
+
     function generateDatas(count) {
-      var data = [];
-      for (var i = 0; i < count; ++i) {
-        data.push(generateData());
-      }
-      return data;
+        var data = [];
+        for (var i = 0; i < count; ++i) {
+            data.push(generateData());
+        }
+        return data;
     }
-    
-    
+
+
     // Create axes
     // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
     var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
-      maxDeviation: 0,
-      baseInterval: {
-        timeUnit: "day",
-        count: 1
-      },
-      renderer: am5xy.AxisRendererX.new(root, {
-        minorGridEnabled:true,
-        minorLabelsEnabled:true
-      }),
-      tooltip: am5.Tooltip.new(root, {})
+        maxDeviation: 0,
+        baseInterval: {
+            timeUnit: "day",
+            count: 1
+        },
+        renderer: am5xy.AxisRendererX.new(root, {
+            minorGridEnabled: true,
+            minorLabelsEnabled: true
+        }),
+        tooltip: am5.Tooltip.new(root, {})
     }));
-    
+
     xAxis.set("minorDateFormats", {
-      "day":"dd",
-      "month":"MM"
+        "day": "dd",
+        "month": "MM"
     });
-    
-    
+
+
     var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-      renderer: am5xy.AxisRendererY.new(root, {})
+        renderer: am5xy.AxisRendererY.new(root, {})
     }));
-    
-    
+
+
     // Add series
     // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
     var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-      name: "Series",
-      xAxis: xAxis,
-      yAxis: yAxis,
-      valueYField: "value",
-      valueXField: "date",
-      tooltip: am5.Tooltip.new(root, {
-        labelText: "{valueY}"
-      })
+        name: "Series",
+        xAxis: xAxis,
+        yAxis: yAxis,
+        valueYField: "value",
+        valueXField: "date",
+        tooltip: am5.Tooltip.new(root, {
+            labelText: "{valueY}"
+        })
     }));
-    
+
     series.columns.template.setAll({ strokeOpacity: 0 })
-    
-    
+
+
     // Add scrollbar
     // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
     chart.set("scrollbarX", am5.Scrollbar.new(root, {
-      orientation: "horizontal"
+        orientation: "horizontal"
     }));
-    
+
     var data = generateDatas(30);
     series.data.setAll(data);
-    
-    
+
+
     // Make stuff animate on load
     // https://www.amcharts.com/docs/v5/concepts/animations/
     series.appear(1000);
     chart.appear(1000, 100);
-    
-    }); // end am5.ready()
+
+}); // end am5.ready()

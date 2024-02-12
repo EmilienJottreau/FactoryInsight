@@ -1,15 +1,15 @@
-from asyncio import run as async_run, sleep
 from random import gauss, random
 from opcua import browse_nodes
+from asyncio import run, sleep
 from asyncua import Client
 
 
-server_url = "opc.tcp://127.0.0.1:49320"
+opc_server_url = "opc.tcp://127.0.0.1:49320"
 
 
 # sequence = [remplissage, chauffage, agitateur, attente, vidage, nettoyage]
 async def simulator() -> None:
-    async with Client(url=server_url) as client:
+    async with Client(url=opc_server_url) as client:
         namespace_index = await client.get_namespace_index("KEPServerEX")
 
         try:
@@ -25,7 +25,7 @@ async def simulator() -> None:
         while True:
             if await tags["operating_state"].read_value():
                 if not await tags["manual_mode"].read_value():
-                    if not await tags["maintenance"].read_value():
+                    if not await tags["failure_state"].read_value():
                         if not await tags["cleaning_state"].read_value():
                             if await tags["input_state"].read_value():
                                 await tags["input_flow"].change_value(gauss(0.8, 0.4))
@@ -48,4 +48,4 @@ async def simulator() -> None:
 
 
 if __name__ == "__main__":
-    async_run(simulator())
+    run(simulator())

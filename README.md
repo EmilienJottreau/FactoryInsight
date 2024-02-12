@@ -23,7 +23,7 @@ Service web de supervision d'installations industrielles.
 - Configurer le serveur OPC depuis [KepServer](https://www.kepware.fr/produit/kepserverex/) :
   - Importer depuis l'application l'espace d'adressage **namespace.opf** situé dans le dossier *ressources*.
   - Se connecter aux sources de données depuis l'onglet *Runtime* > *Connect*.
-- Exécuter `python flask-server/server.py` pour lancer le serveur Flask.
+- Exécuter `python flask-server/__init__.py` pour lancer le serveur Flask.
 - Afficher la page web de l'application depuis l'adresse `http://127.0.0.1:3000/` dans un navigateur.
 - Démarrer le simulateur avec `python flask-server/simulator.py` afin de simuler l'installation.
 

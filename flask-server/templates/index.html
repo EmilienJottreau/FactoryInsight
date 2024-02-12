@@ -5,20 +5,7 @@
     <meta charset="utf-8">
     <title>FactoryInsight</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}">
-     <!-- stle------------------------------------------- -->
-     <style>
-        #chartdiv {
-          width: 100%;
-          height: 500px;
-        }
-        </style>
-        
-        <!-- Resources -->
-        <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-        <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-        <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-        <script src="https://cdn.amcharts.com/lib/5/themes/Responsive.js"></script>
-     <!-- stle------------------------------------------- -->
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
 </head>
 
 <body>
@@ -36,22 +23,23 @@
 
         <div id="tab_contents"></div>
 
-         <!--chart-->
-        
-        <div id="chartdiv"></div>
+        <hr>
+
+        <button onclick="get_values('Tank', 'liquid_level', 5)">Get history</button>
+        <button onclick="switch_mode(this, 'Tank', 'operating_state')" id="mode_button">On</button>
 
         <hr>
 
-        <button onclick="get_value('Tank')">Get current value</button>
-        <button onclick="get_history('Tank', 'liquid_level', 5)">Get history</button>
-        <button onclick="update_tag('Tank', 'heating_state', true)">Update tag</button>
-        <button onclick="switch_mode(this, 'Tank', 'operating_state')" id="mode_button">On</button>
+        <div id="chartdiv"></div>
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"
         integrity="sha512-zoJXRvW2gC8Z0Xo3lBbao5+AS3g6YWr5ztKqaicua11xHo+AvE1b0lT9ODgrHTmNUxeCw0Ry4BGRYZfXu70weg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ url_for('static', filename='script.js')}}"></script>
+    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Responsive.js"></script>
 </body>
 
 </html>

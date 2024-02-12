@@ -1,5 +1,7 @@
 from mysql.connector import connect as mysql_connect
-from typing import Any, Dict, List, Union
+from opcua import OPC_Data
+from asyncua import ua
+from typing import Any
 
 
 class Database:
@@ -44,106 +46,91 @@ class Database:
             if self.logger:
                 print(f"Database '{database_name}' was dropped succcesfully")
 
-    def create_table(self, station: str, table: str, typ: bool) -> None:
+    def create_table(self, station: str, tag: str, variant_type: ua.VariantType) -> None:
         try:
-            if typ:
-                self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + table} (id INT AUTO_INCREMENT PRIMARY KEY, value FLOAT NOT NULL, timestamp TIMESTAMP)")
+            if variant_type is ua.VariantType.Boolean:
+                self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + tag} (id INT AUTO_INCREMENT PRIMARY KEY, value BOOL NOT NULL, timestamp TIMESTAMP)")
             else:
-                self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + table} (id INT AUTO_INCREMENT PRIMARY KEY, value BOOL NOT NULL, timestamp TIMESTAMP)")
+                self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + tag} (id INT AUTO_INCREMENT PRIMARY KEY, value FLOAT NOT NULL, timestamp TIMESTAMP)")
         except:
             if self.logger:
-                print(f"Unable to create '{station + '_' + table}' table")
+                print(f"Unable to create '{station + '_' + tag}' table")
         else:
             if self.logger:
-                print(f"Table '{station + '_' + table}' was created succcesfully")
+                print(f"Table '{station + '_' + tag}' was created succcesfully")
 
-    def drop_table(self, station: str, table: str) -> None:
+    def drop_table(self, station: str, tag: str) -> None:
         try:
-            self.cursor.execute(f"DROP TABLE {station + '_' + table}")
+            self.cursor.execute(f"DROP TABLE {station + '_' + tag}")
         except:
             if self.logger:
-                print(f"Unable to drop '{station + '_' + table}' table")
+                print(f"Unable to drop '{station + '_' + tag}' table")
         else:
             if self.logger:
-                print(f"Table '{station + '_' + table}' was dropped succcesfully")
+                print(f"Table '{station + '_' + tag}' was dropped succcesfully")
 
-    def insert(self, station: str, table: str, tags: Union[Dict, List]) -> Union[int, None]:
+    def insert(self, station: str, tag_name: str, tag_data: dict) -> int | None:
         try:
-            query = f"INSERT INTO {station + '_' + table} (value, timestamp) VALUES (%s, %s)"
+            query = f"INSERT INTO {station + '_' + tag_name} (value, timestamp) VALUES (%s, %s)"
+            query_values = (tag_data["value"], tag_data["timestamp"])
 
-            if not isinstance(tags, List):
-                query_values = (tags["value"], tags["timestamp"])
-                self.cursor.execute(query, query_values)
-            else:
-                query_values = []
-                for tag in tags:
-                    query_values.append((tag["value"], tag["timestamp"]))
-                self.cursor.executemany(query, query_values)
-
+            self.cursor.execute(query, query_values)
             self.db.commit()
         except:
             if self.logger:
-                print(f"Unable to insert tags in '{station + '_' + table}' table")
+                print(f"Unable to insert tags in '{station + '_' + tag_name}' table")
         else:
             if self.logger:
-                print(f"Tags was inserted into '{station + '_' + table}' succcesfully")
+                print(f"Tag was inserted into '{station + '_' + tag_name}' succcesfully")
             return self.cursor.lastrowid
 
-    def update(self, station: str, table: str, id: int, value: Any) -> None:
+    def update(self, station: str, tag: str, id: int, value: Any) -> None:
         try:
-            query = f"UPDATE {station + '_' + table} SET value = %s WHERE id = %s"
+            query = f"UPDATE {station + '_' + tag} SET value = %s WHERE id = %s"
             query_values = (value, id)
 
             self.cursor.execute(query, query_values)
             self.db.commit()
         except:
             if self.logger:
-                print(f"Unable to update '{id}' from '{station + '_' + table}' to {value}")
+                print(f"Unable to update '{id}' from '{station + '_' + tag}' to {value}")
         else:
             if self.logger:
-                print(f"Update '{id}' from '{station + '_' + table}' to {value} succcesfully")
+                print(f"Update '{id}' from '{station + '_' + tag}' to {value} succcesfully")
 
-    def delete(self, station: str, table: str, id: int) -> None:
+    def delete(self, station: str, tag: str, id: int) -> None:
         try:
-            query = f"DELETE FROM {station + '_' + table} WHERE id = %s"
+            query = f"DELETE FROM {station + '_' + tag} WHERE id = %s"
             query_values = (id,)
 
             self.cursor.execute(query, query_values)
             self.db.commit()
         except:
             if self.logger:
-                print(f"Unable to delete '{id}' from '{station + '_' + table}'")
+                print(f"Unable to delete '{id}' from '{station + '_' + tag}'")
         else:
             if self.logger:
-                print(f"Delete '{id}' from '{station + '_' + table}' succcesfully")
+                print(f"Delete '{id}' from '{station + '_' + tag}' succcesfully")
 
-    def select(self, station: str, table: str, limit: int = None) -> List[dict]:
+    def select(self, station: str, tag: str, limit: int = None) -> list[dict]:
         response = []
         try:
             if limit:
-                query = f"SELECT id, value, timestamp FROM {station + '_' + table} ORDER BY timestamp DESC LIMIT {limit}"
+                query = f"SELECT id, value, timestamp FROM {station + '_' + tag} ORDER BY timestamp DESC LIMIT {limit}"
             else:
-                query = f"SELECT id, value, timestamp FROM {station + '_' + table}"
+                query = f"SELECT id, value, timestamp FROM {station + '_' + tag}"
 
             self.cursor.execute(query)
 
             for id, value, timestamp in self.cursor.fetchall():
-                response.append({"id": id, "value": value, "timestamp": str(timestamp)})
+                response.append(OPC_Data(station, tag, value, timestamp, id).json)
         except:
             if self.logger:
-                print(f"Unable to select tags from '{station + '_' + table}'")
+                print(f"Unable to select tags from '{station + '_' + tag}'")
         else:
             if self.logger:
-                print(f"Select {len(response)} tag(s) from '{station + '_' + table}'")
+                print(f"Select {len(response)} tag(s) from '{station + '_' + tag}'")
         return response
-
-    def reset(self) -> None:
-        self.cursor.execute("SHOW TABLES")
-
-        for table in self.cursor:
-            station, table = table[0].split("_")
-            self.drop_table(station, table)
-            self.create_table(station, table)
 
     def __del__(self) -> None:
         try:
@@ -154,13 +141,12 @@ class Database:
 
 if __name__ == "__main__":
     database = Database("mydatabase", logger=True, recreate_db=False)
-    database.create_table("station1", "table1")
-    database.create_table("station1", "table2")
+    database.create_table("station1", "table1", ua.VariantType.Boolean)
+    database.create_table("station1", "table2", ua.VariantType.Float)
     database.drop_table("station1", "table2")
     database.insert("station1", "table1", {"value": 1, "timestamp": ""})
-    database.insert("station1", "table1", [{"value": 2, "timestamp": ""}, {"value": 3, "timestamp": ""}])
-    database.update("station1", "table1", "tag2", 20)
-    database.delete("station1", "table1", 1)
-    result = database.select("station1", "table1")
-    database.reset()
+    database.insert("station1", "table1", {"value": 2, "timestamp": ""})
+    database.update("station1", "table1", 2, 20)
+    database.delete("station1", "table1", 2)
+    print(database.select("station1", "table1"))
     database.drop_database("mydatabase")
