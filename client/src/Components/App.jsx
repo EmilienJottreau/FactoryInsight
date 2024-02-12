@@ -37,6 +37,7 @@ function App() {
       newData.stations[data.station][data.tag] = {
         value: data.value,
         timestamp: data.timestamp,
+        id:data.id
       };
       // console.log("Nouvelles données" + JSON.stringify(newData))
       return newData

@@ -5,28 +5,28 @@
       "number": 1,
       "write": [
         {
-          "url": "/api/v1/update/Tank/agitator_state/",
+          "url": "/api/v1/switch/Tank/agitator_state/",
           "name": "agitator_state",
           "frendlyName": "Agitateur",
           "on": "Allumer",
           "off": "Eteindre"
         },
         {
-          "url": "/api/v1/update/Tank/heating_state/",
+          "url": "/api/v1/switch/Tank/heating_state/",
           "name": "heating_state",
           "frendlyName": "Temperature",
           "on": "Chauffer",
           "off": "Arreter"
         },
         {
-          "url": "/api/v1/update/Tank/input_state/",
+          "url": "/api/v1/switch/Tank/input_state/",
           "name": "input_state",
           "frendlyName": "Vanne Entrée",
           "on": "Ouvrir",
           "off": "Fermer"
         },
         {
-          "url": "/api/v1/update/Tank/output_state/",
+          "url": "/api/v1/switch/Tank/output_state/",
           "name": "output_state",
           "frendlyName": "Vanne sortie",
           "on": "Ouvrir",

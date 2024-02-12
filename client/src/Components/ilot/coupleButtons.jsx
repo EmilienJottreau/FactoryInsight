@@ -19,8 +19,8 @@ export function CoupleButtons({name, state, url, options={}}) {
       <div className="coupleButtons">
         <label>{name.title}</label>
         <div className="twoButtons">
-          <Button text={name.on}  onClick={()=>{ChangeTagValue(true)}} />
-          <Button text={name.off} onClick={()=>{ChangeTagValue(false)}} />
+          <Button text={name.on}  onClick={()=>{ChangeTagValue("1")}} />
+          <Button text={name.off} onClick={()=>{ChangeTagValue("0")}} />
         </div>
       </div>
     </>

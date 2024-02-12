@@ -1,9 +1,9 @@
 import { useOutletContext, useSearchParams } from "react-router-dom";
 import config from "../configuration.json";
 import { Select } from "../base/Select";
-import { useState, useEffect } from "react";
-import axios from 'axios';
-
+import { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import { Context } from "../App";
 
 export function getTagOfStation(id, jsonData) {
   if (jsonData && jsonData.stations && jsonData.stations.length > 0) {
@@ -22,6 +22,9 @@ export function MainHistoryTable() {
   const [searchParams] = useSearchParams();
   const [lastStation, setLastStation] = useOutletContext();
 
+  const values = useContext(Context);
+  var stationData = {};
+
   console.log("last station  " + lastStation);
   const tag = searchParams.get("tag");
 
@@ -31,27 +34,44 @@ export function MainHistoryTable() {
   var station = "";
   if (lastStation == 0) {
     station = "Tank";
+    stationData = values.stations.Tank;
   }
 
   useEffect(() => {
     if (selected == "" || selected == null) return;
 
-    const url =
-      "/api/v1/history/" +
-      station +
-      "/" +
-      selected +
-      "/10";
+    const url = "/api/v1/values/" + station + "/" + selected + "/10";
 
-    axios.get(url, {
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    })
+    axios
+      .get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
       // .then((response) => response.json())
       .then((json) => setData(json.data));
   }, [selected]);
+
+  useEffect(() => {
+    if (!stationData) {
+      return;
+    }
+    console.log(stationData);
+    for (let i = 0; i < Object.keys(stationData).length; i++) {
+      const x = stationData[Object.keys(stationData)[i]];
+      if (Object.keys(stationData)[i] == selected) {
+        setData((newData) => {
+          if (newData.at(0).timestamp != x.timestamp) {
+            newData.unshift(x);
+            return newData;
+          }
+          return newData;
+        });
+      }
+    }
+  }, [stationData, selected, values]);
+
   const tags = getTagOfStation(lastStation, config);
   return (
     <>
