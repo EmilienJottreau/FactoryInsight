@@ -26,7 +26,10 @@ export function MainHistoryTable() {
   var stationData = {};
 
   console.log("last station  " + lastStation);
-  const tag = searchParams.get("tag");
+  var tag = searchParams.get("tag");
+  if(tag==null){
+    tag = "liquid_level"
+  }
 
   const [selected, setSelected] = useState(tag);
   const [data, setData] = useState([]);
