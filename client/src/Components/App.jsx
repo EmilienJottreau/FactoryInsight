@@ -5,6 +5,7 @@ import { Scrim } from "./scrim";
 import { io } from "socket.io-client";
 
 import { Outlet } from "react-router-dom";
+import axios from "axios";
 
 export const Context = createContext({});
 
@@ -27,7 +28,11 @@ function App() {
     setDonnees((prevData) => {
 
       const newData = {...prevData}
+      console.log(newData)
 
+      if (!newData.stations) {
+        newData.stations = {}; // Initialize newData.stations if it doesn't exist
+      }
       if (!newData.stations[data.station]) {
         // If the station doesn't exist, create it
         newData.stations[data.station] = {
@@ -74,6 +79,27 @@ function App() {
       socket.disconnect();
     };
   }, []);
+
+  const refreshDataStation = () => {
+    axios
+    .get("/api/v1/history/1", {
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
+    // .then((response) => response.json())
+    .then((json) => setDonnees(()=>{
+      json.data.map((x, i)=>{
+        handleDataChange(x)
+      })
+    }));
+
+  }
+
+  useEffect(()=>{
+    refreshDataStation()
+  }, [lastStation])
 
 
 

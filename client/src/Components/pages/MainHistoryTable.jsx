@@ -27,8 +27,8 @@ export function MainHistoryTable() {
 
   console.log("last station  " + lastStation);
   var tag = searchParams.get("tag");
-  if(tag==null){
-    tag = "liquid_level"
+  if (tag == null) {
+    tag = "liquid_level";
   }
 
   const [selected, setSelected] = useState(tag);
@@ -37,7 +37,9 @@ export function MainHistoryTable() {
   var station = "";
   if (lastStation == 0) {
     station = "Tank";
-    stationData = values.stations.Tank;
+    if (values && values.stations) {
+      stationData = values.stations.Tank;
+    }
   }
 
   useEffect(() => {
@@ -65,7 +67,7 @@ export function MainHistoryTable() {
       const x = stationData[Object.keys(stationData)[i]];
       if (Object.keys(stationData)[i] == selected) {
         setData((newData) => {
-          if (newData == [] || newData.at(0).timestamp != x.timestamp) {
+          if (newData.at(0) && x && newData.at(0).timestamp != x.timestamp) {
             newData.unshift(x);
             return newData.slice(0, 25); // keep only 25 first elems
           }

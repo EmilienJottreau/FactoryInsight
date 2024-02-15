@@ -6,25 +6,12 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import config from "../configuration.json";
+import { MenuBurger } from "../base/MenuBurger";
 
 export function NavBar({ toggleMenu, menuVisible }) {
   return (
     <nav className="navbar nav d-flex justify-content-between align-items-center">
-      <div className="menuBurger d-flex justify-content-between align-items-center">
-        <button className="burgerButton" href="#section" onClick={toggleMenu}>
-          <div>
-            <FontAwesomeIcon
-              icon="fa-solid fa-bars"
-              style={
-                {
-                  // backgroundColor:"red",
-                }
-              }
-            />
-          </div>
-          <div>Menu</div>
-        </button>
-      </div>
+      <MenuBurger toggleMenu={toggleMenu}/>
       <div className="d-flex flex-wrap">
         {config.stations.map((x, i) => (
           <Link key={i} aria-label={"Aller sur la station" + i} className="nav-link" to={"station/"+(i)}>

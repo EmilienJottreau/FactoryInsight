@@ -13,17 +13,18 @@ export function MainSynoptique() {
 
   useEffect(() => setLastStation(id), [id, setLastStation]);
 
-
   const values = useContext(Context);
   var stationData = {};
 
   if (id === "0") {
-    stationData = values.stations.Tank;
     console.log(stationData);
+    if (values.stations) {
+      stationData = values.stations.Tank;
+    }
   }
 
   return (
-    <main style={{  overflowY: 'scroll' }}>
+    <main style={{ overflowY: "scroll" }}>
       <div className="leftContainer">
         <div className="ilotName">
           <h1>CUVE {parseInt(id) + 1}</h1>
@@ -33,7 +34,10 @@ export function MainSynoptique() {
           </div>
           {/* <div>{JSON.stringify(stationData)}</div> */}
         </div>
-        <div className="informations" style={{ height: '60%', overflowY: 'scroll' }}>
+        <div
+          className="informations"
+          style={{ height: "60%", overflowY: "scroll" }}
+        >
           {/* <DisplayValue
             icon={config.stations[id].read[6].icon}
             value={stationData?.[config.stations[id].read[6].name]?.value}
@@ -55,7 +59,7 @@ export function MainSynoptique() {
         {config.stations[id].write.map((x, i) => (
           <CoupleButtons
             key={x.frendlyName}
-            name={{title: x.frendlyName, on: x.on, off: x.off }}
+            name={{ title: x.frendlyName, on: x.on, off: x.off }}
             url={x.url}
             state={stationData?.[x.name]?.value}
           />
