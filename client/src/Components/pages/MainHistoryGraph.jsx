@@ -1,17 +1,20 @@
 import { useOutletContext, useSearchParams } from "react-router-dom";
 import { getTagOfStation } from "./MainHistoryTable";
 import config from "../configuration.json";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Select } from "../base/Select";
 import axios from 'axios';
 import { useRef, useLayoutEffect } from 'react';
 import * as am5 from "@amcharts/amcharts5";
 import * as am5xy from "@amcharts/amcharts5/xy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
+import { Context } from "../App";
 
 export function MainHistoryGraph(props) {
   const [searchParams] = useSearchParams();
   const [lastStation, setLastStation] = useOutletContext();
+  const values = useContext(Context);
+  var stationData = {};
 
   console.log("last station  " + lastStation);
   const tag = searchParams.get("tag");
@@ -22,13 +25,14 @@ export function MainHistoryGraph(props) {
   var station = "";
   if (lastStation == 0) {
     station = "Tank";
+    stationData = values.stations.Tank;
   }
 
   useEffect(() => {
     if (selected == "" || selected == null) return;
 
     const url =
-      "/api/v1/history/" +
+      "/api/v1/values/" +
       station +
       "/" +
       selected +
@@ -43,6 +47,25 @@ export function MainHistoryGraph(props) {
       // .then((response) => response.json())
       .then((json) => setData(json.data));
   }, [selected]);
+
+  useEffect(() => {
+    if (!stationData) {
+      return;
+    }
+    console.log(stationData);
+    for (let i = 0; i < Object.keys(stationData).length; i++) {
+      const x = stationData[Object.keys(stationData)[i]];
+      if (Object.keys(stationData)[i] == selected) {
+        setData((newData) => {
+          if (newData == [] || newData.at(0).timestamp != x.timestamp) {
+            newData.unshift(x);
+            return newData.slice(0, 25); // keep only 25 first elems
+          }
+          return newData;
+        });
+      }
+    }
+  }, [stationData, selected, values]);
 
   const tags = getTagOfStation(lastStation, config);
 
@@ -89,7 +112,7 @@ useLayoutEffect(() => {
       categoryField: "timestamp"
     })
   );
-  xAxis.data.setAll(data);
+  xAxis.data.setAll(data.slice().reverse());
 
   // Create series
   let series1 = chart.series.push(
@@ -101,7 +124,7 @@ useLayoutEffect(() => {
       categoryXField: "timestamp"
     })
   );
-  series1.data.setAll(data);
+  series1.data.setAll(data.slice().reverse());
 
    // Add scrollbar
     // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/

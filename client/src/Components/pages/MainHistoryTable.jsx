@@ -65,9 +65,9 @@ export function MainHistoryTable() {
       const x = stationData[Object.keys(stationData)[i]];
       if (Object.keys(stationData)[i] == selected) {
         setData((newData) => {
-          if (newData.at(0).timestamp != x.timestamp) {
+          if (newData == [] || newData.at(0).timestamp != x.timestamp) {
             newData.unshift(x);
-            return newData;
+            return newData.slice(0, 25); // keep only 25 first elems
           }
           return newData;
         });
