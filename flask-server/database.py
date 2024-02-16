@@ -1,6 +1,5 @@
 from mysql.connector import connect as mysql_connect
-from opcua import OPC_Data
-from asyncua import ua
+from opc_tags import OPC_Data
 from typing import Any
 
 
@@ -46,12 +45,9 @@ class Database:
             if self.logger:
                 print(f"Database '{database_name}' was dropped succcesfully")
 
-    def create_table(self, station: str, tag: str, variant_type: ua.VariantType) -> None:
+    def create_table(self, station: str, tag: str, tag_type: str) -> None:
         try:
-            if variant_type is ua.VariantType.Boolean:
-                self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + tag} (id INT AUTO_INCREMENT PRIMARY KEY, value BOOL NOT NULL, timestamp TIMESTAMP)")
-            else:
-                self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + tag} (id INT AUTO_INCREMENT PRIMARY KEY, value FLOAT NOT NULL, timestamp TIMESTAMP)")
+            self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + tag} (id INT AUTO_INCREMENT PRIMARY KEY, value {tag_type} NOT NULL, timestamp TIMESTAMP NOT NULL)")
         except:
             if self.logger:
                 print(f"Unable to create '{station + '_' + tag}' table")
@@ -141,8 +137,8 @@ class Database:
 
 if __name__ == "__main__":
     database = Database("mydatabase", logger=True, recreate_db=False)
-    database.create_table("station1", "table1", ua.VariantType.Boolean)
-    database.create_table("station1", "table2", ua.VariantType.Float)
+    database.create_table("station1", "table1", "bool")
+    database.create_table("station1", "table2", "float")
     database.drop_table("station1", "table2")
     database.insert("station1", "table1", {"value": 1, "timestamp": ""})
     database.insert("station1", "table1", {"value": 2, "timestamp": ""})
