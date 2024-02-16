@@ -35,6 +35,7 @@ def flask_server(database: Database, opc_tags: OPC_Tags, logger: bool) -> tuple[
         history = []
         for station, tag in opc_tags:
             history += database.select(station, tag, limit)
+        print(history)
         return history
 
     return socketio, app

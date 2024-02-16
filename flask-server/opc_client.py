@@ -26,7 +26,7 @@ def opc_client(server_url: str, database: Database, socket: SocketIO, opc_tags: 
             await opc_tags.browse_nodes(main_node)
 
             handler = SubHandler()
-            subscription = await client.create_subscription(3000, handler)
+            subscription = await client.create_subscription(200, handler)
 
             for station, tag in opc_tags:
                 await subscription.subscribe_data_change(opc_tags[station][tag].node)
