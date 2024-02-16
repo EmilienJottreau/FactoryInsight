@@ -1,5 +1,5 @@
-from opcua import browse_nodes, get_node_data, OPC_Data, OPC_Tags
 from asyncio import new_event_loop, set_event_loop, sleep
+from opc_tags import get_node_data, OPC_Data, OPC_Tags
 from flask_socketio import SocketIO
 from asyncua import Client, Node
 from database import Database
@@ -23,14 +23,14 @@ def opc_client(server_url: str, database: Database, socket: SocketIO, opc_tags: 
             namespace_index = await client.get_namespace_index("KEPServerEX")
 
             main_node = await client.nodes.root.get_child(f"0:Objects/{namespace_index}:FactoryInsight")
-            opc_tags.set_tags(await browse_nodes(main_node))
+            await opc_tags.browse_nodes(main_node)
 
             handler = SubHandler()
-            subscription = await client.create_subscription(500, handler)
+            subscription = await client.create_subscription(3000, handler)
 
             for station, tag in opc_tags:
                 await subscription.subscribe_data_change(opc_tags[station][tag].node)
-                database.create_table(station, tag, opc_tags[station][tag].variant_type)
+                database.create_table(station, tag, opc_tags[station][tag].python_type)
 
             while True:
                 await sleep(1)

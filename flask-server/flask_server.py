@@ -1,8 +1,8 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO
+from opc_tags import OPC_Tags
 from database import Database
 from flask_cors import CORS
-from opcua import OPC_Tags
 
 
 def flask_server(database: Database, opc_tags: OPC_Tags, logger: bool) -> tuple[SocketIO, Flask]:
