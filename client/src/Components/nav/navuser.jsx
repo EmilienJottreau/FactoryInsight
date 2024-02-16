@@ -23,6 +23,8 @@ export function NavUser({ user, stroke, fill }) {
         onClick={() => {
           document.getElementById("colorModal").style.display = "block";
         }}
+
+        style={{padding:"20px",backgroundColor:"var(--color-background)"}}
       >
         <FontAwesomeIcon icon="fa-solid fa-palette" />
       </button>

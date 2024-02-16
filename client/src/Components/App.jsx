@@ -76,7 +76,9 @@ function App() {
     });
 
     return function cleanup() {
-      socket.disconnect();
+      if (socket.readyState === 1) { // <-- This is important
+        socket.close();
+    }
     };
   }, []);
 

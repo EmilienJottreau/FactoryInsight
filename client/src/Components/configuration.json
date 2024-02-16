@@ -59,71 +59,76 @@
       "read": [
         {
           "name": "agitator_speed",
-          "unit":"tr/min",
-          "icon":"fa-solid fa-gauge-high"
-        },
-        {
-          "name": "agitator_state",
-          "unit":"",
-          "icon":"fa-solid fa-arrows-rotate",
-          "state_on":"démarré",
-          "state_off":"arreté"
-        },
-        {
-          "name": "heating_state",
-          "unit":"",
-          "icon":"fa-solid fa-fire",
-          "state_on":"Allumé",
-          "state_off":"Eteint"
+          "unit": "tr/min",
+          "icon": "fa-solid fa-gauge-high",
+          "hue": "120deg"
         },
         {
           "name": "heating_temperature",
-          "unit":"°C",
-          "icon":"fa-solid fa-temperature-high"
+          "unit": "°C",
+          "icon": "fa-solid fa-temperature-high",
+          "hue": "43deg"
         },
         {
           "name": "input_flow",
-          "unit":"m3/s",
-          "icon":"fa-solid fa-water"
-        },
-        {
-          "name": "input_state",
-          "unit":"",
-          "icon":"",
-          "state_on":"Valve?",
-          "state_off":"?pas en input?"
+          "unit": "m3/s",
+          "icon": "fa-solid fa-water",
+          "hue": "0deg"
         },
         {
           "name": "liquid_level",
-          "unit":"m",
-          "icon":"fa-solid fa-arrows-up-down"
+          "unit": "m",
+          "icon": "fa-solid fa-arrows-up-down",
+          "hue": "205deg"
         },
         {
           "name": "liquid_temperature",
-          "unit":"°C",
-          "icon":"fa-solid fa-temperature-half"
-        },
-        {
-          "name": "operating_state" ,
-          "unit":"",
-          "icon":"",
-          "state_on":"?en operation?",
-          "state_off":"?pas en operation?"
+          "unit": "°C",
+          "icon": "fa-solid fa-temperature-half",
+          "hue": "60deg"
         },
         {
           "name": "output_flow",
-          "unit":"m3/s",
-          "icon":"fa-solid fa-water"
+          "unit": "m3/s",
+          "icon": "fa-solid fa-water",
+          "hue": "270deg"
+        },
+        {
+          "name": "agitator_state",
+          "unit": "",
+          "icon": "fa-solid fa-arrows-rotate",
+          "state_on": "démarré",
+          "state_off": "arreté"
+        },
+        {
+          "name": "heating_state",
+          "unit": "",
+          "icon": "fa-solid fa-fire",
+          "state_on": "Allumé",
+          "state_off": "Eteint"
+        },
+        {
+          "name": "input_state",
+          "unit": "",
+          "icon": "",
+          "state_on": "Valve?",
+          "state_off": "?pas en input?"
+        },
+        {
+          "name": "operating_state",
+          "unit": "",
+          "icon": "",
+          "state_on": "?en operation?",
+          "state_off": "?pas en operation?"
         },
         {
           "name": "output_state",
-          "unit":"",
-          "icon":"",
-          "state_on":"?en output?",
-          "state_off":"?pas en output?"
+          "unit": "",
+          "icon": "",
+          "state_on": "?en output?",
+          "state_off": "?pas en output?"
         }
       ]
     }
-
   ]
 }

@@ -1,4 +1,5 @@
 import { CoupleButtons } from "../ilot/coupleButtons";
+import { ToggleButton } from "../ilot/ToggleButton";
 import { Cuve } from "../ilot/cuve";
 import { useOutletContext, useParams } from "react-router-dom";
 import { Context } from "../App";
@@ -17,9 +18,9 @@ export function MainSynoptique() {
   var stationData = {};
 
   if (id === "0") {
-    console.log(stationData);
-    if (values.stations) {
+    if (values && values.stations) {
       stationData = values.stations.Tank;
+      console.log(stationData);
     }
   }
 
@@ -34,20 +35,14 @@ export function MainSynoptique() {
           </div>
           {/* <div>{JSON.stringify(stationData)}</div> */}
         </div>
-        <div
-          className="informations"
-          style={{ height: "60%", overflowY: "scroll" }}
-        >
-          {/* <DisplayValue
-            icon={config.stations[id].read[6].icon}
-            value={stationData?.[config.stations[id].read[6].name]?.value}
-            unit={config.stations[id].read[6].unit}
-          /> */}
-          {config.stations[id].read.map((x, i) => (
-            <DisplayValue
-              key={x.name}
-              value={stationData?.[x.name]?.value}
-              config={x}
+
+        <div className="buttonContainer">
+          {config.stations[id].write.map((x, i) => (
+            <ToggleButton
+              key={x.frendlyName}
+              name={{ title: x.frendlyName, on: x.on, off: x.off }}
+              url={x.url}
+              state={stationData?.[x.name]?.value}
             />
           ))}
         </div>
@@ -55,39 +50,18 @@ export function MainSynoptique() {
       <div className="synopticContainer">
         <Cuve />
       </div>
-      <div className="buttonContainer">
-        {config.stations[id].write.map((x, i) => (
-          <CoupleButtons
-            key={x.frendlyName}
-            name={{ title: x.frendlyName, on: x.on, off: x.off }}
-            url={x.url}
-            state={stationData?.[x.name]?.value}
+      <div
+        className="informations"
+        style={{ height: "60%", overflowY: "scroll" }}
+      >
+        {config.stations[id].read.map((x, i) => (
+          <DisplayValue
+            key={x.name}
+            value={stationData?.[x.name]?.value}
+            config={x}
           />
         ))}
-
-        {/* <CoupleButtons
-          name={{ title: "Agitateur", on: "Allumer", off: "Eteindre" }}
-          state={agitateurState}
-          action={{
-            on: () => {
-              setAgitateurState(true);
-              console.log("agitateur on");
-            },
-            off: () => {
-              setAgitateurState(false);
-              console.log("agitateur off");
-            },
-          }}
-        /> */}
       </div>
     </main>
   );
 }
-/*
-
-    <div>
-        {loading && <div>Chargement ...</div>}
-        {data && <div>{JSON.stringify(data)}</div>}
-    </div>
-
-*/

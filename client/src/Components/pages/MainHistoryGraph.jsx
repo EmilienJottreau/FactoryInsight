@@ -86,18 +86,6 @@ export function MainHistoryGraph(props) {
       })
     );
 
-    // Define data
-    // let data = [{"id":3269,"timestamp":"2024-02-09 17:02:55","value":1.10234},
-    // {"id":3268,"timestamp":"2024-02-09 17:02:51","value":1.10173},
-    // {"id":3267,"timestamp":"2024-02-09 17:02:48","value":1.10094},
-    // {"id":3266,"timestamp":"2024-02-09 17:02:45","value":1.10002},
-    // {"id":3265,"timestamp":"2024-02-09 17:02:42","value":1.09974},
-    // {"id":3264,"timestamp":"2024-02-09 17:02:39","value":1.09944},
-    // {"id":3263,"timestamp":"2024-02-09 17:02:36","value":1.09918},
-    // {"id":3262,"timestamp":"2024-02-09 17:02:32","value":1.09843},
-    // {"id":3261,"timestamp":"2024-02-09 17:02:29","value":1.09804},
-    // {"id":3260,"timestamp":"2024-02-09 17:02:26","value":1.09764}];
-
     // Create Y-axis
     let yAxis = chart.yAxes.push(
       am5xy.ValueAxis.new(root, {
@@ -114,6 +102,12 @@ export function MainHistoryGraph(props) {
     );
     xAxis.data.setAll(data.slice().reverse());
 
+    const item = config.stations[0].read.filter((item) => item.name === selected)[0];
+    var hue = "0deg"
+    if(item){
+      hue = item.hue
+      console.log("hue", hue)
+    }
     // Create series
     let series1 = chart.series.push(
       am5xy.LineSeries.new(root, {
@@ -122,6 +116,8 @@ export function MainHistoryGraph(props) {
         yAxis: yAxis,
         valueYField: "value",
         categoryXField: "timestamp",
+        fill: "hsl(" + hue + " 60% 40% / 1)",
+        stroke: "hsl(" + hue + " 70% 70% / 1)",
       })
     );
     series1.data.setAll(data.slice().reverse());

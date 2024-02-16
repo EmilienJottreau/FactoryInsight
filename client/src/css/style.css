@@ -224,8 +224,8 @@ main > * {
 
 .informations {
   margin-bottom: 50px;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 
   /* set in react to have scroll */
   /* height: 60%; */
@@ -255,6 +255,13 @@ main > * {
     display: block;
     word-wrap: break-word;
   }
+
+  
+}
+
+.logo-info>*:nth-child(1) {
+  width: 80px;
+  height: 84px;
 }
 
 .logo-info svg {

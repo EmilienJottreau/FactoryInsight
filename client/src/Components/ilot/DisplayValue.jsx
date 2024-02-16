@@ -5,7 +5,12 @@ export function DisplayValue({ value, config }) {
   return (
     <>
       <Link to={"/historyTable?tag="+config.name}>
-        <div className="logo-info">
+        <div className="logo-info"
+          style={config.hue && {
+            backgroundColor: "hsl(0 70% 80% / 1)",
+            filter: "hue-rotate(" + config.hue + ")",
+          }}
+        >
           <div>{config.icon && <FontAwesomeIcon icon={config.icon} />}</div>
           <div>
             <div>{config.name + " "}</div>
