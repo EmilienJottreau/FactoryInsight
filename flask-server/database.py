@@ -10,7 +10,7 @@ class Database:
 
     def connect(self, database_name: str, recreate_database: bool) -> None:
         try:
-            self.db = mysql_connect(host="localhost", user="root", password="", database="")
+            self.db = mysql_connect(host="localhost", user="root", password="", database="", connect_timeout=10)
             self.cursor = self.db.cursor()
 
             self.create_database(database_name)
@@ -117,10 +117,27 @@ class Database:
                 query = f"SELECT id, value, timestamp FROM {station + '_' + tag}"
 
             self.cursor.execute(query)
-
             for id, value, timestamp in self.cursor.fetchall():
                 response.append(OPC_Data(station, tag, value, timestamp, id).json)
         except:
+            if self.logger:
+                print(f"Unable to select tags from '{station + '_' + tag}'")
+        else:
+            if self.logger:
+                print(f"Select {len(response)} tag(s) from '{station + '_' + tag}'")
+        return response
+
+    def select_stat(self, station: str, tag: str, date: str) -> list[dict]:
+        response = []
+        try:
+            query = f"SELECT id, value, timestamp FROM {station + '_' + tag} WHERE timestamp BETWEEN %s and now()"
+            query_values = (date,)
+
+            self.cursor.execute(query, query_values)
+            for id, value, timestamp in self.cursor.fetchall():
+                response.append(OPC_Data(station, tag, value, timestamp, id).json)
+        except Exception as e:
+            print(e)
             if self.logger:
                 print(f"Unable to select tags from '{station + '_' + tag}'")
         else:

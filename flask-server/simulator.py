@@ -18,7 +18,7 @@ async def simulator() -> None:
         except Exception as e:
             print(e)
             raise Exception("Le namespace 'FactoryInsignt' n'est pas chargé dans le serveur OPC")
-        
+
         clock = time()
         liquid_temperature = 0
 
@@ -34,11 +34,11 @@ async def simulator() -> None:
         while True:
             if await tags["operating_state"].read_value():
                 if not await tags["emergency_stop"].read_value():
-                    
+
                     # Automatic sequence
                     if not await tags["manual_mode"].read_value():
                         timer = time() - clock
-                        match(await tags["step_number"].read_value()):
+                        match (await tags["step_number"].read_value()):
                             case 0:
                                 await tags["input_flow"].change_value(True)
                                 await tags["step_number"].change_value(1)
@@ -85,7 +85,7 @@ async def simulator() -> None:
                                 if timer > 1 * 60:
                                     await tags["cycle_number"].change_value(await tags["cycle_number"].read_value() + 1)
                                     await tags["step_number"].change_value(0)
-                                
+
                     if await tags["input_state"].read_value():
                         await tags["input_flow"].change_value(gauss(0.8, 0.4))
                         await tags["liquid_level"].change_value(await tags["liquid_level"].read_value() + random() / 500)
@@ -121,7 +121,7 @@ async def simulator() -> None:
                     elif await tags["liquid_level"].read_value() < 0:
                         await tags["liquid_level"].change_value(0)
                         await tags["output_state"].change_value(False)
-                    
+
                     if await tags["cleaning_state"].read_value():
                         await tags["input_state"].change_value(False)
                         await tags["output_state"].change_value(False)
