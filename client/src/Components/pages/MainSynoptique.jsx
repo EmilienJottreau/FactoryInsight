@@ -7,6 +7,7 @@ import { Context } from "../App";
 import config from "../configuration.json";
 import { useContext, useEffect } from "react";
 import { DisplayValue } from "../ilot/DisplayValue";
+import { CuveSvg } from "../ilot/CuveSvg";
 
 export function MainSynoptique() {
   const { id } = useParams();
@@ -48,7 +49,8 @@ export function MainSynoptique() {
         </div>
       </div>
       <div className="synopticContainer">
-        <Cuve />
+        {/* <Cuve /> */}
+        <CuveSvg stationData={stationData}/>
       </div>
       <div
         className="informations"
