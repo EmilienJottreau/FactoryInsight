@@ -27,6 +27,10 @@ const router = createBrowserRouter([
     errorElement: <PageError />,
     children: [
       {
+        path:"",
+        element: <Accueil/>,
+      },
+      {
         path: "historyGraph",
         element: <MainHistoryGraph />,
       },
@@ -64,7 +68,7 @@ const router = createBrowserRouter([
         ),
       },
     ],
-  },
+  }
 ]);
 
 root.render(

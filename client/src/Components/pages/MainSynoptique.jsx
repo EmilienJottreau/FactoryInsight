@@ -26,13 +26,12 @@ export function MainSynoptique() {
   }
 
   return (
-    <main style={{ overflowY: "scroll" }}>
+    <main>
       <div className="leftContainer">
         <div className="ilotName">
-          <h1>CUVE {parseInt(id) + 1}</h1>
+          <h1>Cuve {parseInt(id) + 1}</h1>
           <div className="textDescription">
-            description du procédé? unt aut facere repellat provident occaecati
-            excepturi optio reprehenderi
+
           </div>
           {/* <div>{JSON.stringify(stationData)}</div> */}
         </div>
@@ -59,11 +58,10 @@ export function MainSynoptique() {
       </div>
       <div className="synopticContainer">
         {/* <Cuve /> */}
-        <CuveSvg stationData={stationData} />
+        <CuveSvg stationData={stationData}/>
       </div>
       <div
         className="informations"
-        style={{ height: "60%", overflowY: "scroll" }}
       >
         {config.stations[id].read.map((x, i) => (
           <DisplayValue

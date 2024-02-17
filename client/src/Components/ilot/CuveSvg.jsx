@@ -50,21 +50,22 @@ export function CuveSvg({ stationData }) {
       <svg
         width={543}
         height={775}
-        viewBox="0 0 543 775"
+        viewBox="-120 0 723 775"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        className="cuveSvg"
       >
         <g id="Group 16">
           <circle
             id="Indicator_Output"
-            cx="421.5"
-            cy="691.5"
+            cx="561.5"
+            cy="551.5"
             r="37.5"
             fill={output_state ? "#00F636":"#F70000"}
           />
           <circle
             id="Indicator_Input"
-            cx="96.5"
+            cx="-56.5"
             cy="37.5"
             r="37.5"
             fill={input_state ? "#00F636":"#F70000"}
@@ -136,7 +137,7 @@ export function CuveSvg({ stationData }) {
                 fillRule="evenodd"
                 clipRule="evenodd"
                 d="M4 0H36V88C36 92.4183 39.5817 96 44 96H132V128H36C18.3269 128 4 113.673 4 96V0Z"
-                fill="#D65C5C"
+                fill="#E05252"
               />
               <g id="Group 9">
                 <rect
@@ -594,11 +595,11 @@ export function CuveSvg({ stationData }) {
             <g id="Agitateur">
               <rect
                 id="Rectangle 86"
-                x={292.682}
+                x={295.682}
                 y={112}
-                width={26.2727}
+                width={16.2727}
                 height={262.727}
-                fill="#28BD28"
+                fill="#82cf3a"
               />
               {agitator_state ? (
                 <motion.path
@@ -611,7 +612,7 @@ export function CuveSvg({ stationData }) {
                   fillRule="evenodd"
                   clipRule="evenodd"
                   d="M316.701 356.15C326.555 361.077 332.091 367.759 332.091 374.727L332.091 374.727L384.636 374.727C384.636 381.695 379.1 388.378 369.246 393.305C359.392 398.232 346.027 401 332.091 401C318.155 401 304.79 398.232 294.936 393.305C285.082 388.378 279.546 381.695 279.546 374.727H279.545L227 374.727C227 367.759 232.536 361.077 242.39 356.15C252.244 351.223 265.61 348.455 279.545 348.455C293.481 348.455 306.847 351.223 316.701 356.15Z"
-                  fill="#28BD28"
+                  fill="#82cf3a"
                 />
               ) : (
                 <path
@@ -619,7 +620,7 @@ export function CuveSvg({ stationData }) {
                   fillRule="evenodd"
                   clipRule="evenodd"
                   d="M316.701 356.15C326.555 361.077 332.091 367.759 332.091 374.727L332.091 374.727L384.636 374.727C384.636 381.695 379.1 388.378 369.246 393.305C359.392 398.232 346.027 401 332.091 401C318.155 401 304.79 398.232 294.936 393.305C285.082 388.378 279.546 381.695 279.546 374.727H279.545L227 374.727C227 367.759 232.536 361.077 242.39 356.15C252.244 351.223 265.61 348.455 279.545 348.455C293.481 348.455 306.847 351.223 316.701 356.15Z"
-                  fill="#28BD28"
+                  fill="#82cf3a"
                 />
               )}
             </g>
