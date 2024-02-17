@@ -46,7 +46,15 @@ export function MainHistoryGraph(props) {
         },
       })
       // .then((response) => response.json())
-      .then((json) => setData(json.data));
+      .then((json) => {
+        const modifiedData = json.data.map((item) => {
+          // Extraire uniquement l'heure de la propriété timestamp
+          item.timestamp = item.timestamp.split(" ")[1];
+          return item;
+        });
+        setData(modifiedData);
+      })
+
   }, [selected]);
 
   useEffect(() => {
@@ -60,7 +68,9 @@ export function MainHistoryGraph(props) {
       if (Object.keys(stationData)[i] == selected) {
         setData((newData) => {
           if (newData.at(0) && newData.at(0).timestamp != x.timestamp) {
-            newData.unshift(x);
+            const y = x;
+            y.timestamp = x.timestamp.split(" ")[1];
+            newData.unshift(y);
             return newData.slice(0, 25); // keep only 25 first elems
           }
           return newData;

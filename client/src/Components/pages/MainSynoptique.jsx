@@ -38,19 +38,28 @@ export function MainSynoptique() {
         </div>
 
         <div className="buttonContainer">
-          {config.stations[id].write.map((x, i) => (
-            <ToggleButton
-              key={x.frendlyName}
-              name={{ title: x.frendlyName, on: x.on, off: x.off }}
-              url={x.url}
-              state={stationData?.[x.name]?.value}
-            />
-          ))}
+          {config.stations[id].write.map(
+            (x, i) =>
+              stationData && (
+                <ToggleButton
+                  key={x.frendlyName}
+                  name={{ title: x.frendlyName, on: x.on, off: x.off }}
+                  url={x.url}
+                  state={stationData?.[x.name]?.value}
+                  isDisabled={
+                    stationData.manual_mode &&
+                    (x.name === "manual_mode"
+                      ? 0
+                      : !+stationData.manual_mode.value)
+                  }
+                />
+              )
+          )}
         </div>
       </div>
       <div className="synopticContainer">
         {/* <Cuve /> */}
-        <CuveSvg stationData={stationData}/>
+        <CuveSvg stationData={stationData} />
       </div>
       <div
         className="informations"

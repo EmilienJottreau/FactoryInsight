@@ -1,7 +1,8 @@
 import { Button } from "./button";
 import axios from "axios";
 
-export function ToggleButton({ name, state, url, options = {} }) {
+export function ToggleButton({ name, state, url, options = {}, isDisabled }) {
+
   const ChangeTagValue = (value) => {
     console.log("url+value " + url + value);
     axios.get(url + value, {
@@ -20,7 +21,7 @@ export function ToggleButton({ name, state, url, options = {} }) {
         <div className="twoButtons">
           <Button
             text={state ? name.off : name.on}
-
+            disabled={isDisabled}
             onClick={() => {
               ChangeTagValue(+!state);
             }}
