@@ -5,6 +5,13 @@
       "number": 1,
       "write": [
         {
+          "url": "/api/v1/switch/Tank/manual_mode/",
+          "name": "manual_mode",
+          "frendlyName": "Mode",
+          "on": "Passer en Manuel",
+          "off": "Passer en Automatique"
+        },
+        {
           "url": "/api/v1/switch/Tank/agitator_state/",
           "name": "agitator_state",
           "frendlyName": "Agitateur",

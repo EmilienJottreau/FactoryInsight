@@ -1,5 +1,4 @@
-import { motion, useAnimation } from "framer-motion";
-import { animated, useSpring } from "@react-spring/web";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export function CuveSvg({ stationData }) {
@@ -33,67 +32,9 @@ export function CuveSvg({ stationData }) {
 
   }
 
-  const firstModel = (
-    <g id="FlameSombre">
-      <path
-        id="Flame"
-        d="M305 671C272.727 692.016 256.52 746 305 746C353.48 746 337.273 692.016 305 671Z"
-        fill="#FF9601"
-      />
-      <g id="Inner" filter="url(#b)">
-        <path
-          id="Inner Base"
-          d="M305 741C279.5 741 297.5 709 305 705C312.5 709 330.5 741 305 741Z"
-          fill="#FFB803"
-        />
-        <path
-          id="Inner 01"
-          d="M305 741C290.5 741.5 286.305 727.262 290.5 719C293.477 726.774 306.919 733.667 305 741Z"
-          fill="#FFB803"
-        />
-        <path
-          id="Inner 02"
-          d="M310.194 740.071C324.274 736.571 320.774 723.721 316.93 713.451C312.952 720.709 306.336 733.546 310.194 740.071Z"
-          fill="#FFB803"
-        />
-      </g>
-    </g>
-  );
-  const secondModel = (
-    <g id="FlameLumiere">
-      <path
-        id="Flame"
-        d="M305 669C272.285 691.137 255.856 748 305 748C354.144 748 337.715 691.137 305 669Z"
-        fill="#FF9601"
-      />
-      <g id="Inner">
-        <path
-          id="Inner Base"
-          d="M305 742C279.5 742 297.5 706.104 305 701.617C312.5 706.104 330.5 742 305 742Z"
-          fill="#FFB803"
-        />
-        <path
-          id="Inner 01"
-          d="M303.115 741.872C288.723 740.037 286.868 725.31 292.335 717.829C294.025 725.98 306.186 734.942 303.115 741.872Z"
-          fill="#FFB803"
-        />
-        <path
-          id="Inner 02"
-          d="M312.686 740.445C325.772 733.979 319.718 721.263 313.855 711.309C311.438 719.681 307.572 734.404 312.686 740.445Z"
-          fill="#FFB803"
-        />
-      </g>
-    </g>
-  );
+  
 
-  const { animatedFlame } = useSpring({
-    from: { animatedFlame: firstModel },
-    to: { animatedFlame: isFlameSombre ? firstModel : secondModel },
-    config: { duration: 2000 },
-    reset: true,
-    reverse: !isFlameSombre,
-    onRest: () => setIsFlameSombre(!isFlameSombre),
-  });
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -102,7 +43,7 @@ export function CuveSvg({ stationData }) {
     return () => clearInterval(interval);
   }, [isFlameSombre]);
 
-  console.log(animatedFlame);
+
 
   return (
     <>

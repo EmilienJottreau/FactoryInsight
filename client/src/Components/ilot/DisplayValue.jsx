@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export function DisplayValue({ value, config }) {
   return (
     <>
-      <Link to={"/historyTable?tag="+config.name}>
+      <Link to={"/historyGraph?tag="+config.name}>
         <div className="logo-info"
           style={config.hue && {
             backgroundColor: "hsl(0 70% 80% / 1)",
