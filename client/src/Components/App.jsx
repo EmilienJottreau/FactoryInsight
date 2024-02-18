@@ -95,7 +95,7 @@ function App() {
       json.data.map((x, i)=>{
         handleDataChange(x)
       })
-    }));
+    })).catch((e) => console.log(e));
 
   }
 

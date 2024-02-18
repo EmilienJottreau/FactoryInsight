@@ -53,8 +53,7 @@ export function MainHistoryGraph(props) {
           return item;
         });
         setData(modifiedData);
-      })
-
+      });
   }, [selected]);
 
   useEffect(() => {
@@ -96,6 +95,14 @@ export function MainHistoryGraph(props) {
       })
     );
 
+    // chart.chartContainer.set(
+    //   "background",
+    //   am5.Rectangle.new(root, {
+    //     fill: am5.color("#ffffff"),
+    //     fillOpacity: 1,
+    //   })
+    // );
+
     // Create Y-axis
     let yAxis = chart.yAxes.push(
       am5xy.ValueAxis.new(root, {
@@ -112,11 +119,13 @@ export function MainHistoryGraph(props) {
     );
     xAxis.data.setAll(data.slice().reverse());
 
-    const item = config.stations[0].read.filter((item) => item.name === selected)[0];
-    var hue = "0deg"
-    if(item){
-      hue = item.hue
-      console.log("hue", hue)
+    const item = config.stations[0].read.filter(
+      (item) => item.name === selected
+    )[0];
+    var hue = "0deg";
+    if (item) {
+      hue = item.hue;
+      console.log("hue", hue);
     }
     // Create series
     let series1 = chart.series.push(
@@ -126,10 +135,14 @@ export function MainHistoryGraph(props) {
         yAxis: yAxis,
         valueYField: "value",
         categoryXField: "timestamp",
-        fill: "hsl(" + hue + " 60% 40% / 1)",
+        fill: "hsl(" + hue + " 61% 67% / 1)",
         stroke: "hsl(" + hue + " 70% 70% / 1)",
       })
     );
+
+    series1.strokes.template.setAll({
+      strokeWidth: 3,
+    });
     series1.data.setAll(data.slice().reverse());
 
     // Add scrollbar
@@ -175,7 +188,6 @@ export function MainHistoryGraph(props) {
     <>
       <div className="center">
         <div className="graphicContainer">
-          Ici sera mis les graphiques de {tag} pour station {lastStation}
           <Select
             items={tags}
             description={"Choisissez le tag"}
@@ -186,7 +198,6 @@ export function MainHistoryGraph(props) {
           <div
             className="rootGraphic"
             id="chartdiv"
-            style={{ width: "min(900px,100%)", height: "min(600px,100%)" }}
           ></div>
         </div>
       </div>

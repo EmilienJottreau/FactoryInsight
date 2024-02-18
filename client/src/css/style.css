@@ -3,8 +3,6 @@
   src: url("Roboto-Regular.woff") format("woff");
 }
 
-
-
 html {
   margin: 0;
   padding: 0;
@@ -17,8 +15,6 @@ html {
   --color-text-inverse: #ffffff;
   --color-background: #ebebeb; */
 
-
-
   --color-primary: #f7965c;
   --color-primary-accent: #a75221;
   --color-gray: #eeb896;
@@ -27,15 +23,15 @@ html {
   --color-background-inverse: #ffffff;
   --color-text: #ffffff;
   --color-text-inverse: #000000;
+  --color-dark: #323232;
+
 }
-
-
 
 body {
   margin: 0;
   padding: 0;
 
-  font-family: 'Roboto';
+  font-family: "Roboto";
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -67,13 +63,15 @@ button {
   background-color: var(--color-gray);
 }
 
-
 button:disabled {
   background-color: var(--color-background);
   outline: solid 1px var(--color-primary);
   color: var(--color-text);
 }
 
+
+.left-menu>*>*:focus,
+.left-menu>*>*:hover,
 button:hover:enabled,
 button:focus:enabled {
   background-color: var(--color-primary);
@@ -85,7 +83,7 @@ button:focus:enabled {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  
+
   a {
     padding: 5px;
     display: flex;
@@ -100,22 +98,16 @@ button:focus:enabled {
 }
 
 .navbar {
-  position: "relative";
-  /* background-color : var(--color-gray); */
   z-index: 2;
   border-bottom: solid 3px var(--color-primary);
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-
-  .nav-link{
+  .nav-link {
     height: 52px;
-
-
-
+    width: 52px;
   }
-
 }
 
 .left-menu {
@@ -126,7 +118,7 @@ button:focus:enabled {
   background-color: var(--color-background);
   color: white;
   animation: comeFromLeft 0.2s normal;
-  
+  margin-top: 15px;
 }
 
 @keyframes comeFromLeft {
@@ -144,23 +136,20 @@ button:focus:enabled {
 .left-menu > * > * {
   display: flex;
   margin: 10px;
-  padding: 10px;
+  padding: 15px;
+
   justify-content: center;
   align-items: center;
   font-size: 18px;
-  border-radius: 20px;
-  background-color: var(--color-gray);
+  border-radius: 15px;
+  background-color: var(--color-dark);
   color: var(--color-text);
   border: none;
   width: 180px;
-}
 
-/* .left-menu > *:focus,
-.left-menu > *:hover,
-.burgerButton:focus,
-.burgerButton:hover,
-.buttonIlot:focus,
-.buttonIlot:hover  */
+  font-size: 1.1rem;
+
+}
 
 
 
@@ -230,25 +219,26 @@ main:nth-last-child() {
 }
 
 main > * {
-
   height: 100%;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  
 }
 
 @media (max-width: 1255px) {
   main {
     display: flex;
 
-  align-items: center;
-  flex-grow: 1;
+    align-items: center;
+    flex-grow: 1;
     flex-direction: column;
+    overflow: visible;
   }
-  main > * {
-    border-inline: 0px;
+
+  .app {
+    height: auto;
   }
+
 }
 
 .ilotName {
@@ -267,13 +257,12 @@ main > * {
   display: grid;
   justify-items: end;
   grid-template-columns: 1fr;
-  grid-template-rows: repeat(10,fit-content(84px));
+  grid-template-rows: repeat(10, fit-content(84px));
   /* set in react to have scroll */
   /* height: 60%; */
   /* overflow: 'scroll'; */
   a {
     width: 80%;
-
   }
 }
 
@@ -282,7 +271,7 @@ main > * {
   background-color: #d9d9d9;
   border-radius: 30px;
   color: var(--color-text);
-  margin: 15px; 
+  margin: 15px;
 
   display: flex;
   flex-direction: row;
@@ -290,9 +279,10 @@ main > * {
 
   overflow: hidden;
 
+  font-size: 1.05rem;
+
+
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.205);
-
-
 
   p {
     margin: 0;
@@ -302,11 +292,9 @@ main > * {
     display: block;
     word-wrap: break-word;
   }
-
-  
 }
 
-.logo-info>*:nth-child(1) {
+.logo-info > *:nth-child(1) {
   width: 80px;
   height: 84px;
 }
@@ -314,7 +302,7 @@ main > * {
 .logo-info svg {
   scale: 2;
   margin: 32px;
-} 
+}
 
 .synopticContainer {
   display: flex;
@@ -332,10 +320,11 @@ main > * {
 .buttonIlot {
   background-color: var(--color-gray);
   color: var(--color-text-inverse);
+  font-size: 1.1rem;
 
   width: 240px;
   height: 60px;
-  border-radius: 45px;
+  border-radius: 20px;
   margin-inline: auto;
   margin-bottom: 13px;
 
@@ -347,7 +336,7 @@ main > * {
   /* border: solid var(--color-primary-accent) 1px; */
   margin: 10px;
   margin-inline: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.205);
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.205);
   label {
     margin-top: 8px;
     margin-inline: 15px;
@@ -360,12 +349,9 @@ main > * {
   margin: 5px;
 }
 
-
-
 .twoButtons {
   display: flex;
 }
-
 
 .center {
   flex-grow: 1;
@@ -375,10 +361,7 @@ main > * {
   justify-content: center;
 }
 
-
-
 /* test modals */
-
 
 /* The Modal (background) */
 .modal {
@@ -390,31 +373,30 @@ main > * {
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
-.no-fill{
+.no-fill {
   background-color: var(--color-background);
 }
 
-
 .tableContainer {
   width: 75%;
-  >* {
+  > * {
     margin: 20px;
   }
 }
 
-.graphicContainer{
+.graphicContainer {
   width: 75%;
   height: 75%;
 }
 .rootGraphic {
-  width: 90%;
   height: 90%;
   border: solid 1px var(--color-primary);
-  border-radius: 20px;
+  background-color: var(--color-background-inverse);
+  border-radius: 10px;
   margin: 20px;
   margin-inline: auto;
 
@@ -424,6 +406,7 @@ main > * {
 .Accueil {
   justify-content: space-between;
   align-items: center;
+  transform: translateY(-40px);
 }
 
 .Accueil > * {
@@ -437,17 +420,39 @@ main > * {
 
 .cuveSvg {
   scale: 130%;
+  transform: translateX(-46px);
 }
 
-
 .themeButton {
-  padding:20px;
+  padding: 20px;
   background-color: var(--color-background);
   border-radius: 10px;
   outline: 1px solid var(--color-primary);
 }
 
-.buttonContainer{
-  width: 350px;
+.buttonContainer {
+  width: 380px;
   display: inline-block;
+}
+
+
+.navbar .center a {
+  margin-inline: 10px;
+}
+
+.title {
+  font-size: 84px;
+  flex-grow: 0;
+  margin-top: 3%;
+}
+
+.contribution{
+  margin: 2rem;
+  flex-grow: 1;
+}
+
+footer{
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
 }

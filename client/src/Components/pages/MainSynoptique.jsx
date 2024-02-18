@@ -29,10 +29,10 @@ export function MainSynoptique() {
     <main>
       <div className="leftContainer">
         <div className="ilotName">
-          <h1>Cuve {parseInt(id) + 1}</h1>
-          <div className="textDescription">
-
-          </div>
+          <h1>
+            <b>Cuve {parseInt(id) + 1}</b>
+          </h1>
+          <div className="textDescription"></div>
           {/* <div>{JSON.stringify(stationData)}</div> */}
         </div>
 
@@ -58,11 +58,9 @@ export function MainSynoptique() {
       </div>
       <div className="synopticContainer">
         {/* <Cuve /> */}
-        <CuveSvg stationData={stationData}/>
+        <CuveSvg stationData={stationData} />
       </div>
-      <div
-        className="informations"
-      >
+      <div className="informations">
         {config.stations[id].read.map((x, i) => (
           <DisplayValue
             key={x.name}

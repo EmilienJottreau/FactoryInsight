@@ -19,7 +19,7 @@ export function Select({ items, description, selected="", setSelected }) {
           onChange={(x) => handleChange(x)}
         >
           {items.sort().map((x, i) => (
-            <option key={x} value={x}>{x}</option>
+            <option key={x} value={x}>{(x.charAt(0).toUpperCase() + x.slice(1)).replace("_", " ")}</option>
           ))}
         </select>
         <label htmlFor="floatingSelect">{description}</label>
