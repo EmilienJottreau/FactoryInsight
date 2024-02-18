@@ -95,13 +95,13 @@ async def simulator() -> None:
                             await tags["step_number"].change_value(0)
 
             if await tags["input_state"].read_value():
-                await tags["input_flow"].change_value(gauss(0.8, 0.4))
+                await tags["input_flow"].change_value(gauss(0.8, 0.2))
                 await tags["liquid_level"].change_value(await tags["liquid_level"].read_value() + random() / 500)
             else:
                 await tags["input_flow"].change_value(0)
 
             if await tags["output_state"].read_value():
-                await tags["output_flow"].change_value(gauss(0.8, 0.4))
+                await tags["output_flow"].change_value(gauss(0.8, 0.2))
                 await tags["liquid_level"].change_value(await tags["liquid_level"].read_value() - random() / 500)
             else:
                 await tags["output_flow"].change_value(0)
