@@ -26,26 +26,34 @@ export function MainSynoptique() {
   }
 
   return (
-    <main style={{ overflowY: "scroll" }}>
+    <main>
       <div className="leftContainer">
         <div className="ilotName">
-          <h1>CUVE {parseInt(id) + 1}</h1>
+          <h1>Cuve {parseInt(id) + 1}</h1>
           <div className="textDescription">
-            description du procédé? unt aut facere repellat provident occaecati
-            excepturi optio reprehenderi
+
           </div>
           {/* <div>{JSON.stringify(stationData)}</div> */}
         </div>
 
         <div className="buttonContainer">
-          {config.stations[id].write.map((x, i) => (
-            <ToggleButton
-              key={x.frendlyName}
-              name={{ title: x.frendlyName, on: x.on, off: x.off }}
-              url={x.url}
-              state={stationData?.[x.name]?.value}
-            />
-          ))}
+          {config.stations[id].write.map(
+            (x, i) =>
+              stationData && (
+                <ToggleButton
+                  key={x.frendlyName}
+                  name={{ title: x.frendlyName, on: x.on, off: x.off }}
+                  url={x.url}
+                  state={stationData?.[x.name]?.value}
+                  isDisabled={
+                    stationData.manual_mode &&
+                    (x.name === "manual_mode"
+                      ? 0
+                      : !+stationData.manual_mode.value)
+                  }
+                />
+              )
+          )}
         </div>
       </div>
       <div className="synopticContainer">
@@ -54,7 +62,6 @@ export function MainSynoptique() {
       </div>
       <div
         className="informations"
-        style={{ height: "60%", overflowY: "scroll" }}
       >
         {config.stations[id].read.map((x, i) => (
           <DisplayValue

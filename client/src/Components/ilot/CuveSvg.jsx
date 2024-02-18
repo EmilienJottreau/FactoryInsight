@@ -1,5 +1,4 @@
-import { motion, useAnimation } from "framer-motion";
-import { animated, useSpring } from "@react-spring/web";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export function CuveSvg({ stationData }) {
@@ -33,67 +32,9 @@ export function CuveSvg({ stationData }) {
 
   }
 
-  const firstModel = (
-    <g id="FlameSombre">
-      <path
-        id="Flame"
-        d="M305 671C272.727 692.016 256.52 746 305 746C353.48 746 337.273 692.016 305 671Z"
-        fill="#FF9601"
-      />
-      <g id="Inner" filter="url(#b)">
-        <path
-          id="Inner Base"
-          d="M305 741C279.5 741 297.5 709 305 705C312.5 709 330.5 741 305 741Z"
-          fill="#FFB803"
-        />
-        <path
-          id="Inner 01"
-          d="M305 741C290.5 741.5 286.305 727.262 290.5 719C293.477 726.774 306.919 733.667 305 741Z"
-          fill="#FFB803"
-        />
-        <path
-          id="Inner 02"
-          d="M310.194 740.071C324.274 736.571 320.774 723.721 316.93 713.451C312.952 720.709 306.336 733.546 310.194 740.071Z"
-          fill="#FFB803"
-        />
-      </g>
-    </g>
-  );
-  const secondModel = (
-    <g id="FlameLumiere">
-      <path
-        id="Flame"
-        d="M305 669C272.285 691.137 255.856 748 305 748C354.144 748 337.715 691.137 305 669Z"
-        fill="#FF9601"
-      />
-      <g id="Inner">
-        <path
-          id="Inner Base"
-          d="M305 742C279.5 742 297.5 706.104 305 701.617C312.5 706.104 330.5 742 305 742Z"
-          fill="#FFB803"
-        />
-        <path
-          id="Inner 01"
-          d="M303.115 741.872C288.723 740.037 286.868 725.31 292.335 717.829C294.025 725.98 306.186 734.942 303.115 741.872Z"
-          fill="#FFB803"
-        />
-        <path
-          id="Inner 02"
-          d="M312.686 740.445C325.772 733.979 319.718 721.263 313.855 711.309C311.438 719.681 307.572 734.404 312.686 740.445Z"
-          fill="#FFB803"
-        />
-      </g>
-    </g>
-  );
+  
 
-  const { animatedFlame } = useSpring({
-    from: { animatedFlame: firstModel },
-    to: { animatedFlame: isFlameSombre ? firstModel : secondModel },
-    config: { duration: 2000 },
-    reset: true,
-    reverse: !isFlameSombre,
-    onRest: () => setIsFlameSombre(!isFlameSombre),
-  });
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -102,28 +43,29 @@ export function CuveSvg({ stationData }) {
     return () => clearInterval(interval);
   }, [isFlameSombre]);
 
-  console.log(animatedFlame);
+
 
   return (
     <>
       <svg
         width={543}
         height={775}
-        viewBox="0 0 543 775"
+        viewBox="-120 0 723 775"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        className="cuveSvg"
       >
         <g id="Group 16">
           <circle
             id="Indicator_Output"
-            cx="421.5"
-            cy="691.5"
+            cx="561.5"
+            cy="551.5"
             r="37.5"
             fill={output_state ? "#00F636":"#F70000"}
           />
           <circle
             id="Indicator_Input"
-            cx="96.5"
+            cx="-56.5"
             cy="37.5"
             r="37.5"
             fill={input_state ? "#00F636":"#F70000"}
@@ -195,7 +137,7 @@ export function CuveSvg({ stationData }) {
                 fillRule="evenodd"
                 clipRule="evenodd"
                 d="M4 0H36V88C36 92.4183 39.5817 96 44 96H132V128H36C18.3269 128 4 113.673 4 96V0Z"
-                fill="#D65C5C"
+                fill="#E05252"
               />
               <g id="Group 9">
                 <rect
@@ -653,11 +595,11 @@ export function CuveSvg({ stationData }) {
             <g id="Agitateur">
               <rect
                 id="Rectangle 86"
-                x={292.682}
+                x={295.682}
                 y={112}
-                width={26.2727}
+                width={16.2727}
                 height={262.727}
-                fill="#28BD28"
+                fill="#82cf3a"
               />
               {agitator_state ? (
                 <motion.path
@@ -670,7 +612,7 @@ export function CuveSvg({ stationData }) {
                   fillRule="evenodd"
                   clipRule="evenodd"
                   d="M316.701 356.15C326.555 361.077 332.091 367.759 332.091 374.727L332.091 374.727L384.636 374.727C384.636 381.695 379.1 388.378 369.246 393.305C359.392 398.232 346.027 401 332.091 401C318.155 401 304.79 398.232 294.936 393.305C285.082 388.378 279.546 381.695 279.546 374.727H279.545L227 374.727C227 367.759 232.536 361.077 242.39 356.15C252.244 351.223 265.61 348.455 279.545 348.455C293.481 348.455 306.847 351.223 316.701 356.15Z"
-                  fill="#28BD28"
+                  fill="#82cf3a"
                 />
               ) : (
                 <path
@@ -678,7 +620,7 @@ export function CuveSvg({ stationData }) {
                   fillRule="evenodd"
                   clipRule="evenodd"
                   d="M316.701 356.15C326.555 361.077 332.091 367.759 332.091 374.727L332.091 374.727L384.636 374.727C384.636 381.695 379.1 388.378 369.246 393.305C359.392 398.232 346.027 401 332.091 401C318.155 401 304.79 398.232 294.936 393.305C285.082 388.378 279.546 381.695 279.546 374.727H279.545L227 374.727C227 367.759 232.536 361.077 242.39 356.15C252.244 351.223 265.61 348.455 279.545 348.455C293.481 348.455 306.847 351.223 316.701 356.15Z"
-                  fill="#28BD28"
+                  fill="#82cf3a"
                 />
               )}
             </g>

@@ -4,16 +4,16 @@ import { Link } from "react-router-dom";
 export function DisplayValue({ value, config }) {
   return (
     <>
-      <Link to={"/historyTable?tag="+config.name}>
+      <Link to={"/historyGraph?tag="+config.name}>
         <div className="logo-info"
           style={config.hue && {
-            backgroundColor: "hsl(0 70% 80% / 1)",
+            backgroundColor: "hsl(0 61% 67% / 1)",
             filter: "hue-rotate(" + config.hue + ")",
           }}
         >
           <div>{config.icon && <FontAwesomeIcon icon={config.icon} />}</div>
           <div>
-            <div>{config.name + " "}</div>
+            <div>{config.frendlyName + " "}</div>
             <div>
               {value !== undefined ? (
                 <p>

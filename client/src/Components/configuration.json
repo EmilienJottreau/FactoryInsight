@@ -5,30 +5,37 @@
       "number": 1,
       "write": [
         {
+          "url": "/api/v1/switch/Tank/manual_mode/",
+          "name": "manual_mode",
+          "frendlyName": "Mode de marche",
+          "on": "Passer en Manuel",
+          "off": "Passer en Automatique"
+        },
+        {
           "url": "/api/v1/switch/Tank/agitator_state/",
           "name": "agitator_state",
           "frendlyName": "Agitateur",
           "on": "Allumer",
-          "off": "Eteindre"
+          "off": "Éteindre"
         },
         {
           "url": "/api/v1/switch/Tank/heating_state/",
           "name": "heating_state",
-          "frendlyName": "Temperature",
-          "on": "Chauffer",
-          "off": "Arreter"
+          "frendlyName": "Chauffage de la cuve",
+          "on": "Allumer",
+          "off": "Éteindre"
         },
         {
           "url": "/api/v1/switch/Tank/input_state/",
           "name": "input_state",
-          "frendlyName": "Vanne Entrée",
+          "frendlyName": "Vanne d'entrée",
           "on": "Ouvrir",
           "off": "Fermer"
         },
         {
           "url": "/api/v1/switch/Tank/output_state/",
           "name": "output_state",
-          "frendlyName": "Vanne sortie",
+          "frendlyName": "Vanne de sortie",
           "on": "Ouvrir",
           "off": "Fermer"
         }
@@ -58,75 +65,46 @@
       ],
       "read": [
         {
-          "name": "agitator_speed",
-          "unit": "tr/min",
-          "icon": "fa-solid fa-gauge-high",
-          "hue": "120deg"
-        },
-        {
-          "name": "heating_temperature",
-          "unit": "°C",
-          "icon": "fa-solid fa-temperature-high",
-          "hue": "43deg"
-        },
-        {
           "name": "input_flow",
-          "unit": "m3/s",
-          "icon": "fa-solid fa-water",
-          "hue": "0deg"
-        },
-        {
-          "name": "liquid_level",
-          "unit": "m",
-          "icon": "fa-solid fa-arrows-up-down",
-          "hue": "205deg"
-        },
-        {
-          "name": "liquid_temperature",
-          "unit": "°C",
-          "icon": "fa-solid fa-temperature-half",
-          "hue": "60deg"
+          "frendlyName": "Débit d'entrée",
+          "unit": "L/s",
+          "icon": "fa-solid fa-right-to-bracket",
+          "hue": "5deg"
         },
         {
           "name": "output_flow",
-          "unit": "m3/s",
-          "icon": "fa-solid fa-water",
+          "frendlyName": "Débit de sortie",
+          "unit": "L/s",
+          "icon": "fa-solid fa-right-from-bracket",
           "hue": "270deg"
         },
         {
-          "name": "agitator_state",
-          "unit": "",
-          "icon": "fa-solid fa-arrows-rotate",
-          "state_on": "démarré",
-          "state_off": "arreté"
+          "name": "liquid_level",
+          "frendlyName": "Niveau du liquide",
+          "unit": "m",
+          "icon": "fa-solid fa-arrows-up-down",
+          "hue": "210deg"
         },
         {
-          "name": "heating_state",
-          "unit": "",
-          "icon": "fa-solid fa-fire",
-          "state_on": "Allumé",
-          "state_off": "Eteint"
+          "name": "heating_temperature",
+          "frendlyName": "Température de chauffage",
+          "unit": "°C",
+          "icon": "fa-solid fa-temperature-high",
+          "hue": "28deg"
         },
         {
-          "name": "input_state",
-          "unit": "",
-          "icon": "",
-          "state_on": "Valve?",
-          "state_off": "?pas en input?"
+          "name": "liquid_temperature",
+          "frendlyName": "Température du liquide",
+          "unit": "°C",
+          "icon": "fa-solid fa-temperature-half",
+          "hue": "56deg"
         },
         {
-          "name": "operating_state",
-          "unit": "",
-          "icon": "",
-          "state_on": "?en operation?",
-          "state_off": "?pas en operation?"
-        },
-        {
-          "name": "output_state",
-          "unit": "",
-          "icon": "",
-          "state_on": "?en output?",
-          "state_off": "?pas en output?"
+          "name": "agitator_speed",
+          "frendlyName": "Vitesse de l'agitateur",
+          "unit": "tr/min",
+          "icon": "fa-solid fa-gauge-high",
+          "hue": "110deg"
         }
       ]
     }

@@ -1,28 +1,42 @@
+@font-face {
+  font-family: "Roboto";
+  src: url("Roboto-Regular.woff") format("woff");
+}
+
+
+
 html {
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
   color: var(--color-text);
 
-  --color-primary: #4d7e3e;
-  /* --color-primary: #793e7e; */
+  /* --color-primary: #4d7e3e;
   --color-primary-accent: #2f4e27;
   --color-gray: #dcdcdc;
-  --color-gray-accent: #c0c0c0;
   --color-text: #000000;
   --color-text-inverse: #ffffff;
-  --color-background: #ebebeb;
-  /* --color-background: #1452bc; */
-  --color-background-inverse: #000000;
+  --color-background: #ebebeb; */
+
+
+
+  --color-primary: #f7965c;
+  --color-primary-accent: #a75221;
+  --color-gray: #eeb896;
+  --color-gray-accent: #c0c0c0;
+  --color-background: #434343;
+  --color-background-inverse: #ffffff;
+  --color-text: #ffffff;
+  --color-text-inverse: #000000;
 }
+
+
 
 body {
   margin: 0;
   padding: 0;
 
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: 'Roboto';
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-background);
@@ -32,6 +46,7 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 a {
@@ -55,7 +70,8 @@ button {
 
 button:disabled {
   background-color: var(--color-background);
-  outline: 0;
+  outline: solid 1px var(--color-primary);
+  color: var(--color-text);
 }
 
 button:hover:enabled,
@@ -87,7 +103,19 @@ button:focus:enabled {
   position: "relative";
   /* background-color : var(--color-gray); */
   z-index: 2;
-  border-bottom: solid 1px var(--color-primary);
+  border-bottom: solid 3px var(--color-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+
+  .nav-link{
+    height: 52px;
+
+
+
+  }
+
 }
 
 .left-menu {
@@ -185,14 +213,16 @@ button:focus:enabled {
   position: relative;
   display: flex;
   flex-grow: 1;
+  color: var(--color-text);
 }
 
 main {
-  display: flex;
-
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
   background-color: var(--color-background);
   flex-grow: 1;
+  overflow: hidden;
+  padding-inline: 10px;
 }
 
 main:nth-last-child() {
@@ -200,16 +230,20 @@ main:nth-last-child() {
 }
 
 main > * {
-  border-inline: solid 1px var(--color-primary);
 
   height: 100%;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  
 }
 
 @media (max-width: 1255px) {
   main {
+    display: flex;
+
+  align-items: center;
+  flex-grow: 1;
     flex-direction: column;
   }
   main > * {
@@ -218,34 +252,47 @@ main > * {
 }
 
 .ilotName {
-  margin: 50px;
-  margin-bottom: auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  margin-inline: 40px;
+
+  h1 {
+    font-size: 3.25rem;
+  }
 }
 
 .informations {
+  margin-top: 50px;
   margin-bottom: 50px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-
+  justify-items: end;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(10,fit-content(84px));
   /* set in react to have scroll */
   /* height: 60%; */
   /* overflow: 'scroll'; */
+  a {
+    width: 80%;
+
+  }
 }
 
-
-
 .logo-info {
-  padding: 20px;
+  /* padding: 20px; */
   background-color: #d9d9d9;
   border-radius: 30px;
   color: var(--color-text);
-  margin: 10px;
+  margin: 15px; 
 
   display: flex;
   flex-direction: row;
   align-items: center;
 
   overflow: hidden;
+
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.205);
+
+
 
   p {
     margin: 0;
@@ -284,25 +331,28 @@ main > * {
 
 .buttonIlot {
   background-color: var(--color-gray);
-  color: var(--color-text);
+  color: var(--color-text-inverse);
 
-  width: 250px;
+  width: 240px;
   height: 60px;
   border-radius: 45px;
-  margin: 5px;
+  margin-inline: auto;
+  margin-bottom: 13px;
+
   text-align: center;
 }
 
 .coupleButtons {
-  border-radius: 5px;
+  border-radius: 10px;
   /* border: solid var(--color-primary-accent) 1px; */
-  margin: 5px;
+  margin: 10px;
   margin-inline: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.205);
   label {
-    margin-top: 15px;
+    margin-top: 8px;
     margin-inline: 15px;
-    color: var(--color-primary-accent);
+    color: var(--color-text);
+    font-size: 1.2rem;
   }
 }
 
@@ -369,4 +419,35 @@ main > * {
   margin-inline: auto;
 
   text-align: center;
+}
+
+.Accueil {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Accueil > * {
+  margin-inline: auto;
+}
+
+#core {
+  transform: translateX(-10px) translateY(20px);
+  scale: 90%;
+}
+
+.cuveSvg {
+  scale: 130%;
+}
+
+
+.themeButton {
+  padding:20px;
+  background-color: var(--color-background);
+  border-radius: 10px;
+  outline: 1px solid var(--color-primary);
+}
+
+.buttonContainer{
+  width: 350px;
+  display: inline-block;
 }
