@@ -137,11 +137,6 @@ async def simulator() -> None:
                 await tags["liquid_level"].change_value(0)
                 await tags["output_state"].change_value(False)
 
-            if await tags["cleaning_state"].read_value():
-                await tags["input_state"].change_value(False)
-                await tags["output_state"].change_value(False)
-                await tags["heating_state"].change_value(False)
-
             await sleep(1)
 
 

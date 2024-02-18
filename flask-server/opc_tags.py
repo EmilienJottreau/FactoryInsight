@@ -1,4 +1,4 @@
-from typing import Any, Tuple, Generator
+from typing import Any, Generator
 from datetime import datetime
 from asyncua import Node, ua
 
@@ -65,7 +65,7 @@ class OPC_Tags:
     def __getitem__(self, station) -> dict[str, OPC_Tag]:
         return self.tags[station]
 
-    def __iter__(self) -> Generator[Tuple[str, str], None, None]:
+    def __iter__(self) -> Generator[tuple[str, str], None, None]:
         for station, tags in self.tags.items():
             for tag in tags.keys():
                 yield station, tag
@@ -74,7 +74,7 @@ class OPC_Tags:
         return str(self.tags)
 
 
-async def get_node_data(node: Node) -> Tuple[str, str, datetime]:
+async def get_node_data(node: Node) -> tuple[str, str, datetime]:
     _, station, tag_name = (await node.read_attribute(1)).Value.Value.Identifier.split(".")
     timestamp = (await node.read_attribute(13)).SourceTimestamp
     return station, tag_name, timestamp
