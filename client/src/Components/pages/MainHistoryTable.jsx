@@ -55,7 +55,9 @@ export function MainHistoryTable() {
         },
       })
       // .then((response) => response.json())
-      .then((json) => setData(json.data));
+      .then((json) => setData(json.data)).catch((e)=>{
+        console.log(e)
+      });
   }, [selected]);
 
   useEffect(() => {

@@ -40,4 +40,4 @@ TODO
 
 ## Bugs connus
 
-TODO
+Au bout d'un certain temps, le serveur flask perd sa connexion avec la base de donnée. Lors de la demande de données historique, rien n'est renvoyé

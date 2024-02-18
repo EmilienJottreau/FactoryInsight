@@ -53,6 +53,8 @@ export function MainHistoryGraph(props) {
           return item;
         });
         setData(modifiedData);
+      }).catch((e)=>{
+        console.log(e)
       });
   }, [selected]);
 
