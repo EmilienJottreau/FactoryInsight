@@ -45,7 +45,7 @@ export function MainHistoryTable() {
   useEffect(() => {
     if (selected == "" || selected == null) return;
 
-    const url = "/api/v1/values/" + station + "/" + selected + "/10";
+    const url = "/api/v1/values/" + station + "/" + selected + "/25";
 
     axios
       .get(url, {
@@ -69,7 +69,7 @@ export function MainHistoryTable() {
         setData((newData) => {
           if (newData.at(0) && x && newData.at(0).timestamp != x.timestamp) {
             newData.unshift(x);
-            return newData.slice(0, 25); // keep only 25 first elems
+            return newData.slice(0, 25  ); // keep only 10 first elems
           }
           return newData;
         });
@@ -91,12 +91,13 @@ export function MainHistoryTable() {
           {/* Ici sera mis les tableaux de {tag} pour station {lastStation} */}
           {/* <div>{JSON.stringify(data)}</div> */}
           {/* <div>{JSON.stringify(tags)}</div> */}
-          <table className="table table-striped">
+          <div style={{ height: "60%", overflowY: "scroll" }}>
+          <table className="table table-striped text-center" >
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Value</th>
-                <th scope="col">Timestamp</th>
+                <th scope="col">Valeur</th>
+                <th scope="col">Horodatage</th>
               </tr>
             </thead>
             <tbody>
@@ -109,6 +110,7 @@ export function MainHistoryTable() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </>

@@ -8,14 +8,14 @@ import { Link } from "react-router-dom";
 import config from "../configuration.json";
 import { MenuBurger } from "../base/MenuBurger";
 
-import { ReactComponent as Mixer } from "../../assets/img/Mixer.svg"
+import { ReactComponent as Glace } from "../../assets/img/Glace.svg"
 import { ReactComponent as Shaker } from "../../assets/img/Shaker.svg"
 
 export function NavBar({ toggleMenu, menuVisible }) {
   return (
     <nav className="navbar">
       <MenuBurger toggleMenu={toggleMenu}/>
-      <div className="d-flex flex-wrap">
+      <div className="center">
         {/* {config.stations.map((x, i) => (
           <Link key={i} aria-label={"Aller sur la station" + i} className="nav-link" to={"station/"+(i)}>
             <NavCircle key={i}  />
@@ -23,7 +23,7 @@ export function NavBar({ toggleMenu, menuVisible }) {
         ))} */}
 
           <Link  aria-label={"Aller sur la station" + 1} className="nav-link" >
-            <Mixer style={{ scale: "28%", transform:"translateY(-144%)" }}/>
+            <Glace style={{ scale: "28%", transform:"translate(-148%, -136%)" }}/>
           </Link>
 
           <Link aria-label={"Aller sur la station" + 0} className="nav-link" to={"station/"+(0)} >
@@ -31,7 +31,7 @@ export function NavBar({ toggleMenu, menuVisible }) {
           </Link>
 
           <Link  aria-label={"Aller sur la station" + 1} className="nav-link" >
-            <Shaker style={{ scale: "28%", transform:"translateY(-144%)" }}/>
+            <Shaker style={{ scale: "28%", transform:"translate(-140%, -146%)" }}/>
           </Link>
 
       </div>

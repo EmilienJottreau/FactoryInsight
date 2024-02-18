@@ -15,6 +15,7 @@ import { MainHistoryTable } from "./Components/pages/MainHistoryTable";
 import { MainStatistique } from "./Components/pages/MainStatistique";
 import { Accueil } from "./Components/pages/Accueil";
 import { MentionsLegales } from "./Components/pages/MentionLegales";
+import { Docs } from "./Components/pages/Docs";
 
 library.add(fas);
 
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       {
         path: "legal",
         element: <MentionsLegales />,
+      },
+      {
+        path:"docs",
+        element: <Docs />,
       },
       {
         path: "station",
