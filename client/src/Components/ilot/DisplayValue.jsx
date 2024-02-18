@@ -24,7 +24,7 @@ export function DisplayValue({ value, config }) {
                       <span>{config.state_off}</span>
                     )
                   ) : (
-                    <span>{value.toFixed(2) + " " + config.unit}</span>
+                    <span>{value.toFixed(config.digit) + " " + config.unit}</span>
                   )}
                 </p>
               ) : (

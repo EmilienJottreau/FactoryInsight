@@ -1,4 +1,4 @@
-export function MentionsLegales() {
+export function Contributeurs() {
   return (
     <>
       <div className="contribution">
