@@ -39,7 +39,7 @@ body {
 }
 
 .App {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -235,9 +235,7 @@ main > * {
     overflow: visible;
   }
 
-  .app {
-    height: auto;
-  }
+
 
 }
 
@@ -361,7 +359,6 @@ main > * {
   justify-content: center;
 }
 
-/* test modals */
 
 /* The Modal (background) */
 .modal {
@@ -375,6 +372,30 @@ main > * {
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+
+  flex-wrap: nowrap;
+  
+  .center {
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+
+  
+  .wrapper {
+    margin: 20px;
+    padding: 50px;
+    background-color: white; 
+    flex-grow: 0;
+
+  }
+  
+  button {
+    margin: 20px;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
 }
 
 .no-fill {
@@ -449,6 +470,9 @@ main > * {
 .contribution{
   margin: 2rem;
   flex-grow: 1;
+  >*>* {
+    margin: 10px;
+  }
 }
 
 footer{
@@ -456,3 +480,22 @@ footer{
   bottom: 0px;
   width: 100%;
 }
+
+.docs {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin: 20px;
+
+  
+
+  button {
+    background-color: unset;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 10px;
+  }
+}
+
+
+

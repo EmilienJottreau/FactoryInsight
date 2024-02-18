@@ -61,14 +61,15 @@ export function CuveSvg({ stationData }) {
             cx="561.5"
             cy="551.5"
             r="37.5"
-            fill={output_state ? "#00F636":"#F70000"}
+            fill={output_state ? "#5ea34a":"#dc7971"}
+            
           />
           <circle
             id="Indicator_Input"
             cx="-56.5"
             cy="37.5"
             r="37.5"
-            fill={input_state ? "#00F636":"#F70000"}
+            fill={input_state ? "#5ea34a":"#dc7971"}
           />
           <g id="Cuve _redesign">
             <rect

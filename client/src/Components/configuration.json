@@ -50,13 +50,6 @@
         },
         {
           "url": "",
-          "name": "maintenance",
-          "frendlyName": "Mode Maintenance",
-          "on": "...",
-          "off": "..."
-        },
-        {
-          "url": "",
           "name": "manual_mode",
           "frendlyName": "Mode Manuel",
           "on": "Chauffer",
@@ -69,42 +62,48 @@
           "frendlyName": "Débit d'entrée",
           "unit": "L/s",
           "icon": "fa-solid fa-right-to-bracket",
-          "hue": "5deg"
+          "hue": "5deg",
+          "digit":"2"
         },
         {
           "name": "output_flow",
           "frendlyName": "Débit de sortie",
           "unit": "L/s",
           "icon": "fa-solid fa-right-from-bracket",
-          "hue": "270deg"
+          "hue": "270deg",
+          "digit":"2"
         },
         {
           "name": "liquid_level",
           "frendlyName": "Niveau du liquide",
           "unit": "m",
           "icon": "fa-solid fa-arrows-up-down",
-          "hue": "210deg"
+          "hue": "210deg",
+          "digit":"3"
         },
         {
           "name": "heating_temperature",
           "frendlyName": "Température de chauffage",
           "unit": "°C",
           "icon": "fa-solid fa-temperature-high",
-          "hue": "28deg"
+          "hue": "28deg",
+          "digit":"2"
         },
         {
           "name": "liquid_temperature",
           "frendlyName": "Température du liquide",
           "unit": "°C",
           "icon": "fa-solid fa-temperature-half",
-          "hue": "56deg"
+          "hue": "56deg",
+          "digit":"2"
         },
         {
           "name": "agitator_speed",
           "frendlyName": "Vitesse de l'agitateur",
           "unit": "tr/min",
           "icon": "fa-solid fa-gauge-high",
-          "hue": "110deg"
+          "hue": "110deg",
+          "digit":"2"
         }
       ]
     }

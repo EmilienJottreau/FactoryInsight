@@ -14,15 +14,26 @@ export function NavUser({ user, stroke, fill }) {
     setState({ background: color.hex });
 
     document.documentElement.style.setProperty("--color-primary", color.hex);
+
+    const hsl =
+      "hsl(" +
+      color.hsl.h +
+      ", " +
+      (color.hsl.s / 4) * 100 +
+      "%, " +
+      color.hsl.l * 100 +
+      "%)";
+
+    document.documentElement.style.setProperty("--color-gray", hsl);
   };
 
   return (
     <div className="navUser">
       <button
-      className="themeButton"
-      aria-label="changer le theme"
+        className="themeButton"
+        aria-label="changer le theme"
         onClick={() => {
-          document.getElementById("colorModal").style.display = "block";
+          document.getElementById("colorModal").style.display = "flex";
         }}
       >
         <FontAwesomeIcon icon="fa-solid fa-palette" />
@@ -30,18 +41,20 @@ export function NavUser({ user, stroke, fill }) {
 
       <div id="colorModal" className="modal">
         <div className="center">
-          <SketchPicker
-            color={state.background}
-            onChangeComplete={handleChangeComplete}
-          />
-          <button
-            className="no-fill"
-            onClick={() => {
-              document.getElementById("colorModal").style.display = "none";
-            }}
-          >
-            Fermer
-          </button>
+          <div className="wrapper center">
+            <SketchPicker
+              color={state.background}
+              onChangeComplete={handleChangeComplete}
+            />
+            <button
+              className="no-fill"
+              onClick={() => {
+                document.getElementById("colorModal").style.display = "none";
+              }}
+            >
+              Fermer
+            </button>
+          </div>
         </div>
       </div>
 

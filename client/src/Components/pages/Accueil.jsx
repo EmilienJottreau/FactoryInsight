@@ -31,6 +31,10 @@ export function Accueil() {
             <Shaker style={{ scale: "224%" }}/>
           </Link>
       </div>
+      <footer>
+            <div className="center">2023-2024</div>
+          </footer>
+
     </div>
     </>
   );
