@@ -14,7 +14,7 @@ Service web de supervision d'installations industrielles.
 - [Facultatif] Créer un environnement virtuel pour installer les bibliothèques [python](https://www.python.org/downloads/) :
   - Utiliser `python -m venv .venv` pour initialiser l'environnement.
   - Activer l'environnement virtuel sur Windows avec `.venv\Scripts\activate` ou `.venv/bin/activate` sur Linux ou mac.
-      - [Facultatif] Sous windows si le powershell refuse de demarrer l'environement virtuel : `Set-ExecutionPolicy Unrestricted -Scope Process`
+      - [Facultatif] Si powershell refuse de lancer l'environnement virtuel, utiliser `Set-ExecutionPolicy Unrestricted -Scope Process`
 - Depuis la racine du dossier, utiliser `pip install -r requirements.txt` pour installer les modules python nécessaires au projet.
 - Initialiser la base de données MySQL depuis [XAMPP](https://www.apachefriends.org/fr/download.html) :
   - Démarrer les modules *Apache* et *MySQL*.
