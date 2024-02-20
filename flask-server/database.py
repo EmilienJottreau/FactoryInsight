@@ -19,8 +19,8 @@ class Database:
                 self.create_database(database_name)
 
             self.cursor.execute(f"USE {database_name}")
-        except:
-            raise Exception("Unable to connect to MySQL database, please check XAMPP module status")
+        except Exception as e:
+            print(e)
         else:
             if self.logger:
                 print(f"Connected to '{database_name}' database successfully")
@@ -28,9 +28,8 @@ class Database:
     def create_database(self, database_name: str) -> None:
         try:
             self.cursor.execute(f"CREATE DATABASE IF NOT EXISTS {database_name} DEFAULT CHARACTER SET 'utf8'")
-        except:
-            if self.logger:
-                print(f"Unable to create '{database_name}' database")
+        except Exception as e:
+            print(e)
         else:
             if self.logger:
                 print(f"Database '{database_name}' was created succcesfully")
@@ -38,9 +37,8 @@ class Database:
     def drop_database(self, database_name: str) -> None:
         try:
             self.cursor.execute(f"DROP DATABASE {database_name}")
-        except:
-            if self.logger:
-                print(f"Unable to drop '{database_name}' database")
+        except Exception as e:
+            print(e)
         else:
             if self.logger:
                 print(f"Database '{database_name}' was dropped succcesfully")
@@ -48,9 +46,8 @@ class Database:
     def create_table(self, station: str, tag: str, tag_type: str) -> None:
         try:
             self.cursor.execute(f"CREATE TABLE IF NOT EXISTS {station +'_' + tag} (id INT AUTO_INCREMENT PRIMARY KEY, value {tag_type} NOT NULL, timestamp TIMESTAMP NOT NULL)")
-        except:
-            if self.logger:
-                print(f"Unable to create '{station + '_' + tag}' table")
+        except Exception as e:
+            print(e)
         else:
             if self.logger:
                 print(f"Table '{station + '_' + tag}' was created succcesfully")
@@ -58,9 +55,8 @@ class Database:
     def drop_table(self, station: str, tag: str) -> None:
         try:
             self.cursor.execute(f"DROP TABLE {station + '_' + tag}")
-        except:
-            if self.logger:
-                print(f"Unable to drop '{station + '_' + tag}' table")
+        except Exception as e:
+            print(e)
         else:
             if self.logger:
                 print(f"Table '{station + '_' + tag}' was dropped succcesfully")
@@ -72,9 +68,8 @@ class Database:
 
             self.cursor.execute(query, query_values)
             self.db.commit()
-        except:
-            if self.logger:
-                print(f"Unable to insert tags in '{station + '_' + tag_name}' table")
+        except Exception as e:
+            print(e)
         else:
             if self.logger:
                 print(f"Tag was inserted into '{station + '_' + tag_name}' succcesfully")
@@ -87,9 +82,8 @@ class Database:
 
             self.cursor.execute(query, query_values)
             self.db.commit()
-        except:
-            if self.logger:
-                print(f"Unable to update '{id}' from '{station + '_' + tag}' to {value}")
+        except Exception as e:
+            print(e)
         else:
             if self.logger:
                 print(f"Update '{id}' from '{station + '_' + tag}' to {value} succcesfully")
@@ -101,9 +95,8 @@ class Database:
 
             self.cursor.execute(query, query_values)
             self.db.commit()
-        except:
-            if self.logger:
-                print(f"Unable to delete '{id}' from '{station + '_' + tag}'")
+        except Exception as e:
+            print(e)
         else:
             if self.logger:
                 print(f"Delete '{id}' from '{station + '_' + tag}' succcesfully")
@@ -119,9 +112,8 @@ class Database:
             self.cursor.execute(query)
             for id, value, timestamp in self.cursor.fetchall():
                 response.append(OPC_Data(station, tag, value, timestamp, id).json)
-        except:
-            if self.logger:
-                print(f"Unable to select tags from '{station + '_' + tag}'")
+        except Exception as e:
+            print(e)
         else:
             if self.logger:
                 print(f"Select {len(response)} tag(s) from '{station + '_' + tag}'")
@@ -138,8 +130,6 @@ class Database:
                 response.append(OPC_Data(station, tag, value, timestamp, id).json)
         except Exception as e:
             print(e)
-            if self.logger:
-                print(f"Unable to select tags from '{station + '_' + tag}'")
         else:
             if self.logger:
                 print(f"Select {len(response)} tag(s) from '{station + '_' + tag}'")
