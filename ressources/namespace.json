@@ -1,0 +1,327 @@
+{
+	"project": {
+		"common.ALLTYPES_DESCRIPTION": "",
+		"servermain.PROJECT_TITLE": "",
+		"channels": [
+			{
+				"common.ALLTYPES_NAME": "FactoryInsight",
+				"servermain.MULTIPLE_TYPES_DEVICE_DRIVER": "Simulator",
+				"servermain.CHANNEL_DIAGNOSTICS_CAPTURE": false,
+				"servermain.CHANNEL_UNIQUE_ID": 3958316553,
+				"servermain.CHANNEL_WRITE_OPTIMIZATIONS_METHOD": 2,
+				"servermain.CHANNEL_WRITE_OPTIMIZATIONS_DUTY_CYCLE": 10,
+				"servermain.CHANNEL_NON_NORMALIZED_FLOATING_POINT_HANDLING": 0,
+				"simulator.CHANNEL_ITEM_PERSISTENCE": false,
+				"simulator.CHANNEL_ITEM_PERSISTENCE_DATA_FILE": "C:\\ProgramData\\Kepware\\KEPServerEX\\V6\\Simulator\\FactorySight.dat",
+				"devices": [
+					{
+						"common.ALLTYPES_NAME": "Tank",
+						"servermain.MULTIPLE_TYPES_DEVICE_DRIVER": "Simulator",
+						"servermain.DEVICE_MODEL": 0,
+						"servermain.DEVICE_UNIQUE_ID": 3211612501,
+						"servermain.DEVICE_ID_FORMAT": 1,
+						"servermain.DEVICE_ID_STRING": "1",
+						"servermain.DEVICE_ID_HEXADECIMAL": 1,
+						"servermain.DEVICE_ID_DECIMAL": 1,
+						"servermain.DEVICE_ID_OCTAL": 1,
+						"servermain.DEVICE_DATA_COLLECTION": true,
+						"servermain.DEVICE_SCAN_MODE": 0,
+						"servermain.DEVICE_SCAN_MODE_RATE_MS": 1000,
+						"servermain.DEVICE_SCAN_MODE_PROVIDE_INITIAL_UPDATES_FROM_CACHE": false,
+						"tags": [
+							{
+								"common.ALLTYPES_NAME": "agitator_error",
+								"common.ALLTYPES_DESCRIPTION": "Fault in the agitation system",
+								"servermain.TAG_ADDRESS": "K0599",
+								"servermain.TAG_DATA_TYPE": 1,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "agitator_speed",
+								"common.ALLTYPES_DESCRIPTION": "Speed of the agitator",
+								"servermain.TAG_ADDRESS": "K0502",
+								"servermain.TAG_DATA_TYPE": 8,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "agitator_state",
+								"common.ALLTYPES_DESCRIPTION": "State of the agitator",
+								"servermain.TAG_ADDRESS": "K0501",
+								"servermain.TAG_DATA_TYPE": 1,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "cleaning_state",
+								"common.ALLTYPES_DESCRIPTION": "Cleaning status if in progress",
+								"servermain.TAG_ADDRESS": "K0003",
+								"servermain.TAG_DATA_TYPE": 1,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "cycle_number",
+								"common.ALLTYPES_DESCRIPTION": "Number of cycles in automatic mode",
+								"servermain.TAG_ADDRESS": "K0020",
+								"servermain.TAG_DATA_TYPE": 4,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "emergency_stop",
+								"common.ALLTYPES_DESCRIPTION": "Stopping the installation",
+								"servermain.TAG_ADDRESS": "K0098",
+								"servermain.TAG_DATA_TYPE": 1,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "failure_state",
+								"common.ALLTYPES_DESCRIPTION": "Presence of a fault",
+								"servermain.TAG_ADDRESS": "K0099",
+								"servermain.TAG_DATA_TYPE": 1,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "heating_error",
+								"common.ALLTYPES_DESCRIPTION": "Fault in the heating system",
+								"servermain.TAG_ADDRESS": "K0499",
+								"servermain.TAG_DATA_TYPE": 1,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "heating_state",
+								"common.ALLTYPES_DESCRIPTION": "Status of the tank heating",
+								"servermain.TAG_ADDRESS": "K0401",
+								"servermain.TAG_DATA_TYPE": 1,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "heating_temperature",
+								"common.ALLTYPES_DESCRIPTION": "Tank heating temperature",
+								"servermain.TAG_ADDRESS": "K0402",
+								"servermain.TAG_DATA_TYPE": 8,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "input_error",
+								"common.ALLTYPES_DESCRIPTION": "Fault in the input system",
+								"servermain.TAG_ADDRESS": "K0199",
+								"servermain.TAG_DATA_TYPE": 1,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "input_flow",
+								"common.ALLTYPES_DESCRIPTION": "Flow of the liquid at the input",
+								"servermain.TAG_ADDRESS": "K0102",
+								"servermain.TAG_DATA_TYPE": 8,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "input_state",
+								"common.ALLTYPES_DESCRIPTION": "Status of the input valve",
+								"servermain.TAG_ADDRESS": "K0101",
+								"servermain.TAG_DATA_TYPE": 1,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "level_error",
+								"common.ALLTYPES_DESCRIPTION": "Fault in the filling/emptying system",
+								"servermain.TAG_ADDRESS": "K0399",
+								"servermain.TAG_DATA_TYPE": 1,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "liquid_level",
+								"common.ALLTYPES_DESCRIPTION": "Liquid level of the tank",
+								"servermain.TAG_ADDRESS": "K0301",
+								"servermain.TAG_DATA_TYPE": 8,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "liquid_temperature",
+								"common.ALLTYPES_DESCRIPTION": "Temperature of the liquid",
+								"servermain.TAG_ADDRESS": "K0404",
+								"servermain.TAG_DATA_TYPE": 8,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "manual_mode",
+								"common.ALLTYPES_DESCRIPTION": "The installation is in manual mode",
+								"servermain.TAG_ADDRESS": "K0002",
+								"servermain.TAG_DATA_TYPE": 1,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "operating_state",
+								"common.ALLTYPES_DESCRIPTION": "The installation is operational",
+								"servermain.TAG_ADDRESS": "K0001",
+								"servermain.TAG_DATA_TYPE": 1,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "output_error",
+								"common.ALLTYPES_DESCRIPTION": "Fault in the output system",
+								"servermain.TAG_ADDRESS": "K0299",
+								"servermain.TAG_DATA_TYPE": 1,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "output_flow",
+								"common.ALLTYPES_DESCRIPTION": "Flow of the liquid at the output",
+								"servermain.TAG_ADDRESS": "K0202",
+								"servermain.TAG_DATA_TYPE": 8,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "output_state",
+								"common.ALLTYPES_DESCRIPTION": "Status of the output valve",
+								"servermain.TAG_ADDRESS": "K0201",
+								"servermain.TAG_DATA_TYPE": 1,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							},
+							{
+								"common.ALLTYPES_NAME": "step_number",
+								"common.ALLTYPES_DESCRIPTION": "Step number in automatic mode",
+								"servermain.TAG_ADDRESS": "K0021",
+								"servermain.TAG_DATA_TYPE": 4,
+								"servermain.TAG_READ_WRITE_ACCESS": 1,
+								"servermain.TAG_SCAN_RATE_MILLISECONDS": 100,
+								"servermain.TAG_SCALING_TYPE": 0
+							}
+						]
+					}
+				]
+			}
+		],
+		"client_interfaces": [
+			{
+				"common.ALLTYPES_NAME": "aeserverinterface",
+				"aeserverinterface.ENABLE_AE_SERVER": true,
+				"aeserverinterface.ENABLE_SIMPLE_EVENTS": true,
+				"aeserverinterface.MAX_SUBSCRIPTION_BUFFER_SIZE": 100,
+				"aeserverinterface.MIN_SUBSCRIPTION_BUFFER_TIME_MS": 1000,
+				"aeserverinterface.MIN_KEEP_ALIVE_TIME_MS": 1000
+			},
+			{
+				"common.ALLTYPES_NAME": "ddeserver",
+				"ddeserver.ENABLE": false,
+				"ddeserver.SERVICE_NAME": "kepdde",
+				"ddeserver.ADVANCED_DDE": true,
+				"ddeserver.XLTABLE": true,
+				"ddeserver.CF_TEXT": true,
+				"ddeserver.CLIENT_UPDATE_INTERVAL_MS": 100,
+				"ddeserver.REQUEST_TIMEOUT_SEC": 15
+			},
+			{
+				"common.ALLTYPES_NAME": "hdaserver",
+				"hdaserver.ENABLE": true,
+				"hdaserver.ENABLE_DIAGNOSTICS": false
+			},
+			{
+				"common.ALLTYPES_NAME": "opcdaserver",
+				"opcdaserver.PROJECT_OPC_DA_1_ENABLED": true,
+				"opcdaserver.PROJECT_OPC_DA_2_ENABLED": true,
+				"opcdaserver.PROJECT_OPC_DA_3_ENABLED": true,
+				"opcdaserver.PROJECT_OPC_SHOW_HINTS_ON_BROWSE": false,
+				"opcdaserver.PROJECT_OPC_SHOW_TAG_PROPERTIES_ON_BROWSE": false,
+				"opcdaserver.PROJECT_OPC_SHUTDOWN_WAIT_SEC": 15,
+				"opcdaserver.PROJECT_OPC_SYNC_REQUEST_WAIT_SEC": 15,
+				"opcdaserver.PROJECT_OPC_ENABLE_DIAGS": false,
+				"opcdaserver.PROJECT_OPC_MAX_CONNECTIONS": 512,
+				"opcdaserver.PROJECT_OPC_MAX_TAG_GROUPS": 2000,
+				"opcdaserver.PROJECT_OPC_REJECT_UNSUPPORTED_LANG_ID": true,
+				"opcdaserver.PROJECT_OPC_IGNORE_DEADBAND_ON_CACHE": false,
+				"opcdaserver.PROJECT_OPC_IGNORE_BROWSE_FILTER": false,
+				"opcdaserver.PROJECT_OPC_205A_DATA_TYPE_SUPPORT": true,
+				"opcdaserver.PROJECT_OPC_SYNC_READ_ERROR_ON_BAD_QUALITY": false,
+				"opcdaserver.PROJECT_OPC_RETURN_INITIAL_UPDATES_IN_SINGLE_CALLBACK": false,
+				"opcdaserver.PROJECT_OPC_RESPECT_CLIENT_LANG_ID": false,
+				"opcdaserver.PROJECT_OPC_COMPLIANT_DATA_CHANGE": true,
+				"opcdaserver.PROJECT_OPC_IGNORE_GROUP_UPDATE_RATE": false
+			},
+			{
+				"common.ALLTYPES_NAME": "thingworxinterface",
+				"thingworxinterface.ENABLED": false,
+				"thingworxinterface.HOSTNAME": "localhost",
+				"thingworxinterface.PORT": 443,
+				"thingworxinterface.RESOURCE": "/Thingworx/WS",
+				"thingworxinterface.APPKEY": "",
+				"thingworxinterface.ALLOW_SELF_SIGNED_CERTIFICATE": false,
+				"thingworxinterface.TRUST_ALL_CERTIFICATES": false,
+				"thingworxinterface.DISABLE_ENCRYPTION": false,
+				"thingworxinterface.MAX_THING_COUNT": 500,
+				"thingworxinterface.THING_NAME": "KEPServerEX",
+				"thingworxinterface.PUBLISH_FLOOR_MSEC": 1000,
+				"thingworxinterface.LOGGING_ENABLED": false,
+				"thingworxinterface.LOG_LEVEL": 3,
+				"thingworxinterface.VERBOSE": false,
+				"thingworxinterface.STORE_AND_FORWARD_ENABLED": false,
+				"thingworxinterface.STORAGE_PATH": "C:\\ProgramData\\Kepware\\KEPServerEX\\V6",
+				"thingworxinterface.DATASTORE_MAXSIZE": 2048,
+				"thingworxinterface.FORWARD_MODE": 0,
+				"thingworxinterface.DATASTORE_ID": 3559203245,
+				"thingworxinterface.DELAY_BETWEEN_PUBLISHES": 0,
+				"thingworxinterface.MAX_UPDATES_PER_PUBLISH": 25000,
+				"thingworxinterface.PROXY_ENABLED": false,
+				"thingworxinterface.PROXY_HOST": "localhost",
+				"thingworxinterface.PROXY_PORT": 3128,
+				"thingworxinterface.PROXY_USERNAME": "",
+				"thingworxinterface.PROXY_PASSWORD": ""
+			},
+			{
+				"common.ALLTYPES_NAME": "uaserverinterface",
+				"uaserverinterface.PROJECT_OPC_UA_ENABLE": true,
+				"uaserverinterface.PROJECT_OPC_UA_DIAGNOSTICS": false,
+				"uaserverinterface.PROJECT_OPC_UA_ANONYMOUS_LOGIN": true,
+				"uaserverinterface.PROJECT_OPC_UA_MAX_CONNECTIONS": 128,
+				"uaserverinterface.PROJECT_OPC_UA_MIN_SESSION_TIMEOUT_SEC": 15,
+				"uaserverinterface.PROJECT_OPC_UA_MAX_SESSION_TIMEOUT_SEC": 60,
+				"uaserverinterface.PROJECT_OPC_UA_TAG_CACHE_TIMEOUT_SEC": 5,
+				"uaserverinterface.PROJECT_OPC_UA_BROWSE_TAG_PROPERTIES": false,
+				"uaserverinterface.PROJECT_OPC_UA_BROWSE_ADDRESS_HINTS": false,
+				"uaserverinterface.PROJECT_OPC_UA_MAX_DATA_QUEUE_SIZE": 2,
+				"uaserverinterface.PROJECT_OPC_UA_MAX_RETRANSMIT_QUEUE_SIZE": 10,
+				"uaserverinterface.PROJECT_OPC_UA_MAX_NOTIFICATION_PER_PUBLISH": 65536
+			}
+		]
+	}
+}

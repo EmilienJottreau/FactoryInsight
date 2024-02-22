@@ -498,4 +498,31 @@ footer{
 }
 
 
+.statsPage{
+  margin: 10px;
+  flex-grow: 1;
 
+  button {
+    margin-left: 10px;
+
+    padding: 10px;
+    padding-inline: 20px;
+    border-radius: 15px;
+  }
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  .form-floating {
+    margin: 10px;
+
+  }
+
+}
+
+.statsResults {
+
+  margin-top: 50px;
+}
