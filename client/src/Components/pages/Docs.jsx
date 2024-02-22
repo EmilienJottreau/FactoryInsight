@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { DownloadPdfButton } from "../base/DownloadPdfButton";
 
 export function Docs() {
   const [pdfData, setPdfData] = useState(null);
@@ -16,62 +17,27 @@ export function Docs() {
 
   return (
     <div className="docs">
-      <ul>
-        <div>
-          <button>
-            <li
-              onClick={() =>
-                loadPdf("Certificats de conformité et de qualité.pdf")
-              }
-            >
-              Certificats de conformité et de qualité.pdf
-            </li>
-          </button>
-        </div>
-        <div>
-          <button>
-            <li onClick={() => loadPdf("Fiche technique.pdf")}>
-              Fiche technique.pdf
-            </li>
-          </button>
-        </div>
-        <div>
-          <button>
-            <li onClick={() => loadPdf("Guide d'entretien préventif.pdf")}>
-              Guide d'entretien préventif.pdf
-            </li>
-          </button>
-        </div>
-        <div>
-          <button>
-            <li onClick={() => loadPdf("Guide de dépannage.pdf")}>
-              Guide de dépannage.pdf
-            </li>
-          </button>
-        </div>
-        <div>
-          <button>
-            <li onClick={() => loadPdf("Manuel de formation.pdf")}>
-              Manuel de formation.pdf
-            </li>
-          </button>
-        </div>
-        <div>
-          <button>
-            <li onClick={() => loadPdf("Schéma électrique.pdf")}>
-              Schéma électrique.pdf
-            </li>
-          </button>
-        </div>
-      </ul>
+      <DownloadPdfButton
+        name="Certificats de conformité et de qualité.pdf"
+        loadPdf={loadPdf}
+      />
+      <DownloadPdfButton name="Fiche technique.pdf" loadPdf={loadPdf} />
+      <DownloadPdfButton
+        name="Guide d'entretien préventif.pdf"
+        loadPdf={loadPdf}
+      />
+      <DownloadPdfButton name="Guide de dépannage.pdf" loadPdf={loadPdf} />
+      <DownloadPdfButton name="Manuel de formation.pdf" loadPdf={loadPdf} />
+      <DownloadPdfButton name="Schéma électrique.pdf" loadPdf={loadPdf} />
+
       {pdfData && (
         <div className="pdfContainer">
-        <embed
-          src={pdfData}
-          type="application/pdf"
-          width="100%"
-          height="600px"
-        />
+          <embed
+            src={pdfData}
+            type="application/pdf"
+            width="100%"
+            height="600px"
+          />
         </div>
       )}
     </div>
