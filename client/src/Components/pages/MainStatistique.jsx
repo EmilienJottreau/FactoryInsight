@@ -95,7 +95,7 @@ export function MainStatistique() {
           Rafraîchir
         </button>
         <div className="statsResults">
-          <h1 className="center">Stats</h1>
+          <h1 className="center">Statistiques</h1>
           <div className="statsCore">
             <div className="title">Maximum</div>
             {data && <div>{data.max.toFixed(configTag.digit)} {configTag.unit}</div>}
