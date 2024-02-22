@@ -17,14 +17,26 @@ export function getTagOfStation(id, jsonData) {
   }
 }
 
-const possibleRange = [1,2,3,4,6,12,24, 48, 96];
+
+function getConfigTag(station, tagName) {
+    // Parcours des données de la station pour trouver le tag correspondant
+    for (var i = 0; i < config.stations[station].read.length; i++) {
+        if (config.stations[station].read[i].name === tagName) {
+            return config.stations[station].read[i];
+        }
+    }
+    // Si le tag n'est pas trouvé, retourne une chaîne vide
+    return "";
+}
+
+const possibleRange = [1, 2, 3, 4, 6, 12, 24, 48, 96];
 
 export function MainStatistique() {
   const [selected, setSelected] = useState("liquid_level");
   const [selectedRange, setSelectedRange] = useState(24);
   const [lastStation, setLastStation] = useOutletContext();
-  const [data, setData] = useState([]);
-  const [recall, setRecall] = useState(0)
+  const [data, setData] = useState(null);
+  const [recall, setRecall] = useState(0);
 
   var station = "";
   if (lastStation == 0) {
@@ -52,6 +64,9 @@ export function MainStatistique() {
   }, [selected, selectedRange, recall]);
 
   const tags = getTagOfStation(lastStation, config);
+  const configTag = getConfigTag(lastStation, selected)
+  console.log(configTag)
+  console.log(data)
 
   return (
     <>
@@ -66,17 +81,31 @@ export function MainStatistique() {
 
           <Select
             items={possibleRange}
-            description={"Choisissez un plage horaire"}
+            description={"Période d'analyse"}
             selected={selectedRange}
             setSelected={setSelectedRange}
+            unit={"h"}
           />
         </div>
-        <button onClick={() => {setRecall((a)=>a+1)}}>Refresh</button>
-        <div className="statsResults"> 
-        <h1>Stats</h1>
-            
-            
-            {JSON.stringify(data)}</div>
+        <button
+          onClick={() => {
+            setRecall((a) => a + 1);
+          }}
+        >
+          Rafraîchir
+        </button>
+        <div className="statsResults">
+          <h1 className="center">Stats</h1>
+          <div className="statsCore">
+            <div className="title">Maximum</div>
+            {data && <div>{data.max.toFixed(configTag.digit)} {configTag.unit}</div>}
+            <div className="title">Moyenne</div>
+            {data && <div>{data.mean.toFixed(configTag.digit)} {configTag.unit}</div>}
+            <div className="title">Minimum</div>
+            {data && <div>{data.min.toFixed(configTag.digit)} {configTag.unit}</div>}
+          </div>
+          {/* {JSON.stringify(data)} */}
+        </div>
       </div>
     </>
   );
