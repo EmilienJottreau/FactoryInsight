@@ -40,4 +40,4 @@ TODO
 
 ## Bugs connus
 
-Au bout d'un certain temps, le serveur flask perd sa connexion avec la base de donnée. Lors de la demande de données historique, rien n'est renvoyé
+- Sur certaines machines, le serveur flask perd la connexion avec la base de données au bout d'un certain temps. Les réponses aux requêtes nécessitant les informations de la base de données sont alors vides.
