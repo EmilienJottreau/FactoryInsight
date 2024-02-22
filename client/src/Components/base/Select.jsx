@@ -1,4 +1,4 @@
-export function Select({ items, description, selected = "", setSelected }) {
+export function Select({ items, description, selected = "", setSelected, unit="" }) {
   const handleChange = (value) => {
     console.log(value.target.value);
     setSelected(value.target.value);
@@ -26,7 +26,7 @@ export function Select({ items, description, selected = "", setSelected }) {
             .map((x, i) => (
               <option key={x} value={x}>
                 {typeof x === "number"
-                  ? x
+                  ? x + unit
                   : (x.charAt(0).toUpperCase() + x.slice(1)).replace("_", " ")}
               </option>
             ))}
