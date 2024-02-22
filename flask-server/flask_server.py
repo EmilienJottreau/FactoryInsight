@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from datetime import datetime, timedelta
 from flask_socketio import SocketIO
 from opc_tags import OPC_Tags
 from database import Database
@@ -36,5 +37,15 @@ def flask_server(database: Database, opc_tags: OPC_Tags, logger: bool) -> tuple[
         for station, tag in opc_tags:
             history += database.select(station, tag, limit)
         return history
+
+    # /api/v1/stats/Tank/liquid_level/24
+    @app.get("/api/v1/stats/<string:station>/<string:tag>/<int:duration>")
+    def get_stats(station: str, tag: str, duration: int):
+        """Get the stats of a tag over a period of time"""
+        results = database.select_stat(station, tag, str(datetime.now() - timedelta(hours=duration)))
+        values = []
+        for result in results:
+            values.append(result["value"])
+        return {"max": max(values), "min": min(values), "mean": sum(values) / len(values)}
 
     return socketio, app

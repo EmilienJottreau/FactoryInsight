@@ -73,7 +73,7 @@ async def simulator() -> None:
                             await tags["step_number"].change_value(5)
                             clock = time()
                     case 5:
-                        if await tags["liquid_level"].read_value() < 0:
+                        if await tags["liquid_level"].read_value() <= 0:
                             await tags["output_state"].change_value(False)
                             await tags["step_number"].change_value(6)
                             clock = time()

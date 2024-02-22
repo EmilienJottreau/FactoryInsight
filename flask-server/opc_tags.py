@@ -4,6 +4,8 @@ from asyncua import Node, ua
 
 
 class OPC_Data:
+    """Convert data to json in a right way"""
+
     def __init__(self, station: str, tag: str, value: Any, timestamp: datetime, id: int = None) -> None:
         self.station = station
         self.tag = tag
@@ -23,7 +25,11 @@ class OPC_Data:
 
 
 class OPC_Tags:
+    """Store tags from the opc server namespace"""
+
     class OPC_Tag:
+        """Store information about tag"""
+
         def __init__(self, node: Node, variant_type: ua.VariantType) -> None:
             self.node = node
             self.variant_type = variant_type
@@ -45,6 +51,7 @@ class OPC_Tags:
         self.tags = None
 
     async def browse_nodes(self, parent_node: Node) -> dict[str, dict[str, OPC_Tag]]:
+        """Browses the tree structure to find all children of a node"""
         nodes = {}
         for child_node in await parent_node.get_children():
             child_name = (await child_node.read_browse_name()).Name
@@ -75,6 +82,7 @@ class OPC_Tags:
 
 
 async def get_node_data(node: Node) -> tuple[str, str, datetime]:
+    """Get name, parent name and timestamp from a tag node"""
     _, station, tag_name = (await node.read_attribute(1)).Value.Value.Identifier.split(".")
     timestamp = (await node.read_attribute(13)).SourceTimestamp
     return station, tag_name, timestamp
