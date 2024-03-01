@@ -30,7 +30,8 @@ Service web de supervision d'installations industrielles.
 
 ## Vidéo de démonstration
 
-TODO
+[![Setup](https://i3.ytimg.com/vi/qaqEv_Dv8r8/maxresdefault.jpg)](https://www.youtube.com/watch?v=qaqEv_Dv8r8 "Video Set-up")
+[![Demo](https://i3.ytimg.com/vi/BiSCd3T03wg/maxresdefault.jpg)](https://youtu.be/BiSCd3T03wg "Video Demo")
 
 ## Membres de l'équipe
 
