@@ -22,11 +22,11 @@ Service web de supervision d'installations industrielles.
   - Importer depuis l'application l'espace d'adressage **namespace.opf** situé dans le dossier *ressources*.
   - Se connecter aux sources de données depuis l'onglet *Runtime* > *Connect*.
 - Exécuter `python flask-server/server.py` pour lancer le serveur Flask.
-- Afficher la page web de l'application depuis l'adresse `http://127.0.0.1:3000/` dans un navigateur.
 - Démarrer le simulateur avec `python flask-server/simulator.py` afin de simuler l'installation.
 - Accéder au dossier client `cd client` pour lancer le serveur [Node.JS](https://nodejs.org/en/download/current) :
   - `npm install` lors de la premiere utilisation pour générer le dossier node_modules.
   - `npm start` pour démarrer le serveur front-end.
+- Afficher la page web de l'application depuis l'adresse `http://127.0.0.1:3000/` dans un navigateur.
 
 ## Vidéo de démonstration
 
