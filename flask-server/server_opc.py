@@ -2,7 +2,7 @@ import asyncio
 from asyncua import ua, Server
 import json
 
-with open(r"ressources\namespace.json", "r" , encoding='utf8') as namespace:
+with open(r"ressources/namespace.json", "r" , encoding='utf8') as namespace:
     config = json.load(namespace)
 
 

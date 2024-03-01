@@ -76,5 +76,5 @@ class OPC_Tags:
 
 async def get_node_data(node: Node) -> tuple[str, str, datetime]:
     _, station, tag_name = (await node.read_attribute(1)).Value.Value.Identifier.split(".")
-    timestamp = (await node.read_attribute(13)).SourceTimestamp
+    timestamp = (await node.read_attribute(13)).ServerTimestamp
     return station, tag_name, timestamp

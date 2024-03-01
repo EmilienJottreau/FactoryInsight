@@ -15,4 +15,4 @@ socketio, app = flask_server(database, opc_tags, logger=False)
 
 socketio.start_background_task(opc_client, opc_server_url, database, socketio, opc_tags)
 
-socketio.run(app)
+socketio.run(app, allow_unsafe_werkzeug=True)
