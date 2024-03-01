@@ -9,6 +9,8 @@ from typing import Any
 def opc_client(server_url: str, database: Database, socket: SocketIO, opc_tags: OPC_Tags) -> None:
 
     class SubHandler:
+        """Receives an event when the value of a subscribed tag changes"""
+
         async def datachange_notification(self, node: Node, value: Any, _) -> None:
             station, tag_name, timestamp = await get_node_data(node)
 
@@ -19,6 +21,7 @@ def opc_client(server_url: str, database: Database, socket: SocketIO, opc_tags: 
             socket.emit("datachange", tag.json)
 
     async def client_loop() -> None:
+        """Initializes the OPC client and subscribes the tags"""
         async with Client(url=server_url) as client:
             namespace_index = await client.get_namespace_index("KEPServerEX")
 
