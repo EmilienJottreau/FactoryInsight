@@ -24,13 +24,16 @@ Service web de supervision d'installations industrielles.
 - Exécuter `python flask-server/server.py` pour lancer le serveur Flask.
 - Démarrer le simulateur avec `python flask-server/simulator.py` afin de simuler l'installation.
 - Accéder au dossier client `cd client` pour lancer le serveur [Node.JS](https://nodejs.org/en/download/current) :
-  - `npm install` lors de la premiere utilisation pour générer le dossier node_modules.
+  - `npm install` lors de la première utilisation pour générer le dossier node_modules.
   - `npm start` pour démarrer le serveur front-end.
 - Afficher la page web de l'application depuis l'adresse `http://127.0.0.1:3000/` dans un navigateur.
 
-## Vidéo de démonstration
+## Vidéos de démonstration
 
+### Setup de l'application web
 [![Setup](https://i3.ytimg.com/vi/qaqEv_Dv8r8/maxresdefault.jpg)](https://www.youtube.com/watch?v=qaqEv_Dv8r8 "Video Set-up")
+
+### Démonstration des fonctionnalités
 [![Demo](https://i3.ytimg.com/vi/BiSCd3T03wg/maxresdefault.jpg)](https://youtu.be/BiSCd3T03wg "Video Demo")
 
 ## Membres de l'équipe
